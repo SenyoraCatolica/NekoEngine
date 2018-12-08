@@ -143,7 +143,7 @@ void ModuleWindow::SetScreenSize(uint size)
 
 uint ModuleWindow::GetScreenSize() const 
 {
-	return size;
+	return 1;
 }
 
 void ModuleWindow::SetWindowWidth(uint width)

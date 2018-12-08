@@ -7,7 +7,7 @@
 #include "Globals.h"
 #include "Light.h"
 
-#include "MathGeoLib/include/Math/float4x4.h"
+#include "MathGeoLib\include\MathGeoLib.h"
 
 #include "glew\include\GL\glew.h"
 #include "SDL\include\SDL_opengl.h"
@@ -102,7 +102,6 @@ public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
-	math::float3x3 NormalMatrix;
 	math::float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
 	bool vsync = false;

@@ -5,7 +5,7 @@
 
 #include "Globals.h"
 
-#include "MathGeoLib\include\Geometry\Frustum.h"
+#include "MathGeoLib\include\MathGeoLib.h"
 
 class ComponentCamera : public Component
 {

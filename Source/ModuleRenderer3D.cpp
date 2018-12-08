@@ -28,6 +28,8 @@
 
 #include <stdio.h>
 #include <algorithm>
+#include "MathGeoLib\include\Geometry\Frustum.h"
+
 
 ModuleRenderer3D::ModuleRenderer3D(bool start_enabled) : Module(start_enabled)
 {

@@ -70,6 +70,12 @@ PrimitiveTypes Primitive::GetType() const
 	return type;
 }
 
+math::float4x4 Primitive::GetTransform()
+{
+	return localTransform;
+}
+
+
 void Primitive::SetLocalTransform(const math::float4x4 localTransform)
 {
 	this->localTransform = localTransform;
@@ -825,4 +831,29 @@ PrimitiveFrustum::PrimitiveFrustum(math::float2 startSize, math::float2 endSize,
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesID);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * indicesSize, indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+// LINE ==================================================
+PrimitiveLine::PrimitiveLine() : Primitive(), origin(0, 0, 0), destination(1, 1, 1)
+{
+	type = PrimitiveTypes::PrimitiveTypeLine;
+}
+
+PrimitiveLine::PrimitiveLine(float x, float y, float z) : Primitive(), origin(0, 0, 0), destination(x, y, z)
+{
+	type = PrimitiveTypes::PrimitiveTypeLine;
+}
+
+void PrimitiveLine::InnerRender() const
+{
+	glLineWidth(2.0f);
+
+	glBegin(GL_LINES);
+
+	glVertex3f(origin.x, origin.y, origin.z);
+	glVertex3f(destination.x, destination.y, destination.z);
+
+	glEnd();
+
+	glLineWidth(1.0f);
 }

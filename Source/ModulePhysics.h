@@ -1,0 +1,76 @@
+#pragma once
+
+#include "Module.h"
+#include "Globals.h"
+#include "Primitive.h"
+#include "Bullet\include\btBulletDynamicsCommon.h"
+#include <list>
+
+#define GRAVITY btVector3(0.0f, -10.0f, 0.0f) 
+
+class PhysicBody3D;
+class RigidBody3DComponent;
+class BoxColliderComponent;
+class DebugPhysicsDrawer;
+
+class ModulePhysics : public Module
+{
+public:
+	ModulePhysics();
+	~ModulePhysics();
+
+	bool Start();
+	bool PreUpdate(float dt);
+	bool Update(float dt);
+	bool PostUpdate(float dt);
+	bool CleanUp();
+
+	PhysicBody3D* AddBody(const PrimitiveSphere& sphere, float mass = 1.0f);
+	//PhysicBody3D* Addbody(RigidBody3DComponent* rb, Sphere& sphere);
+
+	PhysicBody3D* AddBody(const PrimitiveCube& cube, float mass = 1.0f);
+	//PhysicBody3D* Addbody(RigidBody3DComponent* rb, OBB& box);
+
+	PhysicBody3D* AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col);
+
+
+
+private:
+
+	btDefaultCollisionConfiguration * collision_conf = nullptr;
+	btCollisionDispatcher* dispatcher = nullptr;
+	btBroadphaseInterface* broad_phase = nullptr;
+	btSequentialImpulseConstraintSolver* solver = nullptr;
+	btDiscreteDynamicsWorld* world = nullptr;
+	DebugPhysicsDrawer* debug_draw = nullptr;
+
+
+	std::list<btCollisionShape*> shapes;
+	std::list<PhysicBody3D*> bodies;
+	std::list<btDefaultMotionState*> motions;
+	std::list<btTypedConstraint*> constraints;
+
+};
+
+
+//=========================================================================================================
+//small class to handle the debug drawing of the bullet physics
+
+class DebugPhysicsDrawer : public btIDebugDraw
+{
+public:
+	DebugPhysicsDrawer() : line(0, 0, 0)
+	{}
+
+	void drawLine(const btVector3& from, const btVector3& to, const btVector3& color);
+	void drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color);
+	void reportErrorWarning(const char* warningString);
+	void draw3dText(const btVector3& location, const char* textString);
+
+	int	 getDebugMode() const;
+	void setDebugMode(int debugMode);
+
+	DebugDrawModes mode;
+	PrimitiveLine line;
+	Primitive point;
+};

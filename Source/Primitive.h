@@ -22,6 +22,7 @@ enum PrimitiveTypes
 	PrimitiveTypeCone,
 	PrimitiveTypeArrow,
 	PrimitiveTypeFrustum,
+	PrimitiveTypeLine
 };
 
 struct Color;
@@ -40,10 +41,14 @@ public:
 
 	PrimitiveTypes GetType() const;
 
+	math::float4x4 GetTransform();
+
 	void SetLocalTransform(const math::float4x4 localTransform);
 	void SetColor(Color color);
 	void SetWireframeMode(bool wireframeMode);
 	void ShowAxis(bool showAxis);
+
+	math::float4x4 localTransform = math::float4x4::identity;
 
 protected:
 
@@ -53,7 +58,6 @@ protected:
 
 	PrimitiveTypes type = PrimitiveTypes::PrimitiveNoType;
 
-	math::float4x4 localTransform = math::float4x4::identity;
 	Color color = White;
 	bool wireframeMode = false;
 	bool showAxis = false;
@@ -154,8 +158,6 @@ public:
 
 	PrimitiveCube(math::float3 size = math::float3(1.0f, 1.0f, 1.0f));
 
-private:
-
 	math::float3 size = { 0.0f, 0.0f, 0.0f };
 };
 
@@ -165,8 +167,6 @@ class PrimitiveSphere : public Primitive
 public:
 
 	PrimitiveSphere(float radius = 1.0f, uint segments = 8);
-
-private:
 
 	float radius = 0.0f;
 	uint segments = 0;
@@ -231,6 +231,19 @@ private:
 	math::float2 endSize = { 0.0f, 0.0f };
 
 	math::float3 endPosition = { 0.0f, 0.0f, 0.0f };
+};
+
+// ============================================
+class PrimitiveLine : public Primitive
+{
+public:
+	PrimitiveLine();
+	PrimitiveLine(float x, float y, float z);
+	void InnerRender() const;
+
+public:
+	math::float3 origin;
+	math::float3 destination;
 };
 
 #endif
