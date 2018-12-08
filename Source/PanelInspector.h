@@ -28,6 +28,8 @@ private:
 	void ShowTextureResourceInspector() const;
 	void ShowMeshImportSettingsInspector() const;
 	void ShowTextureImportSettingsInspector() const;
+	void ShowBoxColliderInspector() const;
+	void ShowRigidBody3D() const;
 };
 
 #endif

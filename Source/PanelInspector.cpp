@@ -467,4 +467,14 @@ void PanelInspector::ShowTextureImportSettingsInspector() const
 	}
 }
 
+void PanelInspector::ShowBoxColliderInspector() const
+{
+
+}
+
+void PanelInspector::ShowRigidBody3D() const
+{
+
+}
+
 #endif // GAME

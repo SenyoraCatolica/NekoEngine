@@ -19,6 +19,8 @@ public:
 
 	void SetBox(BoxColliderComponent* col);
 
+	void OnUniqueEditor();
+
 	bool Save(JSON_Object* component_obj)const;
 	bool Load(const JSON_Object* component_obj);
 
