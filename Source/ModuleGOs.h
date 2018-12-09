@@ -53,6 +53,8 @@ public:
 
 	bool InvalidateResource(const Resource* resource);
 
+	void AddPhysicsOnPlay();
+
 public:
 
 	const char* nameScene = nullptr;

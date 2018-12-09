@@ -30,6 +30,9 @@ void RigidBody3DComponent::GeneratePhysicBbody()
 		if (box != nullptr)
 			box->SetRigidBody(this);
 	}
+
+	is_kinematic = false;
+	mass = 1.0f;
 }
 
 void RigidBody3DComponent::SetBox(BoxColliderComponent* col)
@@ -45,12 +48,11 @@ void RigidBody3DComponent::OnUniqueEditor()
 
 	const double f64_lo_a = -1000000000000000.0, f64_hi_a = +1000000000000000.0;
 
+	ImGui::Text("Mass");
 	ImGui::PushItemWidth(TRANSFORMINPUTSWIDTH);
 	ImGui::DragScalar("##Mass", ImGuiDataType_Float, (void*)&mass, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f); ImGui::SameLine();
 
-	bool tmp_kinematic = is_kinematic;
-	ImGui::Checkbox("Is Kinematic", &tmp_kinematic);
-	is_kinematic = tmp_kinematic;
+	ImGui::Checkbox("Is Kinematic", &is_kinematic);
 }
 
 

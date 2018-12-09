@@ -15,6 +15,8 @@ class ComponentTransform;
 class ComponentMaterial;
 class ComponentMesh;
 class ComponentCamera;
+class BoxColliderComponent;
+class RigidBody3DComponent;
 
 class GameObject
 {
@@ -52,6 +54,7 @@ public:
 	bool HasComponents() const;
 	uint GetComponenetsLength() const;
 	Component* GetComponent(uint index) const;
+	Component* GetComponent(ComponentType type);
 	int GetComponentIndexOnComponents(Component* component) const;
 	void SwapComponents(Component* firstComponent, Component* secondComponent);
 	void ReorderComponents(Component* source, Component* target);
@@ -87,6 +90,8 @@ public:
 	ComponentMaterial* materialRenderer = nullptr;
 	ComponentMesh* meshRenderer = nullptr;
 	ComponentCamera* camera = nullptr;
+	BoxColliderComponent* box_collider = nullptr;
+	RigidBody3DComponent* rb = nullptr;
 
 	math::AABB boundingBox;
 

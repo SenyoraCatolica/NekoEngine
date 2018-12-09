@@ -26,8 +26,8 @@ public:
 
 public:
 
-	math::float3 offset;
-	math::float3 size;
+	math::float3 offset = math::float3::zero;
+	math::float3 size = math::float3::one;
 	bool is_trigger = false;
 	math::OBB box;
 

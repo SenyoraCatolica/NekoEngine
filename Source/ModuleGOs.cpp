@@ -6,10 +6,15 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
+#include "BoxColliderComponent.h"
+#include "RigidBody3DComponent.h"
 
 #include "Application.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
+
+#include "ModulePhysics.h"
+#include "PhysicBody3D.h"
 
 #include "Resource.h"
 
@@ -116,6 +121,8 @@ bool ModuleGOs::OnGameMode()
 		tmpGameObjects.push_back(tmpGameObject);
 	}
 	CONSOLE_LOG("MODULE GOS: tmpGameObjects vector size OnGameMode: %i", tmpGameObjects.size());
+
+	AddPhysicsOnPlay();
 
 	return true;
 }
@@ -447,4 +454,19 @@ bool ModuleGOs::InvalidateResource(const Resource* resource)
 
 	assert(resource->CountReferences() <= 0);
 	return true;
+}
+
+
+void ModuleGOs::AddPhysicsOnPlay()
+{
+	std::vector<GameObject*>::iterator it = gameObjects.begin();
+	if (it != gameObjects.end());
+	{
+		BoxColliderComponent* box = (BoxColliderComponent*)(*it)->GetComponent(ComponentType::COMPONENT_BOX);
+		RigidBody3DComponent* rb = (RigidBody3DComponent*)(*it)->GetComponent(ComponentType::COMPONENT_RB);
+
+		if(box != nullptr || rb != nullptr)
+			PhysicBody3D* body = App->physics->AddBody(rb, box); //2do do something with this body
+		it++;
+	}
 }
