@@ -3,6 +3,9 @@
 #include "RigidBody3DComponent.h"
 #include "BoxColliderComponent.h"
 
+#include "Application.h"
+#include "ModuleTimeManager.h"
+
 #ifdef _DEBUG
 #pragma comment (lib, "Bullet/libx86/BulletDynamics_debug.lib")
 #pragma comment (lib, "Bullet/libx86/BulletCollision_debug.lib")
@@ -57,19 +60,56 @@ bool ModulePhysics::Start()
 	return true;
 }
 
-bool ModulePhysics::PreUpdate(float dt)
+update_status ModulePhysics::PreUpdate()
 {
-	return true;
+	if(App->IsPlay() == false)
+		return UPDATE_CONTINUE;
+
+	world->stepSimulation(App->timeManager->GetDt(), 15);
+
+	int numManifolds = world->getDispatcher()->getNumManifolds();
+	for (int i = 0; i<numManifolds; i++)
+	{
+		btPersistentManifold* contactManifold = world->getDispatcher()->getManifoldByIndexInternal(i);
+		btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
+		btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
+
+		int numContacts = contactManifold->getNumContacts();
+		if (numContacts > 0)
+		{
+			PhysicBody3D* pbodyA = (PhysicBody3D*)obA->getUserPointer();
+			PhysicBody3D* pbodyB = (PhysicBody3D*)obB->getUserPointer();
+
+			if (pbodyA && pbodyB)
+			{
+				std::list<Module*>::iterator it = pbodyA->collision_listeners.begin();
+				while (it != pbodyA->collision_listeners.end())
+				{
+					(*it)->OnCollision(pbodyA, pbodyB);
+					it++;
+				}
+
+				it = pbodyB->collision_listeners.begin();
+				while (it != pbodyB->collision_listeners.end())
+				{
+					(*it)->OnCollision(pbodyB, pbodyA);
+					it++;
+				}
+			}
+		}
+	}
+
+	return UPDATE_CONTINUE;
 }
 
-bool ModulePhysics::Update(float dt)
+update_status ModulePhysics::Update()
 {
-	return true;
+	return UPDATE_CONTINUE;
 }
 
-bool ModulePhysics::PostUpdate(float dt)
+update_status ModulePhysics::PostUpdate()
 {
-	return true;
+	return UPDATE_CONTINUE;
 }
 
 bool ModulePhysics::CleanUp()

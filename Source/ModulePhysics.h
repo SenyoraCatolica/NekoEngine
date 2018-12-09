@@ -20,9 +20,9 @@ public:
 	~ModulePhysics();
 
 	bool Start();
-	bool PreUpdate(float dt);
-	bool Update(float dt);
-	bool PostUpdate(float dt);
+	update_status PreUpdate();
+	update_status Update();
+	update_status PostUpdate();
 	bool CleanUp();
 
 	PhysicBody3D* AddBody(const PrimitiveSphere& sphere, float mass = 1.0f);
