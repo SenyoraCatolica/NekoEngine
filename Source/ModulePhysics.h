@@ -22,7 +22,6 @@ public:
 	bool Start();
 	update_status PreUpdate();
 	update_status Update();
-	update_status PostUpdate();
 	bool CleanUp();
 
 	PhysicBody3D* AddBody(const PrimitiveSphere& sphere, float mass = 1.0f);
@@ -32,8 +31,6 @@ public:
 	//PhysicBody3D* Addbody(RigidBody3DComponent* rb, OBB& box);
 
 	PhysicBody3D* AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col);
-
-
 
 private:
 

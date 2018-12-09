@@ -10,7 +10,7 @@
 
 
 RigidBody3DComponent::RigidBody3DComponent(GameObject* embedded_game_object) :
-	Component(embedded_game_object, ComponentType::COMPONENT_BOX)
+	Component(embedded_game_object, ComponentType::COMPONENT_RB)
 {
 	GeneratePhysicBbody();
 }

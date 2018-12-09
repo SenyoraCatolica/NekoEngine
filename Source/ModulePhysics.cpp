@@ -2,9 +2,15 @@
 #include "PhysicBody3D.h"
 #include "RigidBody3DComponent.h"
 #include "BoxColliderComponent.h"
+#include "Primitive.h"
 
 #include "Application.h"
 #include "ModuleTimeManager.h"
+#include "ModuleInput.h"
+#include "Globals.h"
+#include "GameObject.h"
+#include "ComponentTransform.h"
+
 
 #ifdef _DEBUG
 #pragma comment (lib, "Bullet/libx86/BulletDynamics_debug.lib")
@@ -62,7 +68,7 @@ bool ModulePhysics::Start()
 
 update_status ModulePhysics::PreUpdate()
 {
-	if(App->IsPlay() == false)
+	if(App->GetEngineState() != engine_states::ENGINE_PLAY)
 		return UPDATE_CONTINUE;
 
 	world->stepSimulation(App->timeManager->GetDt(), 15);
@@ -104,11 +110,22 @@ update_status ModulePhysics::PreUpdate()
 
 update_status ModulePhysics::Update()
 {
-	return UPDATE_CONTINUE;
-}
+	if (App->IsPlay() == false)
+		return UPDATE_CONTINUE;
 
-update_status ModulePhysics::PostUpdate()
-{
+	//2do render vehicle
+	world->debugDrawWorld();
+
+	
+	//2do implement throwing balls
+	/*if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
+		PrimitiveSphere s(1);
+		s.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+		float force = 30.0f;
+		AddBody(s)->Push(-(App->camera->Z.x * force), -(App->camera->Z.y * force), -(App->camera->Z.z * force));
+	}*/
+
 	return UPDATE_CONTINUE;
 }
 
@@ -265,22 +282,26 @@ return pbody;
 
 PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col)
 {
-	if (rb == nullptr && col == nullptr)
-		return nullptr;
-
 	math::OBB box;
+	GameObject* parent;
 
 	if (col != nullptr)
+	{
 		box = col->box;
+		parent = col->GetParent();
+	}
 
 	else
 		box.SetNegativeInfinity();
 
-	btCollisionShape* colShape = new btBoxShape(btVector3(0.0f, 0.0f, 0.0f));
+	btCollisionShape* colShape = new btBoxShape(btVector3(box.r.x, box.r.y, box.r.z));
 	shapes.push_back(colShape);
 
+	if (parent == nullptr)
+		parent = rb->GetParent();
+
 	btTransform startTransform;
-	startTransform.setFromOpenGLMatrix(*math::float4x4::identity.v);
+	startTransform.setFromOpenGLMatrix(parent->transform->GetGlobalMatrix().ptr());
 
 
 	btVector3 localInertia(0, 0, 0);
