@@ -12,6 +12,9 @@
 
 ShaderImporter::ShaderImporter()
 {
+	//defaultVertexShaderObject = LoadDefaultVertexShaderObject();
+	//defaultFragmentShaderObject = LoadDefaultFragmentShaderObject();
+	//defaultShaderProgram = LoadDefaultShaderProgram(defaultVertexShaderObject, defaultFragmentShaderObject);
 }
 
 ShaderImporter::~ShaderImporter() 
@@ -191,25 +194,22 @@ bool ShaderImporter::Load(const void* buffer, uint size, ResourceShader* outputS
 GLuint ShaderImporter::LoadDefaultVertexShaderObject() const
 {
 	const GLchar* vertex_shader_glsl_330_es =
-		"#version 330 core\n"
-		"layout (location = 0) in vec3 position;\n"
-		"layout (location = 1) in vec4 normals;\n"
-		"layout (location = 2) in vec4 color;\n"
-		"layout (location = 3) in vec2 texCoord;\n"
-		"uniform mat4 model_matrix;\n"
-		"uniform mat4 view_matrix;\n"
-		"uniform mat4 proj_matrix;\n"
+		"#version 330 core"
+		"layout (location = 0) in vec2 Position;\n"
+		"layout (location = 1) in vec4 Color;\n"
+		"layout (location = 2) in vec2 texCoord;\n"
+		"uniform mat4 ProjMtx;\n"
 		"out vec4 ourColor;\n"
-		"out vec2 ourTexCoord;\n"
+		"out vec2 TexCoord;\n"
 		"void main()\n"
 		"{\n"
-		"    ourTexCoord = texCoord;\n"
+		"    TexCoord = texCoord;\n"
 		"    ourColor = color;\n"
 		"    gl_Position = proj_matrix * view_matrix * model_matrix * vec4(position, 1.0f);\n"
 		"}\n";
 
-	GLuint defaultVertexShaderObject = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(defaultVertexShaderObject, 1, &vertex_shader_glsl_330_es, NULL);
+	GLuint defaultVertexShaderObject = glCreateShader(GL_VERTEX_SHADER); // Creates an empty Shader Object
+	glShaderSource(defaultVertexShaderObject, 1, &vertex_shader_glsl_330_es, NULL); // Takes an array of strings and stores it into the shader
 
 	glCompileShader(defaultVertexShaderObject);
 	{
@@ -225,7 +225,7 @@ GLuint ShaderImporter::LoadDefaultVertexShaderObject() const
 
 			CONSOLE_LOG("SHADER IMPORTER: Default Vertex Shader Object could not be compiled. ERROR: %s", infoLog);
 
-			glDeleteShader(defaultVertexShaderObject);
+			glDeleteShader(defaultVertexShaderObject); // TODO
 		}
 		else
 			CONSOLE_LOG("Successfully compiled Default Vertex Shader Object");
@@ -237,18 +237,18 @@ GLuint ShaderImporter::LoadDefaultVertexShaderObject() const
 GLuint ShaderImporter::LoadDefaultFragmentShaderObject() const
 {
 	const GLchar* fragment_shader_glsl_330_es =
-		"#version 330 core\n"
-		"in vec4 ourColor;\n"
-		"in vec2 ourTexCoord;\n"
-		"out vec4 FragColor;\n"
-		"uniform sampler2D ourTexture_0;\n"
+		"#version 330 core"
+		"in vec3 ourColor;\n"
+		"in vec2 TexCoord;\n"
+		"out vec4 color;\n"
+		"uniform sampler2D ourTexture;\n"
 		"void main()\n"
 		"{\n"
-		"     FragColor = texture(ourTexture_0, ourTexCoord);\n"
+		"    color = texture(ourTexture, TexCoord);\n"
 		"}\n";
 
-	GLuint defaultFragmentShaderObject = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(defaultFragmentShaderObject, 1, &fragment_shader_glsl_330_es, NULL);
+	GLuint defaultFragmentShaderObject = glCreateShader(GL_VERTEX_SHADER); // Creates an empty Shader Object
+	glShaderSource(defaultFragmentShaderObject, 1, &fragment_shader_glsl_330_es, NULL); // Takes an array of strings and stores it into the shader
 
 	glCompileShader(defaultFragmentShaderObject);
 	{
@@ -264,7 +264,7 @@ GLuint ShaderImporter::LoadDefaultFragmentShaderObject() const
 
 			CONSOLE_LOG("SHADER IMPORTER: Default Fragment Shader Object could not be compiled. ERROR: %s", infoLog);
 
-			glDeleteShader(defaultFragmentShaderObject);
+			glDeleteShader(defaultFragmentShaderObject); // TODO
 		}
 		else
 			CONSOLE_LOG("SHADER IMPORTER: Successfully compiled Default Fragment Shader Object");
@@ -305,13 +305,6 @@ GLuint ShaderImporter::LoadDefaultShaderProgram(uint defaultVertexShaderObject, 
 	}
 
 	return defaultShaderProgram;
-}
-
-void ShaderImporter::InitDefaultShaders()
-{
-	defaultVertexShaderObject = LoadDefaultVertexShaderObject();
-	defaultFragmentShaderObject = LoadDefaultFragmentShaderObject();
-	defaultShaderProgram = LoadDefaultShaderProgram(defaultVertexShaderObject, defaultFragmentShaderObject);
 }
 
 GLuint ShaderImporter::GetDefaultVertexShaderObject() const
