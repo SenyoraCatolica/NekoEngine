@@ -23,18 +23,25 @@ void BoxColliderComponent::UpdateBoxCollider()
 {
 	if (box != nullptr)
 	{
-		if (App->IsPlay() == false)
+		if (App->IsEditor())
 		{
-			math::float3 trans;
-			math::Quat rot;
-			math::float3 scale;
-			parent->transform->GetGlobalMatrix().Decompose(trans, rot, scale);
+			//update box on editor
+			if (box != nullptr)
+			{
+				//Get the transform data from go transform
+				math::float3 trans; math::Quat rot; math::float3 scale;
+				parent->transform->GetGlobalMatrix().Decompose(trans, rot, scale);
 
-			box->SetPos(trans.x, trans.y, trans.z);
-			box->SetRotation(rot);
-			box->SetScale(scale.x, scale.y, scale.z);
+				//Add offset
+				math::float3 real_offset = rot.Transform(offset);
+				trans -= real_offset;
 
-			box->Render();
+				//Set the new transform
+				box->SetPos(trans.x, trans.y, trans.z);
+				box->SetRotation(rot.Inverted());
+
+				box->Render();
+			}
 		}
 	}
 }

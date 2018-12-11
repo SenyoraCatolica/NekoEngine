@@ -466,7 +466,7 @@ void ModuleGOs::AddPhysicsOnPlay()
 		RigidBody3DComponent* rb = (RigidBody3DComponent*)(*it)->GetComponent(ComponentType::COMPONENT_RB);
 
 		if(box != nullptr || rb != nullptr)
-			PhysicBody3D* body = App->physics->AddBody(rb, box); //2do do something with this body
+			App->physics->AddBody(rb, box, (*it)); 
 		it++;
 	}
 }

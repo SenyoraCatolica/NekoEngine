@@ -27,12 +27,10 @@ public:
 	bool CleanUp();
 
 	PhysicBody3D* AddBody(const PrimitiveSphere& sphere, float mass = 1.0f);
-	//PhysicBody3D* Addbody(RigidBody3DComponent* rb, Sphere& sphere);
-
 	PhysicBody3D* AddBody(const PrimitiveCube& cube, float mass = 1.0f);
-	//PhysicBody3D* Addbody(RigidBody3DComponent* rb, OBB& box);
-
 	PhysicBody3D* AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col, GameObject* go);
+
+	void UpdateBodies();
 
 private:
 

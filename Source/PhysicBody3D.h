@@ -5,6 +5,8 @@
 
 class btRigidBody;
 class Module;
+class BoxColliderComponent;
+class RigidBodyComponent;
 
 class PhysicBody3D
 {
@@ -25,6 +27,8 @@ public:
 
 private:
 	math::float3 position = math::float3::zero;
+	BoxColliderComponent* box;
+	RigidBodyComponent* rb;
 
 public:
 	std::list<Module*> collision_listeners;

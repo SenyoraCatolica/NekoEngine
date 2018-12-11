@@ -116,6 +116,7 @@ update_status ModulePhysics::Update()
 	//2do render vehicle
 	world->debugDrawWorld();
 
+	//Update PhysicBodies with their gos
 
 	
 	//2do implement throwing balls
@@ -333,6 +334,38 @@ PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderCompon
 	return pbody;
 }
 
+
+void ModulePhysics::UpdateBodies()
+{
+	std::map<GameObject*, PhysicBody3D*>::iterator it = body_gos.begin();
+	while (it != body_gos.end())
+	{
+		BoxColliderComponent* box = (BoxColliderComponent*)(*it).first->GetComponent(ComponentType::COMPONENT_BOX);
+
+		if (App->IsPlay())
+		{
+			//update box on play
+			if (box->GetBoxCollider())
+			{
+				//Get the transform data from go transform
+				math::float3 trans; math::Quat rot; math::float3 scale;
+				(*it).second->GetTransform().Transposed().Decompose(trans, rot, scale);
+
+				//Add offset
+				math::float3 real_offset = rot.Transform(box->offset);
+
+				//Set the new transform
+				box->GetBoxCollider()->SetPos(trans.x, trans.y, trans.z);
+				box->GetBoxCollider()->SetRotation(rot.Inverted());
+
+				math::float4x4 matrix = math::float4x4::FromTRS(trans + real_offset, rot, (*it).first->transform->scale);
+				(*it).first->transform->SetTransform(matrix);
+			}
+		}
+
+		it++;
+	}
+}
 
 
 //Small class to handle the debug draw of the physics

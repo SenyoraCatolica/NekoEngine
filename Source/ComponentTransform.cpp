@@ -185,6 +185,18 @@ void ComponentTransform::SetMatrixFromGlobal(math::float4x4& globalMatrix)
 	}
 }
 
+void ComponentTransform::SetTransform(const math::float4x4& matrix)
+{
+	math::float3 pos, scale;
+	math::Quat rot;
+	matrix.Decompose(pos, rot, scale);
+
+	position = pos;
+	rotation = rot;
+	this->scale = scale;
+}
+
+
 void ComponentTransform::OnInternalSave(JSON_Object* file)
 {
 	json_object_set_number(file, "PosX", position.x);
