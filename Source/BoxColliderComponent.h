@@ -16,7 +16,7 @@ public:
 	BoxColliderComponent(GameObject* embedded_game_object);
 	~BoxColliderComponent();
 
-	void UpdateBoxCollider();
+	void UpdateBoxCollider(bool render);
 
 	void GenerateBoxCollider();
 

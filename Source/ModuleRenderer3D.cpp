@@ -14,6 +14,7 @@
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
+#include "BoxColliderComponent.h"
 
 #include "Quadtree.h"
 #include "ResourceMesh.h"
@@ -211,6 +212,9 @@ update_status ModuleRenderer3D::PostUpdate()
 			for (uint i = 0; i < cameraComponents.size(); ++i)
 				App->debugDrawer->DebugDraw(cameraComponents[i]->frustum, Grey);
 		}
+
+		for (uint i = 0; i < boxComponents.size(); ++i)
+			boxComponents[i]->UpdateBoxCollider(drawPhysics);
 
 		if (drawQuadtree)
 			RecursiveDrawQuadtree(App->scene->quadtree.root);
@@ -488,6 +492,44 @@ bool ModuleRenderer3D::EraseCameraComponent(ComponentCamera* toErase)
 
 	if (ret)
 		cameraComponents.erase(it);
+
+	return ret;
+}
+
+BoxColliderComponent* ModuleRenderer3D::CreateBoxColliderComponent(GameObject* parent)
+{
+	BoxColliderComponent* newComponent = new BoxColliderComponent(parent);
+
+	std::vector<BoxColliderComponent*>::const_iterator it = std::find(boxComponents.begin(), boxComponents.end(), newComponent);
+
+	if (it == boxComponents.end())
+		boxComponents.push_back(newComponent);
+
+	return newComponent;
+}
+
+bool ModuleRenderer3D::AddBoxColliderComponent(BoxColliderComponent* toAdd)
+{
+	bool ret = true;
+
+	std::vector<BoxColliderComponent*>::const_iterator it = std::find(boxComponents.begin(), boxComponents.end(), toAdd);
+	ret = it == boxComponents.end();
+
+	if (ret)
+		boxComponents.push_back(toAdd);
+
+	return ret;
+}
+
+bool ModuleRenderer3D::EraseBoxColliderComponent(BoxColliderComponent* toErase)
+{
+	bool ret = false;
+
+	std::vector<BoxColliderComponent*>::const_iterator it = std::find(boxComponents.begin(), boxComponents.end(), toErase);
+	ret = it != boxComponents.end();
+
+	if (ret)
+		boxComponents.erase(it);
 
 	return ret;
 }

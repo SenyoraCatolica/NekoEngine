@@ -19,7 +19,7 @@ BoxColliderComponent::~BoxColliderComponent()
 {
 }
 
-void BoxColliderComponent::UpdateBoxCollider()
+void BoxColliderComponent::UpdateBoxCollider(bool render)
 {
 	if (box != nullptr)
 	{
@@ -40,7 +40,8 @@ void BoxColliderComponent::UpdateBoxCollider()
 				box->SetPos(trans.x, trans.y, trans.z);
 				box->SetRotation(rot.Inverted());
 
-				box->Render();
+				if(render)
+					box->Render();
 			}
 		}
 	}

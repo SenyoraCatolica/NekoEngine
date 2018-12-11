@@ -20,6 +20,7 @@
 class GameObject;
 class ComponentMesh;
 class ComponentCamera;
+class BoxColliderComponent;
 class QuadtreeNode;
 
 class ModuleRenderer3D : public Module
@@ -74,6 +75,10 @@ public:
 	bool AddCameraComponent(ComponentCamera* toAdd);
 	bool EraseCameraComponent(ComponentCamera* toErase);
 
+	BoxColliderComponent* CreateBoxColliderComponent(GameObject* parent);
+	bool AddBoxColliderComponent(BoxColliderComponent* toAdd);
+	bool EraseBoxColliderComponent(BoxColliderComponent* toErase);
+
 	bool RecalculateMainCamera();
 	bool SetMainCamera(ComponentCamera* mainCamera);
 	bool SetCurrentCamera();
@@ -94,6 +99,8 @@ private:
 	ComponentCamera* mainCamera = nullptr;
 	ComponentCamera* currentCamera = nullptr;
 
+	std::vector<BoxColliderComponent*> boxComponents;
+
 	uint maxTextureUnits = 0;
 
 public:
@@ -110,6 +117,7 @@ public:
 	bool drawBoundingBoxes = true;
 	bool drawCamerasFrustum = true;
 	bool drawQuadtree = false;
+	bool drawPhysics = true;
 };
 
 #endif

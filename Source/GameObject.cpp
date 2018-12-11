@@ -83,6 +83,9 @@ void GameObject::Activate() const
 
 	if (camera != nullptr)
 		App->renderer3D->AddCameraComponent(camera);
+
+	if (box_collider != nullptr)
+		App->renderer3D->AddBoxColliderComponent(box_collider);
 }
 
 GameObject::~GameObject()
@@ -207,7 +210,7 @@ Component* GameObject::AddComponent(ComponentType type)
 		break;
 
 	case COMPONENT_BOX:
-		newComponent = box_collider = new BoxColliderComponent(this);;
+		newComponent = box_collider = App->renderer3D->CreateBoxColliderComponent(this);
 		break;
 
 	case COMPONENT_RB:
