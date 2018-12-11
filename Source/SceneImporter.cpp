@@ -309,25 +309,22 @@ void SceneImporter::RecursivelyImportNodes(const aiScene* scene, const aiNode* n
 					aiString textureName;
 					scene->mMaterials[nodeMesh->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE, 0, &textureName);
 
-					if (textureName.length > 0)
+					std::string file;
+					App->fs->GetFileName(textureName.data, file, true);
+
+					// Check if the texture exists in Assets
+					std::string outputFile = DIR_ASSETS;
+					if (App->fs->RecursiveExists(file.data(), DIR_ASSETS, outputFile))
 					{
-						std::string file;
-						App->fs->GetFileName(textureName.data, file, true);
+						uint UUID = 0;
+						if (!App->res->FindTextureByFile(outputFile.data(), UUID))
+							// If the texture is not a resource yet, import it
+							UUID = App->res->ImportFile(outputFile.data());
 
-						// Check if the texture exists in Assets
-						std::string outputFile = DIR_ASSETS;
-						if (App->fs->RecursiveExists(file.data(), DIR_ASSETS, outputFile))
+						if (UUID > 0)
 						{
-							uint UUID = 0;
-							if (!App->res->FindTextureByFile(outputFile.data(), UUID))
-								// If the texture is not a resource yet, import it
-								UUID = App->res->ImportFile(outputFile.data());
-
-							if (UUID > 0)
-							{
-								gameObject->AddComponent(ComponentType::Material_Component);
-								gameObject->materialRenderer->res[0].res = UUID;
-							}
+							gameObject->AddComponent(ComponentType::Material_Component);
+							gameObject->materialRenderer->res[0].res = UUID;
 						}
 					}
 				}
@@ -725,10 +722,10 @@ bool SceneImporter::Load(const void* buffer, uint size, ResourceMesh* outputMesh
 	uint bytes = sizeof(ranges);
 	memcpy(ranges, cursor, bytes);
 
-	cursor += bytes;
-
 	outputMesh->verticesSize = ranges[0];
 	outputMesh->indicesSize = ranges[4];
+
+	cursor += bytes;
 
 	char* normalsCursor = cursor + ranges[0] * sizeof(GLfloat) * 3;
 	char* colorCursor = normalsCursor + ranges[1] * sizeof(GLfloat) * 3;
@@ -740,25 +737,25 @@ bool SceneImporter::Load(const void* buffer, uint size, ResourceMesh* outputMesh
 	{
 		// 2. Load vertices
 		bytes = sizeof(GLfloat) * 3;
-		memcpy(outputMesh->vertices[i].position, cursor, bytes);
+		memcpy(outputMesh->vertices, cursor, bytes);
 
 		cursor += bytes;
 
 		// 3. Load normals
 		bytes = sizeof(GLfloat) * 3;
-		memcpy(outputMesh->vertices[i].normal, normalsCursor, bytes);
+		memcpy(outputMesh->vertices, normalsCursor, bytes);
 
 		normalsCursor += bytes;
 
 		// 4. Load colors
 		bytes = sizeof(GLubyte) * 4;
-		memcpy(outputMesh->vertices[i].color, colorCursor, bytes);
+		memcpy(outputMesh->vertices, colorCursor, bytes);
 
 		colorCursor += bytes;
 
 		// 5. Load texture coords
 		bytes = sizeof(GLfloat) * 2;
-		memcpy(outputMesh->vertices[i].texCoord, texCoordsCursor, bytes);
+		memcpy(outputMesh->vertices, texCoordsCursor, bytes);
 
 		texCoordsCursor += bytes;
 	}	

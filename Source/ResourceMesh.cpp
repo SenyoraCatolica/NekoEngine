@@ -27,8 +27,8 @@ bool ResourceMesh::LoadInMemory()
 		return ret;
 
 	GenerateVBO();
-	GenerateIBO();
 	GenerateVAO();
+	GenerateIBO();
 
 	return ret;
 }
@@ -36,8 +36,7 @@ bool ResourceMesh::LoadInMemory()
 bool ResourceMesh::UnloadFromMemory()
 {
 	glDeleteBuffers(1, (GLuint*)&VBO);
-	glDeleteBuffers(1, (GLuint*)&IBO);
-	glDeleteVertexArrays(1, (GLuint*)&VAO);
+	glDeleteBuffers(1, (GLuint*)IBO);
 
 	RELEASE_ARRAY(vertices);
 	RELEASE_ARRAY(indices);
