@@ -48,6 +48,10 @@ public:
 	void SetWireframeMode(bool wireframeMode);
 	void ShowAxis(bool showAxis);
 
+	void			SetPos(float x, float y, float z);
+	void			SetRotation(math::Quat rot);
+	void			SetScale(float x, float y, float z);
+
 	math::float4x4 localTransform = math::float4x4::identity;
 
 protected:

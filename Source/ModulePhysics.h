@@ -8,6 +8,7 @@
 
 #define GRAVITY btVector3(0.0f, -10.0f, 0.0f) 
 
+class GameObject;
 class PhysicBody3D;
 class RigidBody3DComponent;
 class BoxColliderComponent;
@@ -30,7 +31,7 @@ public:
 	PhysicBody3D* AddBody(const PrimitiveCube& cube, float mass = 1.0f);
 	//PhysicBody3D* Addbody(RigidBody3DComponent* rb, OBB& box);
 
-	PhysicBody3D* AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col);
+	PhysicBody3D* AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col, GameObject* go);
 
 private:
 

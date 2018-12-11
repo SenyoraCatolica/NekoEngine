@@ -280,14 +280,14 @@ bodies.push_back(pbody);
 return pbody;
 }*/
 
-PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col)
+PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col, GameObject* go)
 {
 	math::OBB box;
 	GameObject* parent;
 
 	if (col != nullptr)
 	{
-		box = col->box;
+		//box = col->box;
 		parent = col->GetParent();
 	}
 

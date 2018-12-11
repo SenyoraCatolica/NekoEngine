@@ -96,6 +96,23 @@ void Primitive::ShowAxis(bool showAxis)
 	this->showAxis = showAxis;
 }
 
+void Primitive::SetPos(float x, float y, float z)
+{
+	localTransform.v[3][0] = x;
+	localTransform.v[3][1] = y;
+	localTransform.v[3][2] = z;
+}
+
+void Primitive::SetRotation(math::Quat rot)
+{
+	localTransform.SetRotatePart(rot);
+}
+
+void Primitive::SetScale(float x, float y, float z)
+{
+	localTransform.Set3x3Part(localTransform.Float3x3Part() * localTransform.Scale(x, y, z).ToFloat3x3());
+}
+
 // Ray --------------------------------------------------
 PrimitiveRay::PrimitiveRay(math::float3 direction, float length) : Primitive(PrimitiveTypes::PrimitiveTypeRay), direction(direction), length(length)
 {

@@ -2,7 +2,9 @@
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
 #include "ModulePhysics.h"
-#include "RigidBody3DComponent.h"
+#include "Application.h"
+#include "ComponentTransform.h"
+
 
 #include "imgui\imgui.h"
 #include "imgui\imgui_internal.h"
@@ -11,35 +13,44 @@ BoxColliderComponent::BoxColliderComponent(GameObject* embedded_game_object) :
 	Component(embedded_game_object, ComponentType::COMPONENT_BOX)
 {
 	GenerateBoxCollider();
-	box.SetNegativeInfinity();
 }
 
 BoxColliderComponent::~BoxColliderComponent()
 {
-	rb = nullptr;
 }
 
-void BoxColliderComponent::GenerateBoxCollider()
+void BoxColliderComponent::UpdateBoxCollider()
 {
-	if (parent)
+	if (box != nullptr)
 	{
-		rb = (RigidBody3DComponent*)parent->GetComponent(COMPONENT_RB);
+		if (App->IsPlay() == false)
+		{
+			math::float3 trans;
+			math::Quat rot;
+			math::float3 scale;
+			parent->transform->GetGlobalMatrix().Decompose(trans, rot, scale);
+
+			box->SetPos(trans.x, trans.y, trans.z);
+			box->SetRotation(rot);
+			box->SetScale(scale.x, scale.y, scale.z);
+
+			box->Render();
+		}
 	}
-
-	box.r = math::float3::one;
-	box.pos = math::float3::zero;
-	box.axis[0] = math::float3::unitX;
-	box.axis[1] = math::float3::unitY;
-	box.axis[2] = math::float3::unitZ;
+}
 
 
-	if (rb != nullptr)
-		rb->SetBox(this);
+void BoxColliderComponent::GenerateBoxCollider()
+{	
+	if (parent->boundingBox.IsFinite())
+		box = new PrimitiveCube(parent->boundingBox.Size());
+	else
+		box = new PrimitiveCube(math::float3::one);
 }
 
 void BoxColliderComponent::SetRigidBody(RigidBody3DComponent* rb)
 {
-	this->rb = rb;
+
 }
 
 void BoxColliderComponent::OnUniqueEditor()

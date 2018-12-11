@@ -2,6 +2,7 @@
 
 #include "MathGeoLib/include/MathGeoLib.h"
 #include "Component.h"
+#include "Primitive.h"
 
 
 class PhysicBody3D;
@@ -14,6 +15,8 @@ public:
 
 	BoxColliderComponent(GameObject* embedded_game_object);
 	~BoxColliderComponent();
+
+	void UpdateBoxCollider();
 
 	void GenerateBoxCollider();
 
@@ -29,8 +32,8 @@ public:
 	math::float3 offset = math::float3::zero;
 	math::float3 size = math::float3::one;
 	bool is_trigger = false;
-	math::OBB box;
 
 private:
-	RigidBody3DComponent * rb;
+	PrimitiveCube* box = nullptr;
+	
 };
