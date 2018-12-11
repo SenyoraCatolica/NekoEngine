@@ -5,6 +5,7 @@
 #include "Primitive.h"
 #include "Bullet\include\btBulletDynamicsCommon.h"
 #include <list>
+#include <map>
 
 #define GRAVITY btVector3(0.0f, -10.0f, 0.0f) 
 
@@ -47,6 +48,7 @@ private:
 	std::list<PhysicBody3D*> bodies;
 	std::list<btDefaultMotionState*> motions;
 	std::list<btTypedConstraint*> constraints;
+	std::map<GameObject*, PhysicBody3D*> body_gos;
 
 };
 

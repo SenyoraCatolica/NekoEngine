@@ -82,6 +82,12 @@ void BoxColliderComponent::OnUniqueEditor()
 	ImGui::Checkbox("Is Trigger", &is_trigger);
 }
 
+PrimitiveCube* BoxColliderComponent::GetBoxCollider()
+{
+	return box;
+}
+
+
 
 bool BoxColliderComponent::Save(JSON_Object* component_obj)const
 {

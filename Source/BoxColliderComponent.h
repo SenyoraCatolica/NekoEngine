@@ -24,6 +24,8 @@ public:
 
 	void OnUniqueEditor();
 
+	PrimitiveCube* GetBoxCollider();
+
 	bool Save(JSON_Object* component_obj)const;
 	bool Load(const JSON_Object* component_obj);
 

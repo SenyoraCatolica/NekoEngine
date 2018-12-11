@@ -116,6 +116,7 @@ update_status ModulePhysics::Update()
 	//2do render vehicle
 	world->debugDrawWorld();
 
+
 	
 	//2do implement throwing balls
 	/*if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
@@ -282,19 +283,19 @@ return pbody;
 
 PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col, GameObject* go)
 {
-	math::OBB box;
+	PrimitiveCube* box;
 	GameObject* parent;
 
 	if (col != nullptr)
 	{
-		//box = col->box;
+		box = col->GetBoxCollider();
 		parent = col->GetParent();
 	}
 
 	else
-		box.SetNegativeInfinity();
+		box = new PrimitiveCube(math::float3::one);
 
-	btCollisionShape* colShape = new btBoxShape(btVector3(box.r.x, box.r.y, box.r.z));
+	btCollisionShape* colShape = new btBoxShape(btVector3(box->size.x*0.5f, box->size.y*0.5f, box->size.z*0.5f));
 	shapes.push_back(colShape);
 
 	if (parent == nullptr)
@@ -326,6 +327,8 @@ PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderCompon
 	body->setUserPointer(pbody);
 	world->addRigidBody(body);
 	bodies.push_back(pbody);
+
+	body_gos.insert(std::pair<GameObject*, PhysicBody3D*>(go, pbody));
 
 	return pbody;
 }
