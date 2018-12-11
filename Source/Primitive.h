@@ -36,6 +36,7 @@ public:
 	virtual ~Primitive();
 
 	void Render(const math::float4x4 globalTransform = math::float4x4::identity) const;
+	void RawRender();
 
 	// -----
 

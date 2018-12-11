@@ -41,7 +41,7 @@ void BoxColliderComponent::UpdateBoxCollider(bool render)
 				box->SetRotation(rot.Inverted());
 
 				if(render)
-					box->Render();
+					box->Render(parent->transform->GetGlobalMatrix());
 			}
 		}
 	}
@@ -69,23 +69,9 @@ void BoxColliderComponent::OnUniqueEditor()
 
 	const double f64_lo_a = -1000000000000000.0, f64_hi_a = +1000000000000000.0;
 
-	ImGui::Text("Position");
+	ImGui::DragFloat3("Collider offset: ", offset.ptr(), 0.1f, -1000.0f, 1000.0f);
 
-	ImGui::PushItemWidth(50);
-	ImGui::DragScalar("##PosX", ImGuiDataType_Float, (void*)&offset.x, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f); ImGui::SameLine();
-	ImGui::PushItemWidth(50);
-	ImGui::DragScalar("##PosY", ImGuiDataType_Float, (void*)&offset.y, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f); ImGui::SameLine();
-	ImGui::PushItemWidth(50);
-	ImGui::DragScalar("##PosZ", ImGuiDataType_Float, (void*)&offset.z, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f); ImGui::SameLine();
-
-	ImGui::Text("Size");
-
-	ImGui::PushItemWidth(50);
-	ImGui::DragScalar("##SizeX", ImGuiDataType_Float, (void*)&size.x, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f); ImGui::SameLine();
-	ImGui::PushItemWidth(50);
-	ImGui::DragScalar("##SizeY", ImGuiDataType_Float, (void*)&size.y, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f); ImGui::SameLine();
-	ImGui::PushItemWidth(50);
-	ImGui::DragScalar("##SixeZ", ImGuiDataType_Float, (void*)&size.z, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f); ImGui::SameLine();
+	ImGui::DragFloat3("Size: ", box->size.ptr(), 0.1f, -1000.0f, 1000.0f);
 
 	ImGui::Checkbox("Is Trigger", &is_trigger);
 }

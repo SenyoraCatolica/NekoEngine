@@ -459,14 +459,14 @@ bool ModuleGOs::InvalidateResource(const Resource* resource)
 
 void ModuleGOs::AddPhysicsOnPlay()
 {
-	std::vector<GameObject*>::iterator it = gameObjects.begin();
-	if (it != gameObjects.end());
+	if (gameObjects.empty())return;
+
+	for(int i = 0; i < gameObjects.size(); i++)
 	{
-		BoxColliderComponent* box = (BoxColliderComponent*)(*it)->GetComponent(ComponentType::COMPONENT_BOX);
-		RigidBody3DComponent* rb = (RigidBody3DComponent*)(*it)->GetComponent(ComponentType::COMPONENT_RB);
+		BoxColliderComponent* box = (BoxColliderComponent*)gameObjects[i]->GetComponent(ComponentType::COMPONENT_BOX);
+		RigidBody3DComponent* rb = (RigidBody3DComponent*)gameObjects[i]->GetComponent(ComponentType::COMPONENT_RB);
 
 		if(box != nullptr || rb != nullptr)
-			App->physics->AddBody(rb, box, (*it)); 
-		it++;
+			App->physics->AddBody(rb, box, gameObjects[i]);
 	}
 }

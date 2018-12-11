@@ -117,7 +117,7 @@ update_status ModulePhysics::Update()
 	world->debugDrawWorld();
 
 	//Update PhysicBodies with their gos
-
+	UpdateBodies();
 	
 	//2do implement throwing balls
 	/*if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
@@ -360,6 +360,8 @@ void ModulePhysics::UpdateBodies()
 
 				math::float4x4 matrix = math::float4x4::FromTRS(trans + real_offset, rot, (*it).first->transform->scale);
 				(*it).first->transform->SetTransform(matrix);
+
+				box->GetBoxCollider()->RawRender();
 			}
 		}
 
