@@ -89,7 +89,7 @@ update_status ModuleInput::PreUpdate()
 
 	Uint32 buttons = SDL_GetMouseState(&mouse_x, &mouse_y);
 
-	uint screenSize = App->window->GetScreenSize();
+	uint screenSize = 1;
 	mouse_x /= screenSize;
 	mouse_y /= screenSize;
 	mouse_z = 0;
