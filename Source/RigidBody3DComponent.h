@@ -21,8 +21,8 @@ public:
 
 	void OnUniqueEditor();
 
-	bool Save(JSON_Object* component_obj)const;
-	bool Load(const JSON_Object* component_obj);
+	virtual void OnInternalSave(JSON_Object* file);
+	virtual void OnLoad(JSON_Object* file);
 
 
 

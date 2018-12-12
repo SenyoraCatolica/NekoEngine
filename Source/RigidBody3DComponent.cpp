@@ -12,7 +12,6 @@
 RigidBody3DComponent::RigidBody3DComponent(GameObject* embedded_game_object) :
 	Component(embedded_game_object, ComponentType::COMPONENT_RB)
 {
-	GeneratePhysicBbody();
 }
 
 RigidBody3DComponent::~RigidBody3DComponent()
@@ -56,12 +55,14 @@ void RigidBody3DComponent::OnUniqueEditor()
 }
 
 
-bool RigidBody3DComponent::Save(JSON_Object* component_obj)const
+void RigidBody3DComponent::OnInternalSave(JSON_Object* file)
 {
-	return true;
+	json_object_set_number(file, "Mass", (double)mass);
+	json_object_set_boolean(file, "IsKinematic", is_kinematic);
 }
 
-bool RigidBody3DComponent::Load(const JSON_Object* component_obj)
+void RigidBody3DComponent::OnLoad(JSON_Object* file)
 {
-	return true;
+	mass = json_object_get_number(file, "Mass");
+	is_kinematic = json_object_get_boolean(file, "IsKinematic");
 }

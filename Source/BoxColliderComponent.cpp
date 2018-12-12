@@ -84,12 +84,26 @@ PrimitiveShapeCube* BoxColliderComponent::GetBoxCollider()
 
 
 
-bool BoxColliderComponent::Save(JSON_Object* component_obj)const
+void BoxColliderComponent::OnInternalSave(JSON_Object* file)
 {
-	return true;
+	json_object_set_number(file, "OffsetX", offset.x);
+	json_object_set_number(file, "OffsetY", offset.y);
+	json_object_set_number(file, "OffsetZ", offset.z);
+	json_object_set_number(file, "SizeX", size.x);
+	json_object_set_number(file, "SizeY", size.y);
+	json_object_set_number(file, "SizeZ", size.z);
+
+	json_object_set_boolean(file, "IsTrigger", is_trigger);
 }
 
-bool BoxColliderComponent::Load(const JSON_Object* component_obj)
+void BoxColliderComponent::OnLoad(JSON_Object* file)
 {
-	return true;
+	offset.x = json_object_get_number(file, "OffsetX");
+	offset.y = json_object_get_number(file, "OffsetY");
+	offset.z = json_object_get_number(file, "OffsetZ");
+	size.x = json_object_get_number(file, "SizeX");
+	size.y = json_object_get_number(file, "SizeY");
+	size.z = json_object_get_number(file, "SizeZ");
+
+	is_trigger = json_object_get_boolean(file, "IsTrigger");
 }
