@@ -66,6 +66,20 @@ GameObject::GameObject(const GameObject& gameObject)
 		components.push_back(camera);
 	}
 
+	if (gameObject.box_collider != nullptr)
+	{
+		box_collider = new BoxColliderComponent(*gameObject.box_collider);
+		box_collider->SetParent(this);
+		components.push_back(box_collider);
+	}
+
+	if (gameObject.rb != nullptr)
+	{
+		rb = new RigidBody3DComponent(*gameObject.rb);
+		rb->SetParent(this);
+		components.push_back(rb);
+	}
+
 	boundingBox = gameObject.boundingBox;
 
 	isActive = gameObject.isActive;
