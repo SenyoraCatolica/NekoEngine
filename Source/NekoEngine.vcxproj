@@ -151,6 +151,9 @@
     <ClInclude Include="Assimp\include\vector2.h" />
     <ClInclude Include="Assimp\include\vector3.h" />
     <ClInclude Include="Assimp\include\version.h" />
+    <ClInclude Include="BoxColliderComponent.h" />
+    <ClInclude Include="Bullet\include\btBulletCollisionCommon.h" />
+    <ClInclude Include="Bullet\include\btBulletDynamicsCommon.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCamera.h" />
@@ -248,9 +251,12 @@
     <ClInclude Include="mmgr\mmgr.h" />
     <ClInclude Include="mmgr\nommgr.h" />
     <ClInclude Include="ModuleGOs.h" />
+    <ClInclude Include="ModulePhysics.h" />
     <ClInclude Include="PanelDebugDraw.h" />
     <ClInclude Include="PanelEdit.h" />
     <ClInclude Include="PanelResources.h" />
+    <ClInclude Include="PhysicBody3D.h" />
+    <ClInclude Include="PrimitiveShape.h" />
     <ClInclude Include="Raycaster.h" />
     <ClInclude Include="PanelAssets.h" />
     <ClInclude Include="Quadtree.h" />
@@ -259,6 +265,7 @@
     <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="ResourceTypes.h" />
+    <ClInclude Include="RigidBody3DComponent.h" />
     <ClInclude Include="SceneImporter.h" />
     <ClInclude Include="ModuleCameraEditor.h" />
     <ClInclude Include="ModuleFileSystem.h" />
@@ -287,6 +294,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BoxColliderComponent.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentCamera.cpp" />
@@ -338,9 +346,12 @@
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="ModuleGOs.cpp" />
+    <ClCompile Include="ModulePhysics.cpp" />
     <ClCompile Include="PanelDebugDraw.cpp" />
     <ClCompile Include="PanelEdit.cpp" />
     <ClCompile Include="PanelResources.cpp" />
+    <ClCompile Include="PhysicBody3D.cpp" />
+    <ClCompile Include="PrimitiveShape.cpp" />
     <ClCompile Include="Raycaster.cpp" />
     <ClCompile Include="PanelAssets.cpp" />
     <ClCompile Include="Quadtree.cpp" />
@@ -348,6 +359,7 @@
     <ClCompile Include="ModuleResourceManager.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
+    <ClCompile Include="RigidBody3DComponent.cpp" />
     <ClCompile Include="SceneImporter.cpp" />
     <ClCompile Include="ModuleCameraEditor.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />

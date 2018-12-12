@@ -10,6 +10,7 @@
 #include "ModuleGOs.h"
 #include "ModuleTimeManager.h"
 #include "ModuleResourceManager.h"
+#include "ModulePhysics.h"
 #include "MaterialImporter.h"
 #include "SceneImporter.h"
 #include "DebugDrawer.h"
@@ -28,6 +29,7 @@ Application::Application() : fpsTrack(FPS_TRACK_SIZE), msTrack(MS_TRACK_SIZE)
 	GOs = new ModuleGOs();
 	timeManager = new ModuleTimeManager();
 	res = new ModuleResourceManager();
+	physics = new ModulePhysics();
 
 	debugDrawer = new DebugDrawer();
 	materialImporter = new MaterialImporter();
@@ -56,6 +58,7 @@ Application::Application() : fpsTrack(FPS_TRACK_SIZE), msTrack(MS_TRACK_SIZE)
 	AddModule(window);
 	AddModule(input);
 	AddModule(scene);
+	AddModule(physics);
 
 	// Renderer last!
 	AddModule(renderer3D);

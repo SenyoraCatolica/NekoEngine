@@ -46,6 +46,7 @@ struct ModuleRenderer3D;
 struct ModuleFileSystem;
 struct ModuleGOs;
 struct ModuleTimeManager;
+struct ModulePhysics;
 struct DebugDrawer;
 
 class Application
@@ -126,6 +127,7 @@ public:
 	ModuleFileSystem*		fs;
 	ModuleGOs*				GOs;
 	ModuleTimeManager*		timeManager;
+	ModulePhysics*			physics;
 
 	DebugDrawer*			debugDrawer;
 

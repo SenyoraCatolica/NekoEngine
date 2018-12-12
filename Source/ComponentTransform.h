@@ -29,6 +29,8 @@ public:
 	math::float4x4& GetGlobalMatrix() const;
 	void SetMatrixFromGlobal(math::float4x4& globalMatrix);
 
+	void SetTransform(math::float4x4& matrix);
+
 	virtual void OnInternalSave(JSON_Object* file);
 	virtual void OnLoad(JSON_Object* file);
 

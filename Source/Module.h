@@ -10,6 +10,7 @@
 
 #include "Globals.h"
 #include "EventSystem.h"
+#include "PhysicBody3D.h"
 
 class Module
 {
@@ -66,6 +67,8 @@ public:
 	bool IsActive() const { return enabled; }
 
 	void SetActive(bool enable) { this->enabled = enable; }
+
+	virtual void OnCollision(PhysicBody3D* body1, PhysicBody3D* body2) {}
 
 protected:
 
