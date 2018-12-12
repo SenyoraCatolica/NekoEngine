@@ -4,6 +4,8 @@
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
+#include "BoxColliderComponent.h"
+#include "RigidBody3DComponent.h"
 #include "ResourceMesh.h"
 #include "ModuleResourceManager.h"
 
@@ -81,6 +83,9 @@ void GameObject::Activate() const
 
 	if (camera != nullptr)
 		App->renderer3D->AddCameraComponent(camera);
+
+	if (box_collider != nullptr)
+		App->renderer3D->AddBoxColliderComponent(box_collider);
 }
 
 GameObject::~GameObject()
@@ -199,6 +204,13 @@ Component* GameObject::AddComponent(ComponentType type)
 	case Camera_Component:
 		newComponent = camera = App->renderer3D->CreateCameraComponent(this);
 		break;
+	case COMPONENT_BOX:
+		newComponent = box_collider = App->renderer3D->CreateBoxColliderComponent(this);
+		break;
+
+	case COMPONENT_RB:
+		newComponent = rb = new RigidBody3DComponent(this);;
+		break;
 	default:
 		break;
 	}
@@ -275,6 +287,19 @@ uint GameObject::GetComponenetsLength() const
 Component* GameObject::GetComponent(uint index) const
 {
 	return components[index];
+}
+
+Component* GameObject::GetComponent(ComponentType type)
+{
+	std::vector<Component*>::iterator it = components.begin();
+	while (it != components.end())
+	{
+		if ((*it)->GetType() == type)
+			return (*it);
+		it++;
+	}
+
+	return nullptr;
 }
 
 // Get the index of the component from the gameobject's components vector. If the component cannot be found, returns -1

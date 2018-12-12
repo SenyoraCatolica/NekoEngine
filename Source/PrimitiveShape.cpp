@@ -23,7 +23,7 @@ void PrimitiveShape::Render() const
 	glPushMatrix();
 	glMultMatrixf(*transform.v);
 	glDisable(GL_LIGHTING);
-	if (axis == true)
+	/*if (axis == true)
 	{
 		// Draw Axis Grid
 		glLineWidth(2.0f);
@@ -53,7 +53,7 @@ void PrimitiveShape::Render() const
 		glEnd();
 
 		glLineWidth(1.0f);
-	}
+	}*/
 
 	glColor3f(color.r, color.g, color.b);
 

@@ -10,6 +10,7 @@
 #include "Application.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
+#include "ModulePhysics.h"
 
 #include "Resource.h"
 
@@ -116,6 +117,8 @@ bool ModuleGOs::OnGameMode()
 		tmpGameObjects.push_back(tmpGameObject);
 	}
 	CONSOLE_LOG("MODULE GOS: tmpGameObjects vector size OnGameMode: %i", tmpGameObjects.size());
+
+	AddPhysicsOnPlay();
 
 	return true;
 }
@@ -446,4 +449,18 @@ bool ModuleGOs::InvalidateResource(const Resource* resource)
 
 	assert(resource->CountReferences() <= 0);
 	return true;
+}
+
+void ModuleGOs::AddPhysicsOnPlay()
+{
+	if (gameObjects.empty())return;
+
+	for (int i = 0; i < gameObjects.size(); i++)
+	{
+		BoxColliderComponent* box = (BoxColliderComponent*)gameObjects[i]->GetComponent(ComponentType::COMPONENT_BOX);
+		RigidBody3DComponent* rb = (RigidBody3DComponent*)gameObjects[i]->GetComponent(ComponentType::COMPONENT_RB);
+
+		if (box != nullptr || rb != nullptr)
+			App->physics->AddBody(rb, box, gameObjects[i]);
+	}
 }

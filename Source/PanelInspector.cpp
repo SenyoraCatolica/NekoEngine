@@ -119,6 +119,18 @@ void PanelInspector::ShowGameObjectInspector() const
 				gameObject->AddComponent(ComponentType::Camera_Component);
 				ImGui::CloseCurrentPopup();
 			}
+
+		if (gameObject->camera == nullptr)
+			if (ImGui::Selectable("Box Collider")) {
+				gameObject->AddComponent(ComponentType::COMPONENT_BOX);
+				ImGui::CloseCurrentPopup();
+			}
+		if (gameObject->camera == nullptr)
+			if (ImGui::Selectable("Rigid Body 3D")) {
+				gameObject->AddComponent(ComponentType::COMPONENT_RB);
+				ImGui::CloseCurrentPopup();
+			}
+
 		ImGui::EndPopup();		
 	}
 }

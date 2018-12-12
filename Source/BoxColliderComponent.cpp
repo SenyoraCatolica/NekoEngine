@@ -26,11 +26,12 @@ void BoxColliderComponent::UpdateBoxCollider(bool render)
 		if (App->IsEditor())
 		{
 			//update box on editor
-			if (box != nullptr)
+			if (box != nullptr && parent != nullptr)
 			{
 				//Get the transform data from go transform
 				math::float3 trans; math::Quat rot; math::float3 scale;
-				parent->transform->GetGlobalMatrix().Decompose(trans, rot, scale);
+				math::float4x4 matrix = parent->transform->GetGlobalMatrix();
+				matrix.Decompose(trans, rot, scale);
 
 				//Add offset
 				math::float3 real_offset = rot.Transform(offset);

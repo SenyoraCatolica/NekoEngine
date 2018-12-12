@@ -71,7 +71,8 @@ update_status ModulePhysics::PreUpdate()
 	if (App->GetEngineState() != engine_states::ENGINE_PLAY)
 		return UPDATE_CONTINUE;
 
-	world->stepSimulation(App->timeManager->GetDt(), 15);
+	float dt = App->timeManager->GetDt();
+	world->stepSimulation( dt, 15);
 
 	int numManifolds = world->getDispatcher()->getNumManifolds();
 	for (int i = 0; i < numManifolds; i++)
@@ -241,8 +242,14 @@ PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderCompon
 	if (parent == nullptr)
 		parent = rb->GetParent();
 
+	math::float4x4 matrix;
+	if (col != nullptr)
+		matrix = col->GetBoxCollider()->transform;
+	else
+		matrix = parent->transform->GetGlobalMatrix();
+
 	btTransform startTransform;
-	startTransform.setFromOpenGLMatrix(parent->transform->GetGlobalMatrix().ptr());
+	startTransform.setFromOpenGLMatrix(*matrix.v);
 
 
 	btVector3 localInertia(0, 0, 0);
