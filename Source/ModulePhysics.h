@@ -31,6 +31,7 @@ public:
 	PhysicBody3D* AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col, GameObject* go);
 
 	void UpdateBodies();
+	void ClearBodies();
 
 private:
 

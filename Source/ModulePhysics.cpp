@@ -315,6 +315,53 @@ void ModulePhysics::UpdateBodies()
 	}
 }
 
+void ModulePhysics::ClearBodies()
+{
+	//erase body + go map
+	std::map<GameObject*, PhysicBody3D*>::iterator it = body_gos.begin();
+	body_gos.erase(it, body_gos.end());
+	body_gos.clear();
+
+	//erase body list
+	std::list<PhysicBody3D*>::iterator itl = bodies.begin();
+	while (itl != bodies.end())
+	{
+		world->removeRigidBody((*itl)->body);
+		itl++;
+	}
+	bodies.clear();
+
+	//erase shapes list
+	/*std::list<btCollisionShape*>::iterator it_shapes = shapes.begin();
+	while (it_shapes != shapes.end())
+	{
+		shapes.remove(*it_shapes);
+		it_shapes++;
+	}*/
+	shapes.clear();
+
+	//erase motions list
+	std::list<btDefaultMotionState*>::iterator it_mot = motions.begin();
+	/*while (it_mot != motions.end())
+	{
+		motions.remove(*it_mot);
+		it_mot++;
+	}*/
+	motions.clear();
+
+	//erase constraints list
+	std::list<btTypedConstraint*>::iterator it_cons = constraints.begin();
+	while (it_cons != constraints.end())
+	{
+		world->removeConstraint(*it_cons);
+		it_cons++;
+	}
+	constraints.clear();
+
+	//2DO remove vehicles
+}
+
+
 
 //Small class to handle the debug draw of the physics
 // =============================================

@@ -248,6 +248,10 @@ void GameObject::InternallyDeleteComponent(Component* toDelete)
 		App->renderer3D->EraseCameraComponent((ComponentCamera*)toDelete);
 		materialRenderer = nullptr;
 		break;
+	case ComponentType::COMPONENT_BOX:
+		App->renderer3D->EraseBoxColliderComponent((BoxColliderComponent*)toDelete);
+		box_collider = nullptr;
+		break;
 	}
 
 	components.erase(std::remove(components.begin(), components.end(), toDelete), components.end());
@@ -265,6 +269,10 @@ void GameObject::InternallyDeleteComponents()
 			break;
 		case ComponentType::Camera_Component:
 			App->renderer3D->EraseCameraComponent((ComponentCamera*)components[i]);
+			break;
+
+		case ComponentType::COMPONENT_BOX:
+			App->renderer3D->EraseBoxColliderComponent((BoxColliderComponent*)components[i]);
 			break;
 		}		
 

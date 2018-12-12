@@ -453,6 +453,8 @@ bool ModuleGOs::InvalidateResource(const Resource* resource)
 
 void ModuleGOs::AddPhysicsOnPlay()
 {
+	App->physics->ClearBodies();
+
 	if (gameObjects.empty())return;
 
 	for (int i = 0; i < gameObjects.size(); i++)
