@@ -256,6 +256,7 @@
     <ClInclude Include="PanelEdit.h" />
     <ClInclude Include="PanelResources.h" />
     <ClInclude Include="PhysicBody3D.h" />
+    <ClInclude Include="PhysicVehicle3D.h" />
     <ClInclude Include="PrimitiveShape.h" />
     <ClInclude Include="Raycaster.h" />
     <ClInclude Include="PanelAssets.h" />
@@ -351,6 +352,7 @@
     <ClCompile Include="PanelEdit.cpp" />
     <ClCompile Include="PanelResources.cpp" />
     <ClCompile Include="PhysicBody3D.cpp" />
+    <ClCompile Include="PhysicVehicle3D.cpp" />
     <ClCompile Include="PrimitiveShape.cpp" />
     <ClCompile Include="Raycaster.cpp" />
     <ClCompile Include="PanelAssets.cpp" />

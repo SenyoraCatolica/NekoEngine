@@ -643,6 +643,9 @@
     <ClInclude Include="PrimitiveShape.h">
       <Filter>Sources\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicVehicle3D.h">
+      <Filter>Sources\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -907,6 +910,9 @@
       <Filter>Sources\Modules\GO&amp;Components\Components</Filter>
     </ClCompile>
     <ClCompile Include="PrimitiveShape.cpp">
+      <Filter>Sources\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicVehicle3D.cpp">
       <Filter>Sources\Physics</Filter>
     </ClCompile>
   </ItemGroup>
