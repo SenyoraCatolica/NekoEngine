@@ -18,7 +18,7 @@ PhysicVehicle3D::~PhysicVehicle3D()
 // ----------------------------------------------------------------------------
 void PhysicVehicle3D::Render()
 {
-	Cylinder wheel;
+	PrimitiveShapeCylinder wheel;
 
 	wheel.color = Red;
 
@@ -28,62 +28,62 @@ void PhysicVehicle3D::Render()
 		wheel.height = info.wheels[0].width;
 
 		vehicle->updateWheelTransform(i);
-		vehicle->getWheelInfo(i).m_worldTransform.getOpenGLMatrix(&wheel.transform);
+		vehicle->getWheelInfo(i).m_worldTransform.getOpenGLMatrix(*wheel.transform.v);
 
 		wheel.Render();
 	}
 
 	PrimitiveShapeCube chassis(info.chassis_size.x, info.chassis_size.y, info.chassis_size.z);
-	vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis.transform);
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(*chassis.transform.v);
 	btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
 	btVector3 offset(info.chassis_offset.x, info.chassis_offset.y, info.chassis_offset.z);
 	offset = offset.rotate(q.getAxis(), q.getAngle());
 
-	chassis.transform.M[12] += offset.getX();
-	chassis.transform.M[13] += offset.getY();
-	chassis.transform.M[14] += offset.getZ();
+	chassis.transform.At[0][3] += offset.getX();
+	chassis.transform.At[1][3] += offset.getY();
+	chassis.transform.At[2][3] += offset.getZ();
 
 
 	chassis.Render();
 
 
 	PrimitiveShapeCube cabin(info.cabin_size.x, info.cabin_size.y, info.cabin_size.z);
-	vehicle->getChassisWorldTransform().getOpenGLMatrix(&cabin.transform);
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(*cabin.transform.v);
 	btQuaternion q2 = vehicle->getChassisWorldTransform().getRotation();
 	btVector3 offset2(info.cabin_offset.x, info.cabin_offset.y, info.cabin_offset.z);
 	offset2 = offset2.rotate(q2.getAxis(), q2.getAngle());
 
-	cabin.transform.M[12] += offset2.getX();
-	cabin.transform.M[13] += offset2.getY();
-	cabin.transform.M[14] += offset2.getZ();
+	cabin.transform.At[0][3] += offset2.getX();
+	cabin.transform.At[1][3] += offset2.getY();
+	cabin.transform.At[2][3] += offset2.getZ();
 
 
 	cabin.Render();
 
 
 	PrimitiveShapeCube front(info.front_size.x, info.front_size.y, info.front_size.z);
-	vehicle->getChassisWorldTransform().getOpenGLMatrix(&front.transform);
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(*front.transform.v);
 	btQuaternion q3 = vehicle->getChassisWorldTransform().getRotation();
 	btVector3 offset3(info.front_offset.x, info.front_offset.y, info.front_offset.z);
 	offset3 = offset3.rotate(q3.getAxis(), q3.getAngle());
 
-	front.transform.M[12] += offset3.getX();
-	front.transform.M[13] += offset3.getY();
-	front.transform.M[14] += offset3.getZ();
+	front.transform.At[0][3] += offset3.getX();
+	front.transform.At[1][3] += offset3.getY();
+	front.transform.At[2][3] += offset3.getZ();
 
 
 	front.Render();
 
 
 	PrimitiveShapeCube bar(info.bar_size.x, info.bar_size.y, info.bar_size.z);
-	vehicle->getChassisWorldTransform().getOpenGLMatrix(&bar.transform);
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(*bar.transform.v);
 	btQuaternion q4 = vehicle->getChassisWorldTransform().getRotation();
 	btVector3 offset4(info.bar_offset.x, info.bar_offset.y, info.bar_offset.z);
 	offset4 = offset4.rotate(q4.getAxis(), q4.getAngle());
 
-	bar.transform.M[12] += offset4.getX();
-	bar.transform.M[13] += offset4.getY();
-	bar.transform.M[14] += offset4.getZ();
+	bar.transform.At[0][3] += offset4.getX();
+	bar.transform.At[1][3] += offset4.getY();
+	bar.transform.At[2][3] += offset4.getZ();
 
 
 	bar.Render();

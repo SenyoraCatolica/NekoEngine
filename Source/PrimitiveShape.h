@@ -11,6 +11,7 @@ enum ShapeTypes
 	Shape_Plane,
 	Shape_Cube,
 	Shape_Sphere,
+	Shape_Cylinder
 };
 
 class  PrimitiveShape
@@ -83,4 +84,16 @@ public:
 	void InnerRender() const;
 public:
 	float radius;
+};
+
+// ============================================
+class PrimitiveShapeCylinder : public PrimitiveShape
+{
+public:
+	PrimitiveShapeCylinder();
+	PrimitiveShapeCylinder(float radius, float height);
+	void InnerRender() const;
+public:
+	float radius;
+	float height;
 };
