@@ -123,7 +123,7 @@ update_status ModulePhysics::Update()
 	//Update PhysicBodies with their gos
 	UpdateBodies();
 
-	//2do implement throwing balls
+	//throwing balls
 	if (gameCamera != nullptr)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
@@ -372,6 +372,8 @@ void ModulePhysics::ClearBodies()
 	constraints.clear();
 
 	//2DO remove vehicles
+
+	gameCamera = nullptr;
 }
 
 void ModulePhysics::SetMainCamera(ComponentCamera* cam)
@@ -379,7 +381,16 @@ void ModulePhysics::SetMainCamera(ComponentCamera* cam)
 	gameCamera = cam;
 }
 
-
+void ModulePhysics::CreateCameraSphare()
+{
+	if (gameCamera != nullptr)
+	{
+		PrimitiveShapeSphere s(1);
+		math::float3 pos = gameCamera->frustum.pos;
+		s.SetPos(pos.x, pos.y, pos.z);
+		AddBody(s, 0);
+	}
+}
 
 
 //Small class to handle the debug draw of the physics

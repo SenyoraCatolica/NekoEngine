@@ -575,6 +575,7 @@ bool ModuleRenderer3D::SetMainCamera(ComponentCamera* mainCamera)
 	{
 		this->mainCamera = mainCamera;
 		App->physics->SetMainCamera(mainCamera);
+		App->physics->CreateCameraSphare();
 	}
 	else
 		CONSOLE_LOG("Main Camera could not be set");

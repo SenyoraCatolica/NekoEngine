@@ -36,6 +36,7 @@ public:
 	void ClearBodies();
 
 	void SetMainCamera(ComponentCamera* cam);
+	void CreateCameraSphare();
 
 private:
 
