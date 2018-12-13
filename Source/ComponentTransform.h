@@ -31,6 +31,8 @@ public:
 
 	void SetTransform(math::float4x4& matrix);
 
+	void UpdateOnTransformChanged();
+
 	virtual void OnInternalSave(JSON_Object* file);
 	virtual void OnLoad(JSON_Object* file);
 

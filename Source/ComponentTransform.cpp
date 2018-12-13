@@ -90,27 +90,7 @@ void ComponentTransform::OnUniqueEditor()
 
 	if (!position.Equals(lastPosition) || !rotation.Equals(lastRotation) || !scale.Equals(lastScale))
 	{
-		// Transform updated: if the game object has a camera, update its frustum
-		if (parent->camera != nullptr)
-			parent->camera->UpdateTransform();
-
-		// Transform updated: if the game object is selected, update the camera reference
-		if (parent == App->scene->selectedObject.Get())
-			App->camera->SetReference(position);
-
-		// Transform updated: recalculate bounding boxes
-		System_Event newEvent;
-		newEvent.goEvent.gameObject = parent;
-		newEvent.type = System_Event_Type::RecalculateBBoxes;
-		App->PushSystemEvent(newEvent);
-
-		if (parent->IsStatic())
-		{
-			// Bounding box changed: recreate quadtree
-			System_Event newEvent;
-			newEvent.type = System_Event_Type::RecreateQuadtree;
-			App->PushSystemEvent(newEvent);
-		}
+		UpdateOnTransformChanged();
 	}
 
 #endif // !GAMEMODE
@@ -195,6 +175,32 @@ void ComponentTransform::SetTransform(math::float4x4& matrix)
 	rotation = rot;
 	scale = scal;
 }
+
+void ComponentTransform::UpdateOnTransformChanged()
+{
+	// Transform updated: if the game object has a camera, update its frustum
+	if (parent->camera != nullptr)
+		parent->camera->UpdateTransform();
+
+	// Transform updated: if the game object is selected, update the camera reference
+	if (parent == App->scene->selectedObject.Get())
+		App->camera->SetReference(position);
+
+	// Transform updated: recalculate bounding boxes
+	System_Event newEvent;
+	newEvent.goEvent.gameObject = parent;
+	newEvent.type = System_Event_Type::RecalculateBBoxes;
+	App->PushSystemEvent(newEvent);
+
+	if (parent->IsStatic())
+	{
+		// Bounding box changed: recreate quadtree
+		System_Event newEvent;
+		newEvent.type = System_Event_Type::RecreateQuadtree;
+		App->PushSystemEvent(newEvent);
+	}
+}
+
 
 
 void ComponentTransform::OnInternalSave(JSON_Object* file)

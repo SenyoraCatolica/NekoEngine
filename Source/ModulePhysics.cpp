@@ -307,6 +307,8 @@ void ModulePhysics::UpdateBodies()
 				math::float4x4 matrix = math::float4x4::FromTRS(trans + real_offset, rot, (*it).first->transform->scale);
 				(*it).first->transform->SetTransform(matrix);
 
+				(*it).first->transform->UpdateOnTransformChanged();
+
 				box->GetBoxCollider()->Render();
 			}
 		}
