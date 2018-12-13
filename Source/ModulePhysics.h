@@ -15,6 +15,8 @@ class RigidBody3DComponent;
 class BoxColliderComponent;
 class DebugPhysicsDrawer;
 
+class ComponentCamera;
+
 class ModulePhysics : public Module
 {
 public:
@@ -33,6 +35,8 @@ public:
 	void UpdateBodies();
 	void ClearBodies();
 
+	void SetMainCamera(ComponentCamera* cam);
+
 private:
 
 	btDefaultCollisionConfiguration * collision_conf = nullptr;
@@ -48,6 +52,8 @@ private:
 	std::list<btDefaultMotionState*> motions;
 	std::list<btTypedConstraint*> constraints;
 	std::map<GameObject*, PhysicBody3D*> body_gos;
+
+	ComponentCamera* gameCamera = nullptr;
 
 };
 

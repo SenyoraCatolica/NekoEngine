@@ -7,6 +7,7 @@
 #include "ModuleResourceManager.h"
 #include "ModuleGui.h"
 #include "ModuleGOs.h"
+#include "ModulePhysics.h"
 #include "DebugDrawer.h"
 
 #include "GameObject.h"
@@ -571,7 +572,10 @@ bool ModuleRenderer3D::SetMainCamera(ComponentCamera* mainCamera)
 	bool ret = mainCamera != nullptr;
 
 	if (ret)
+	{
 		this->mainCamera = mainCamera;
+		App->physics->SetMainCamera(mainCamera);
+	}
 	else
 		CONSOLE_LOG("Main Camera could not be set");
 

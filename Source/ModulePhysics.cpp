@@ -3,6 +3,8 @@
 #include "RigidBody3DComponent.h"
 #include "BoxColliderComponent.h"
 #include "Primitive.h"
+#include "SDL\include\SDL.h"
+
 
 #include "Application.h"
 #include "ModuleTimeManager.h"
@@ -10,6 +12,7 @@
 #include "Globals.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 
 
 #ifdef _DEBUG
@@ -121,13 +124,21 @@ update_status ModulePhysics::Update()
 	UpdateBodies();
 
 	//2do implement throwing balls
-	/*if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	if (gameCamera != nullptr)
 	{
-		PrimitiveSphere s(1);
-		s.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-		float force = 30.0f;
-		AddBody(s)->Push(-(App->camera->Z.x * force), -(App->camera->Z.y * force), -(App->camera->Z.z * force));
-	}*/
+		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		{
+			PrimitiveShapeSphere s(1);
+			math::float3 pos = gameCamera->GetParent()->transform->position;
+			s.SetPos(pos.x, pos.y, pos.z + 5);
+
+			float force = 30.0f;
+			math::float3 direction = gameCamera->GetParent()->transform->GetGlobalMatrix().WorldZ();
+			PhysicBody3D* sphereBody = AddBody(s); 
+			sphereBody->Push((direction.x * force), (direction.y * force), (direction.z * force));
+		}
+	}
+	
 
 	return UPDATE_CONTINUE;
 }
@@ -362,6 +373,12 @@ void ModulePhysics::ClearBodies()
 
 	//2DO remove vehicles
 }
+
+void ModulePhysics::SetMainCamera(ComponentCamera* cam)
+{
+	gameCamera = cam;
+}
+
 
 
 
