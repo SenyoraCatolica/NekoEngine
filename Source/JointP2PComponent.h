@@ -25,7 +25,7 @@ public:
 public:
 
 	PhysicBody3D* body;
-	math::float3 anchor;
+	math::float3 anchor = math::float3::zero;
 
 	JointP2PComponent* jointTo = nullptr;
 	GameObject* jointToGO = nullptr;

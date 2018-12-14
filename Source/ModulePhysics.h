@@ -39,6 +39,7 @@ public:
 	void ClearBodies();
 
 	void AddConstraint(JointP2PComponent* jointA, JointP2PComponent* jointB);
+	void AddBodiestoConstraints();
 
 	void SetMainCamera(ComponentCamera* cam);
 	void CreateCameraSphare();

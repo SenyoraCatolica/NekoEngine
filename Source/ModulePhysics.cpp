@@ -397,9 +397,25 @@ void ModulePhysics::ClearBodies()
 }
 void ModulePhysics::AddConstraint(JointP2PComponent* jointA, JointP2PComponent* jointB)
 {
-	if(jointA != nullptr && jointB != nullptr)
+	if (jointA != nullptr && jointB != nullptr)
+	{
 		constraints_pair.insert(std::pair<JointP2PComponent*, JointP2PComponent*>(jointA, jointB));
+	}
 }
+
+void ModulePhysics::AddBodiestoConstraints()
+{
+	std::map<JointP2PComponent*, JointP2PComponent*>::iterator it = constraints_pair.begin();
+	while (it != constraints_pair.end())
+	{
+		(*it).first->body = AddBody((*it).first->GetParent()->rb, (*it).first->GetParent()->box_collider, (*it).first->GetParent());
+		(*it).second->body = AddBody((*it).second->GetParent()->rb, (*it).second->GetParent()->box_collider, (*it).second->GetParent());
+
+		AddConstraintP2P((*it).first, (*it).second);
+		it++;
+	}
+}
+
 
 void ModulePhysics::SetMainCamera(ComponentCamera* cam)
 {

@@ -480,4 +480,6 @@ void ModuleGOs::AddPhysicsOnPlay()
 		if (box != nullptr || rb != nullptr)
 			App->physics->AddBody(rb, box, gameObjects[i]);
 	}
+
+	App->physics->AddBodiestoConstraints();
 }
