@@ -6,6 +6,8 @@
 #include "ComponentCamera.h"
 #include "BoxColliderComponent.h"
 #include "RigidBody3DComponent.h"
+#include "JointP2PComponent.h"
+
 #include "ResourceMesh.h"
 #include "ModuleResourceManager.h"
 
@@ -225,6 +227,10 @@ Component* GameObject::AddComponent(ComponentType type)
 	case COMPONENT_RB:
 		newComponent = rb = new RigidBody3DComponent(this);;
 		break;
+
+	case COMPONENT_JP2P:
+		newComponent = jp2p = new JointP2PComponent(this);
+
 	default:
 		break;
 	}

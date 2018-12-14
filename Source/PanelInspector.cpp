@@ -120,16 +120,22 @@ void PanelInspector::ShowGameObjectInspector() const
 				ImGui::CloseCurrentPopup();
 			}
 
-		if (gameObject->camera == nullptr)
+		if (gameObject->box_collider == nullptr)
 			if (ImGui::Selectable("Box Collider")) {
 				gameObject->AddComponent(ComponentType::COMPONENT_BOX);
 				ImGui::CloseCurrentPopup();
 			}
-		if (gameObject->camera == nullptr)
+		if (gameObject->rb == nullptr)
 			if (ImGui::Selectable("Rigid Body 3D")) {
 				gameObject->AddComponent(ComponentType::COMPONENT_RB);
 				ImGui::CloseCurrentPopup();
 			}
+		if (gameObject->jp2p == nullptr)
+			if (ImGui::Selectable("Joint Point to Point")) {
+				gameObject->AddComponent(ComponentType::COMPONENT_JP2P);
+				ImGui::CloseCurrentPopup();
+			}
+			
 
 		ImGui::EndPopup();		
 	}

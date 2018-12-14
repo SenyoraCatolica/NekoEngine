@@ -13,6 +13,7 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
+#include "JointP2PComponent.h"
 
 
 #ifdef _DEBUG
@@ -291,6 +292,25 @@ PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderCompon
 	return pbody;
 }
 
+void ModulePhysics::AddConstraintP2P(JointP2PComponent* jointA, JointP2PComponent* jointB)
+{
+	if (jointA == nullptr || jointB == nullptr)
+		return;
+
+	btTypedConstraint* p2p = new btPoint2PointConstraint(
+		*(jointA->body->body),
+		*(jointB->body->body),
+		btVector3(jointA->anchor.x, jointA->anchor.y, jointA->anchor.z),
+		btVector3(jointB->anchor.x, jointB->anchor.y, jointB->anchor.z));
+
+	world->addConstraint(p2p);
+	constraints.push_back(p2p);
+	body_gos.insert(std::pair<GameObject*, PhysicBody3D*>(jointA->GetParent(), jointA->body));
+	body_gos.insert(std::pair<GameObject*, PhysicBody3D*>(jointB->GetParent(), jointB->body));
+	p2p->setDbgDrawSize(2.0f);
+}
+
+
 
 void ModulePhysics::UpdateBodies()
 {
@@ -374,6 +394,11 @@ void ModulePhysics::ClearBodies()
 	//2DO remove vehicles
 
 	gameCamera = nullptr;
+}
+void ModulePhysics::AddConstraint(JointP2PComponent* jointA, JointP2PComponent* jointB)
+{
+	if(jointA != nullptr && jointB != nullptr)
+		constraints_pair.insert(std::pair<JointP2PComponent*, JointP2PComponent*>(jointA, jointB));
 }
 
 void ModulePhysics::SetMainCamera(ComponentCamera* cam)

@@ -17,6 +17,7 @@ class ComponentMesh;
 class ComponentCamera;
 class BoxColliderComponent;
 class RigidBody3DComponent;
+class JointP2PComponent;
 
 class GameObject
 {
@@ -92,6 +93,7 @@ public:
 	ComponentCamera* camera = nullptr;
 	BoxColliderComponent* box_collider = nullptr;
 	RigidBody3DComponent* rb = nullptr;
+	JointP2PComponent* jp2p = nullptr;
 
 	math::AABB boundingBox;
 

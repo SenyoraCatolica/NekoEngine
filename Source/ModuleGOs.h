@@ -39,6 +39,7 @@ public:
 
 	GameObject* GetGameObject(uint index) const;
 	GameObject* GetGameObjectByUUID(uint UUID) const;
+	GameObject*   GetGameObjectByName(const char* name) const;
 	void GetGameObjects(std::vector<GameObject*>& gameObjects) const;
 	void GetStaticGameObjects(std::vector<GameObject*>& gameObjects) const;
 	void GetDynamicGameObjects(std::vector<GameObject*>& gameObjects) const;

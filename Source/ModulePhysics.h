@@ -13,6 +13,7 @@ class GameObject;
 class PhysicBody3D;
 class RigidBody3DComponent;
 class BoxColliderComponent;
+class JointP2PComponent;
 class DebugPhysicsDrawer;
 
 class ComponentCamera;
@@ -32,8 +33,12 @@ public:
 	PhysicBody3D* AddBody(const PrimitiveShapeCube& cube, float mass = 1.0f);
 	PhysicBody3D* AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col, GameObject* go);
 
+	void AddConstraintP2P(JointP2PComponent* jointA, JointP2PComponent* jointB);
+
 	void UpdateBodies();
 	void ClearBodies();
+
+	void AddConstraint(JointP2PComponent* jointA, JointP2PComponent* jointB);
 
 	void SetMainCamera(ComponentCamera* cam);
 	void CreateCameraSphare();
@@ -53,6 +58,7 @@ private:
 	std::list<btDefaultMotionState*> motions;
 	std::list<btTypedConstraint*> constraints;
 	std::map<GameObject*, PhysicBody3D*> body_gos;
+	std::map<JointP2PComponent*, JointP2PComponent*> constraints_pair;
 
 	ComponentCamera* gameCamera = nullptr;
 

@@ -244,6 +244,21 @@ GameObject* ModuleGOs::GetGameObjectByUUID(uint UUID) const
 	return nullptr;
 }
 
+GameObject* ModuleGOs::GetGameObjectByName(const char* name) const
+{
+	for (uint i = 0; i < gameObjects.size(); ++i)
+	{
+		/*if (gameObjects[i]->GetName() == name)
+			return gameObjects[i];*/
+
+		if(std::strcmp(gameObjects[i]->GetName(), name) == 0)
+			return gameObjects[i];
+	}
+
+	return nullptr;
+}
+
+
 void ModuleGOs::GetGameObjects(std::vector<GameObject*>& gameObjects) const
 {
 	for (uint i = 0; i < this->gameObjects.size(); ++i)
