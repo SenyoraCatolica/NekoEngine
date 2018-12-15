@@ -31,7 +31,7 @@ public:
 
 	PhysicBody3D* AddBody(const PrimitiveShapeSphere& sphere, float mass = 1.0f);
 	PhysicBody3D* AddBody(const PrimitiveShapeCube& cube, float mass = 1.0f);
-	PhysicBody3D* AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col, GameObject* go);
+	PhysicBody3D* AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col, GameObject* go, bool is_constraint = false);
 
 	void AddConstraintP2P(JointP2PComponent* jointA, JointP2PComponent* jointB);
 

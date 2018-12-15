@@ -91,10 +91,16 @@ void JointP2PComponent::OnUniqueEditor()
 
 void JointP2PComponent::OnInternalSave(JSON_Object* file)
 {
-
+	json_object_set_number(file, "AnchorX", anchor.x);
+	json_object_set_number(file, "AnchorY", anchor.y);
+	json_object_set_number(file, "AnchorZ", anchor.z);
+	json_object_set_number(file, "JointToUUID", jointToGO->GetUUID());
 }
 
 void JointP2PComponent::OnLoad(JSON_Object* file)
 {
-
+	anchor.x = json_object_get_number(file, "AnchorX");
+	anchor.y = json_object_get_number(file, "AnchorY");
+	anchor.z = json_object_get_number(file, "AnchorZ");
+	uint uuid = json_object_get_number(file, "JointToUUID");
 }

@@ -474,11 +474,9 @@ void ModuleGOs::AddPhysicsOnPlay()
 
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
-		BoxColliderComponent* box = (BoxColliderComponent*)gameObjects[i]->GetComponent(ComponentType::COMPONENT_BOX);
-		RigidBody3DComponent* rb = (RigidBody3DComponent*)gameObjects[i]->GetComponent(ComponentType::COMPONENT_RB);
-
-		if (box != nullptr || rb != nullptr)
-			App->physics->AddBody(rb, box, gameObjects[i]);
+		if(gameObjects[i]->jp2p == nullptr)
+			if (gameObjects[i]->box_collider != nullptr || gameObjects[i]->rb != nullptr)
+				App->physics->AddBody(gameObjects[i]->rb, gameObjects[i]->box_collider, gameObjects[i]);
 	}
 
 	App->physics->AddBodiestoConstraints();

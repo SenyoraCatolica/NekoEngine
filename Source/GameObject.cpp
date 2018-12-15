@@ -82,6 +82,13 @@ GameObject::GameObject(const GameObject& gameObject)
 		components.push_back(rb);
 	}
 
+	if (jp2p != nullptr)
+	{
+		jp2p = new JointP2PComponent(*gameObject.jp2p);
+		jp2p->SetParent(this);
+		components.push_back(jp2p);
+	}
+
 	boundingBox = gameObject.boundingBox;
 
 	isActive = gameObject.isActive;

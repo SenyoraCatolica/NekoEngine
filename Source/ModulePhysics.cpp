@@ -234,7 +234,7 @@ PhysicBody3D* ModulePhysics::AddBody(const PrimitiveShapeCube& cube, float mass)
 	return pbody;
 }
 
-PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col, GameObject* go)
+PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col, GameObject* go, bool is_constraint)
 {
 	PrimitiveShapeCube* box;
 	GameObject* parent;
@@ -287,7 +287,8 @@ PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderCompon
 	world->addRigidBody(body);
 	bodies.push_back(pbody);
 
-	body_gos.insert(std::pair<GameObject*, PhysicBody3D*>(go, pbody));
+	if(is_constraint == false)
+		body_gos.insert(std::pair<GameObject*, PhysicBody3D*>(go, pbody));
 
 	return pbody;
 }
@@ -408,8 +409,8 @@ void ModulePhysics::AddBodiestoConstraints()
 	std::map<JointP2PComponent*, JointP2PComponent*>::iterator it = constraints_pair.begin();
 	while (it != constraints_pair.end())
 	{
-		(*it).first->body = AddBody((*it).first->GetParent()->rb, (*it).first->GetParent()->box_collider, (*it).first->GetParent());
-		(*it).second->body = AddBody((*it).second->GetParent()->rb, (*it).second->GetParent()->box_collider, (*it).second->GetParent());
+		(*it).first->body = AddBody((*it).first->GetParent()->rb, (*it).first->GetParent()->box_collider, (*it).first->GetParent(), true);
+		(*it).second->body = AddBody((*it).second->GetParent()->rb, (*it).second->GetParent()->box_collider, (*it).second->GetParent(), true);
 
 		AddConstraintP2P((*it).first, (*it).second);
 		it++;
