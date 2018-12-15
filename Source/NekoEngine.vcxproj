@@ -154,6 +154,7 @@
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Bullet\include\btBulletCollisionCommon.h" />
     <ClInclude Include="Bullet\include\btBulletDynamicsCommon.h" />
+    <ClInclude Include="CarComponent.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCamera.h" />
@@ -297,6 +298,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BoxColliderComponent.cpp" />
+    <ClCompile Include="CarComponent.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentCamera.cpp" />

@@ -649,6 +649,9 @@
     <ClInclude Include="JointP2PComponent.h">
       <Filter>Sources\Modules\GO&amp;Components\Components</Filter>
     </ClInclude>
+    <ClInclude Include="CarComponent.h">
+      <Filter>Sources\Modules\GO&amp;Components\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -919,6 +922,9 @@
       <Filter>Sources\Physics</Filter>
     </ClCompile>
     <ClCompile Include="JointP2PComponent.cpp">
+      <Filter>Sources\Modules\GO&amp;Components\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CarComponent.cpp">
       <Filter>Sources\Modules\GO&amp;Components\Components</Filter>
     </ClCompile>
   </ItemGroup>
