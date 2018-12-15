@@ -6,6 +6,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
+#include "CarComponent.h"
 
 #include "Application.h"
 #include "ModuleFileSystem.h"
@@ -474,9 +475,20 @@ void ModuleGOs::AddPhysicsOnPlay()
 
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
-		if(gameObjects[i]->jp2p == nullptr)
+		if (gameObjects[i]->jp2p == nullptr)
+		{
 			if (gameObjects[i]->box_collider != nullptr || gameObjects[i]->rb != nullptr)
-				App->physics->AddBody(gameObjects[i]->rb, gameObjects[i]->box_collider, gameObjects[i]);
+			{
+				if (gameObjects[i]->car == nullptr)
+					App->physics->AddBody(gameObjects[i]->rb, gameObjects[i]->box_collider, gameObjects[i]);
+			}
+
+			if (gameObjects[i]->car != nullptr)
+			{
+				gameObjects[i]->car->SetVehicle(App->physics->AddVehicle(gameObjects[i]->car));
+				gameObjects[i]->car->SetCarData();
+			}
+		}
 	}
 
 	App->physics->AddBodiestoConstraints();

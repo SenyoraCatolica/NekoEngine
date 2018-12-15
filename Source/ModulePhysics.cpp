@@ -1,7 +1,6 @@
 #include "ModulePhysics.h"
 #include "PhysicBody3D.h"
-#include "RigidBody3DComponent.h"
-#include "BoxColliderComponent.h"
+#include "PhysicVehicle3D.h"
 #include "Primitive.h"
 #include "SDL\include\SDL.h"
 
@@ -13,7 +12,10 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
+#include "RigidBody3DComponent.h"
+#include "BoxColliderComponent.h"
 #include "JointP2PComponent.h"
+#include "CarComponent.h"
 
 
 #ifdef _DEBUG
@@ -44,6 +46,7 @@ ModulePhysics::~ModulePhysics()
 	delete broad_phase;
 	delete dispatcher;
 	delete collision_conf;
+	delete vehicle_raycaster;
 }
 
 bool ModulePhysics::Start()
@@ -66,6 +69,7 @@ bool ModulePhysics::Start()
 	}
 
 	debug_draw->setDebugMode(1); //TODO this should be set in a window
+	vehicle_raycaster = new btDefaultVehicleRaycaster(world);
 
 	return true;
 }
@@ -293,6 +297,91 @@ PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderCompon
 	return pbody;
 }
 
+PhysicVehicle3D* ModulePhysics::AddVehicle(CarComponent* car)
+{
+	btCompoundShape* comShape = new btCompoundShape();
+	shapes.push_back(comShape);
+
+	const VehicleInfo info = *car->car_info;
+
+	btCollisionShape* colShape1 = new btBoxShape(btVector3(info.chassis_size.x*0.5f, info.chassis_size.y*0.5f, info.chassis_size.z*0.5f));
+	shapes.push_back(colShape1);
+
+	btCollisionShape* colShape2 = new btBoxShape(btVector3(info.cabin_size.x*0.5f, info.cabin_size.y*0.5f, info.cabin_size.z*0.5f));
+	shapes.push_back(colShape2);
+
+	btCollisionShape* colShape3 = new btBoxShape(btVector3(info.front_size.x*0.5f, info.front_size.y*0.5f, info.front_size.z*0.5f));
+	shapes.push_back(colShape3);
+
+	btCollisionShape* colShape4 = new btBoxShape(btVector3(info.bar_size.x*0.5f, info.bar_size.y*0.5f, info.bar_size.z*0.5f));
+	shapes.push_back(colShape4);
+
+	btTransform trans1;
+	trans1.setIdentity();
+	trans1.setOrigin(btVector3(info.chassis_offset.x, info.chassis_offset.y - 0, info.chassis_offset.z));
+
+	btTransform trans2;
+	trans2.setIdentity();
+	trans2.setOrigin(btVector3(info.cabin_offset.x, info.cabin_offset.y, info.cabin_offset.z));
+
+	btTransform trans3;
+	trans3.setIdentity();
+	trans3.setOrigin(btVector3(info.front_offset.x, info.front_offset.y, info.front_offset.z));
+
+	btTransform trans4;
+	trans4.setIdentity();
+	trans4.setOrigin(btVector3(info.bar_offset.x, info.bar_offset.y, info.bar_offset.z));
+
+	comShape->addChildShape(trans1, colShape1);
+	comShape->addChildShape(trans2, colShape2);
+	comShape->addChildShape(trans3, colShape3);
+	comShape->addChildShape(trans4, colShape4);
+
+	btTransform startTransform;
+	startTransform.setIdentity();
+
+	btVector3 localInertia(0, 0, 0);
+	comShape->calculateLocalInertia(info.mass, localInertia);
+
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(info.mass, myMotionState, comShape, localInertia);
+
+	btRigidBody* body = new btRigidBody(rbInfo);
+	body->setContactProcessingThreshold(BT_LARGE_FLOAT);
+	body->setActivationState(DISABLE_DEACTIVATION);
+
+	world->addRigidBody(body);
+
+	btRaycastVehicle::btVehicleTuning tuning;
+	tuning.m_frictionSlip = info.frictionSlip;
+	tuning.m_maxSuspensionForce = info.maxSuspensionForce;
+	tuning.m_maxSuspensionTravelCm = info.maxSuspensionTravelCm;
+	tuning.m_suspensionCompression = info.suspensionCompression;
+	tuning.m_suspensionDamping = info.suspensionDamping;
+	tuning.m_suspensionStiffness = info.suspensionStiffness;
+
+	btRaycastVehicle* vehicle = new btRaycastVehicle(tuning, body, vehicle_raycaster);
+
+	vehicle->setCoordinateSystem(0, 1, 2);
+
+	for (int i = 0; i < info.num_wheels; ++i)
+	{
+		btVector3 conn(info.wheels[i].connection.x, info.wheels[i].connection.y, info.wheels[i].connection.z);
+		btVector3 dir(info.wheels[i].direction.x, info.wheels[i].direction.y, info.wheels[i].direction.z);
+		btVector3 axis(info.wheels[i].axis.x, info.wheels[i].axis.y, info.wheels[i].axis.z);
+
+		vehicle->addWheel(conn, dir, axis, info.wheels[i].suspensionRestLength, info.wheels[i].radius, tuning, info.wheels[i].front);
+	}
+	// ---------------------
+
+	PhysicVehicle3D* pvehicle = new PhysicVehicle3D(body, vehicle, info);
+	world->addVehicle(vehicle);
+	vehicles.push_back(pvehicle);
+
+	return pvehicle;
+}
+
+
 void ModulePhysics::AddConstraintP2P(JointP2PComponent* jointA, JointP2PComponent* jointB)
 {
 	if (jointA == nullptr || jointB == nullptr)
@@ -346,6 +435,17 @@ void ModulePhysics::UpdateBodies()
 		}
 
 		it++;
+	}
+
+	std::list<PhysicVehicle3D*>::iterator itv = vehicles.begin();
+	while (itv != vehicles.end())
+	{
+		/*(*itv)->ApplyEngineForce(acceleration);
+		(*itv)->Turn(turn);
+		(*itv)->Brake(brake);*/
+
+		(*itv)->Render();
+		itv++;
 	}
 }
 

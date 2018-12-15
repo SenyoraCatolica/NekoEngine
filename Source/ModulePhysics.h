@@ -11,9 +11,11 @@
 
 class GameObject;
 class PhysicBody3D;
+class PhysicVehicle3D;
 class RigidBody3DComponent;
 class BoxColliderComponent;
 class JointP2PComponent;
+class CarComponent;
 class DebugPhysicsDrawer;
 
 class ComponentCamera;
@@ -32,8 +34,10 @@ public:
 	PhysicBody3D* AddBody(const PrimitiveShapeSphere& sphere, float mass = 1.0f);
 	PhysicBody3D* AddBody(const PrimitiveShapeCube& cube, float mass = 1.0f);
 	PhysicBody3D* AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col, GameObject* go, bool is_constraint = false);
-
+	PhysicVehicle3D* AddVehicle(CarComponent* car);
 	void AddConstraintP2P(JointP2PComponent* jointA, JointP2PComponent* jointB);
+
+
 
 	void UpdateBodies();
 	void ClearBodies();
@@ -46,12 +50,14 @@ public:
 
 private:
 
-	btDefaultCollisionConfiguration * collision_conf = nullptr;
-	btCollisionDispatcher* dispatcher = nullptr;
-	btBroadphaseInterface* broad_phase = nullptr;
-	btSequentialImpulseConstraintSolver* solver = nullptr;
-	btDiscreteDynamicsWorld* world = nullptr;
-	DebugPhysicsDrawer* debug_draw = nullptr;
+	btDefaultCollisionConfiguration*		collision_conf = nullptr;
+	btCollisionDispatcher*					dispatcher = nullptr;
+	btBroadphaseInterface*					broad_phase = nullptr;
+	btSequentialImpulseConstraintSolver*	solver = nullptr;
+	btDiscreteDynamicsWorld*				world = nullptr;
+	DebugPhysicsDrawer*						debug_draw = nullptr;
+	btDefaultVehicleRaycaster*				vehicle_raycaster = nullptr;
+
 
 
 	std::list<btCollisionShape*> shapes;
@@ -60,6 +66,9 @@ private:
 	std::list<btTypedConstraint*> constraints;
 	std::map<GameObject*, PhysicBody3D*> body_gos;
 	std::map<JointP2PComponent*, JointP2PComponent*> constraints_pair;
+
+	std::list<PhysicVehicle3D*> vehicles;
+
 
 	ComponentCamera* gameCamera = nullptr;
 
