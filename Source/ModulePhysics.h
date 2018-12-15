@@ -8,6 +8,9 @@
 #include <map>
 
 #define GRAVITY btVector3(0.0f, -10.0f, 0.0f) 
+#define MAX_ACCELERATION 1000.0f
+#define TURN_DEGREES 15.0f * DEGTORAD
+#define BRAKE_POWER 1000.0f
 
 class GameObject;
 class PhysicBody3D;
@@ -72,6 +75,9 @@ private:
 
 	ComponentCamera* gameCamera = nullptr;
 
+	float acceleration = 0;
+	float turn = 0;
+	float brake = 0;
 };
 
 

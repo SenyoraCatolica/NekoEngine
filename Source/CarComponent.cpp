@@ -125,7 +125,7 @@ void CarComponent::OnUniqueEditor()
 	ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
 	ImGui::PushItemFlag(ImGuiItemFlags_Disabled, false);
 
-	ImGui::SliderFloat("Mass", &car_info->mass, 0.0f, 1000.0f);
+	ImGui::SliderFloat("Mass", &car_info->mass, 1.0f, 1000.0f);
 	ImGui::SliderFloat("Suspension Stiffness", &car_info->suspensionStiffness, 0.0f, 200.0f);
 	ImGui::SliderFloat("Suspension Compression", &car_info->suspensionCompression, 0.0f, 1.0f);
 	ImGui::SliderFloat("Suspension Damping", &car_info->suspensionDamping, 0.0f, 1.0f);

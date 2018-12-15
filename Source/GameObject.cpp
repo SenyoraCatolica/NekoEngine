@@ -83,11 +83,18 @@ GameObject::GameObject(const GameObject& gameObject)
 		components.push_back(rb);
 	}
 
-	if (jp2p != nullptr)
+	if (gameObject.jp2p != nullptr)
 	{
 		jp2p = new JointP2PComponent(*gameObject.jp2p);
 		jp2p->SetParent(this);
 		components.push_back(jp2p);
+	}
+
+	if (gameObject.car != nullptr)
+	{
+		car = new CarComponent(*gameObject.car);
+		car->SetParent(this);
+		components.push_back(car);
 	}
 
 	boundingBox = gameObject.boundingBox;

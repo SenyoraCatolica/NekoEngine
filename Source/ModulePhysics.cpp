@@ -125,6 +125,31 @@ update_status ModulePhysics::Update()
 	//2do render vehicle
 	world->debugDrawWorld();
 
+	turn = acceleration = brake = 0.0f;
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	{
+		acceleration = MAX_ACCELERATION;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		if (turn < TURN_DEGREES)
+			turn += TURN_DEGREES;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
+		if (turn > -TURN_DEGREES)
+			turn -= TURN_DEGREES;
+	}
+
+
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	{
+		acceleration = -MAX_ACCELERATION;
+	}
+
+
 	//Update PhysicBodies with their gos
 	UpdateBodies();
 
@@ -143,7 +168,6 @@ update_status ModulePhysics::Update()
 			sphereBody->Push((direction.x * force), (direction.y * force), (direction.z * force));
 		}
 	}
-	
 
 	return UPDATE_CONTINUE;
 }
@@ -440,9 +464,9 @@ void ModulePhysics::UpdateBodies()
 	std::list<PhysicVehicle3D*>::iterator itv = vehicles.begin();
 	while (itv != vehicles.end())
 	{
-		/*(*itv)->ApplyEngineForce(acceleration);
+		(*itv)->ApplyEngineForce(acceleration);
 		(*itv)->Turn(turn);
-		(*itv)->Brake(brake);*/
+		(*itv)->Brake(brake);
 
 		(*itv)->Render();
 		itv++;
