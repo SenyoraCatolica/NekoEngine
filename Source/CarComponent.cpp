@@ -11,7 +11,7 @@ CarComponent::CarComponent(GameObject* parent) :
 
 CarComponent::~CarComponent() 
 {
-
+	car = nullptr;
 }
 
 void CarComponent::SetCarData()
@@ -28,7 +28,16 @@ void CarComponent::SetCarData()
 
 void CarComponent::OnUniqueEditor()
 {
+	ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+	ImGui::PushItemFlag(ImGuiItemFlags_Disabled, false);
 
+	ImGui::SliderFloat("Mass", &mass, 0.0f, 1000.0f);
+	ImGui::SliderFloat("Suspension Stiffness", &suspensionStiffness, 0.0f, 200.0f);
+	ImGui::SliderFloat("Suspension Compression", &suspensionCompression, 0.0f, 1.0f);
+	ImGui::SliderFloat("Suspension Damping", &suspensionDamping, 0.0f, 1.0f);
+	ImGui::SliderFloat("Max Suspension Travel", &maxSuspensionTravelCm, 0.0f, 1000.0f);
+	ImGui::SliderFloat("Friction Slip", &frictionSlip, 0.0f, 1000.0f);
+	ImGui::SliderFloat("Max Suspension Force", &maxSuspensionForce, 0.0f, 100000.0f);
 }
 
 PhysicVehicle3D* CarComponent::GetVehicle()

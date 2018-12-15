@@ -135,6 +135,11 @@ void PanelInspector::ShowGameObjectInspector() const
 				gameObject->AddComponent(ComponentType::COMPONENT_JP2P);
 				ImGui::CloseCurrentPopup();
 			}
+		if (gameObject->car == nullptr)
+			if (ImGui::Selectable("Car")) {
+				gameObject->AddComponent(ComponentType::COMPONENT_CAR);
+				ImGui::CloseCurrentPopup();
+			}
 			
 
 		ImGui::EndPopup();		
