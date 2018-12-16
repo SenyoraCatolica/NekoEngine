@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleScene.h"
+#include "ModulePhysics.h"
 
 #include "ImGui\imgui.h"
 
@@ -47,6 +48,11 @@ bool PanelDebugDraw::Draw()
 
 			bool drawQuadtree = App->renderer3D->GetDrawQuadtree();
 			if (ImGui::Checkbox("Quadtree", &drawQuadtree)) { App->renderer3D->SetDrawQuadtree(drawQuadtree); }
+
+			ImGui::SameLine();
+
+			bool drawPhysics = App->physics->draw_physics;
+			if (ImGui::Checkbox("Physics", &drawPhysics)) { App->physics->draw_physics = drawPhysics; }
 		}
 	}
 	ImGui::End();

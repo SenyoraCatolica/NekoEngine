@@ -51,6 +51,10 @@ public:
 	void SetMainCamera(ComponentCamera* cam);
 	void CreateCameraSphare();
 
+
+public:
+	bool draw_physics = true;
+
 private:
 
 	btDefaultCollisionConfiguration*		collision_conf = nullptr;
@@ -60,8 +64,6 @@ private:
 	btDiscreteDynamicsWorld*				world = nullptr;
 	DebugPhysicsDrawer*						debug_draw = nullptr;
 	btDefaultVehicleRaycaster*				vehicle_raycaster = nullptr;
-
-
 
 	std::list<btCollisionShape*> shapes;
 	std::list<PhysicBody3D*> bodies;

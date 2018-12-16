@@ -122,8 +122,8 @@ update_status ModulePhysics::Update()
 	if (App->IsPlay() == false)
 		return UPDATE_CONTINUE;
 
-	//2do render vehicle
-	world->debugDrawWorld();
+	if(draw_physics)
+		world->debugDrawWorld();
 
 	turn = acceleration = brake = 0.0f;
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
@@ -475,6 +475,13 @@ void ModulePhysics::UpdateBodies()
 
 void ModulePhysics::ClearBodies()
 {
+
+	/*for (int i = world->getNumCollisionObjects() - 1; i >= 0; i--)
+	{
+		btCollisionObject* obj = world->getCollisionObjectArray()[i];
+		world->removeCollisionObject(obj);
+	}*/
+
 	//erase body + go map
 	std::map<GameObject*, PhysicBody3D*>::iterator it = body_gos.begin();
 	body_gos.erase(it, body_gos.end());
@@ -490,21 +497,22 @@ void ModulePhysics::ClearBodies()
 	bodies.clear();
 
 	//erase shapes list
-	/*std::list<btCollisionShape*>::iterator it_shapes = shapes.begin();
+	std::list<btCollisionShape*>::iterator it_shapes = shapes.begin();
 	while (it_shapes != shapes.end())
 	{
-		shapes.remove(*it_shapes);
+		delete (*it).first;
+		delete (*it).second;
 		it_shapes++;
-	}*/
+	}
 	shapes.clear();
 
 	//erase motions list
 	std::list<btDefaultMotionState*>::iterator it_mot = motions.begin();
-	/*while (it_mot != motions.end())
+	while (it_mot != motions.end())
 	{
-		motions.remove(*it_mot);
+		delete (*it_mot);
 		it_mot++;
-	}*/
+	}
 	motions.clear();
 
 	//erase constraints list
@@ -512,11 +520,20 @@ void ModulePhysics::ClearBodies()
 	while (it_cons != constraints.end())
 	{
 		world->removeConstraint(*it_cons);
+		delete (*it_cons);
 		it_cons++;
 	}
 	constraints.clear();
 
 	//2DO remove vehicles
+	std::list<PhysicVehicle3D*>::iterator it_v = vehicles.begin();
+	while (it_v != vehicles.end())
+	{
+		world->removeVehicle((*it_v)->vehicle);
+		delete (*it_v);
+		it_v++;
+	}
+	vehicles.clear();
 
 	gameCamera = nullptr;
 }

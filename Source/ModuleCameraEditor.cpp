@@ -56,8 +56,8 @@ update_status ModuleCameraEditor::Update()
 {
 	BROFILER_CATEGORY(__FUNCTION__, Profiler::Color::Orchid);
 
-	if (!App->IsEditor())
-		return UPDATE_CONTINUE;
+	/*if (App->IsEditor() == false)
+		return UPDATE_CONTINUE;*/
 
 	// Free movement and rotation
 	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
@@ -77,6 +77,9 @@ update_status ModuleCameraEditor::Update()
 			offsetPosition -= camera->frustum.up;
 		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
 			offsetPosition += camera->frustum.up;
+
+		movementSpeed = 3.0f;
+		rotationSpeed = 3.0f;
 
 		float cameraMovementSpeed = movementSpeed * App->timeManager->GetRealDt();
 
