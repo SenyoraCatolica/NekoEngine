@@ -27,8 +27,6 @@ public:
 
 private:
 	math::float3 position = math::float3::zero;
-	BoxColliderComponent* box;
-	RigidBodyComponent* rb;
 
 public:
 	std::list<Module*> collision_listeners;

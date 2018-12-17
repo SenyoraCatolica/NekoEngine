@@ -170,7 +170,7 @@ update_status ModulePhysics::Update()
 			sphereBody->Push((direction.x * force), (direction.y * force), (direction.z * force));
 		}
 
-		//cameraBody->SetTransform(gameCamera->GetParent()->transform->GetGlobalMatrix());
+		cameraBody->SetPos(gameCamera->GetParent()->transform->position);
 	}
 
 	return UPDATE_CONTINUE;
@@ -576,7 +576,7 @@ void ModulePhysics::CreateCameraSphare()
 		PrimitiveShapeSphere s(1);
 		math::float3 pos = gameCamera->frustum.pos;
 		s.SetPos(pos.x, pos.y, pos.z);
-		cameraBody = AddBody(s, 0);
+		cameraBody = AddBody(s, 500);
 	}
 }
 

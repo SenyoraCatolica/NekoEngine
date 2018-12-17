@@ -268,7 +268,15 @@ void ModuleRenderer3D::LoadStatus(const JSON_Object* jObject)
 
 bool ModuleRenderer3D::OnGameMode()
 {
-	return SetCurrentCamera();
+	bool ret = SetCurrentCamera();
+
+	if (ret)
+	{
+		App->physics->SetMainCamera(mainCamera);
+		App->physics->CreateCameraSphare();
+	}
+
+	return ret;
 }
 
 bool ModuleRenderer3D::OnEditorMode()
@@ -577,8 +585,6 @@ bool ModuleRenderer3D::SetMainCamera(ComponentCamera* mainCamera)
 	if (ret)
 	{
 		this->mainCamera = mainCamera;
-		App->physics->SetMainCamera(mainCamera);
-		App->physics->CreateCameraSphare();
 	}
 	else
 		CONSOLE_LOG("Main Camera could not be set");
