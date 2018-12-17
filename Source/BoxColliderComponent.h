@@ -20,8 +20,6 @@ public:
 
 	void GenerateBoxCollider();
 
-	void SetRigidBody(RigidBody3DComponent* rb);
-
 	void OnUniqueEditor();
 
 	PrimitiveShapeCube* GetBoxCollider();

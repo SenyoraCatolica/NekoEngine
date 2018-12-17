@@ -17,6 +17,8 @@ BoxColliderComponent::BoxColliderComponent(GameObject* embedded_game_object) :
 
 BoxColliderComponent::~BoxColliderComponent()
 {
+	delete box;
+	box = nullptr;
 }
 
 void BoxColliderComponent::UpdateBoxCollider(bool render)
@@ -55,11 +57,6 @@ void BoxColliderComponent::GenerateBoxCollider()
 		box = new PrimitiveShapeCube(parent->boundingBox.Size().x, parent->boundingBox.Size().y, parent->boundingBox.Size().z);
 	else
 		box = new PrimitiveShapeCube(1, 1, 1);
-}
-
-void BoxColliderComponent::SetRigidBody(RigidBody3DComponent* rb)
-{
-
 }
 
 void BoxColliderComponent::OnUniqueEditor()
