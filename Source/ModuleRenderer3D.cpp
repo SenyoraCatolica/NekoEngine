@@ -756,8 +756,8 @@ void ModuleRenderer3D::UpdateMainCamera()
 			if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
 				offsetPosition += currentCamera->frustum.up;
 
-			float movementSpeed = 1.0f;
-			float  rotationSpeed = 1.0f;
+			float movementSpeed = 0.5f;
+			float  rotationSpeed = 0.5f;
 
 			float cameraMovementSpeed = movementSpeed;
 

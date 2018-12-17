@@ -138,8 +138,6 @@ void ComponentCamera::LookAround(const math::float3& reference, float pitch, flo
 	math::Quat rotationY = math::Quat::RotateAxisAngle(frustum.WorldRight(), pitch * DEGTORAD);
 	math::Quat finalRotation = rotationX;
 
-	/*frustum.up = finalRotation * frustum.up * 3;
-	frustum.front = finalRotation * frustum.front * 3;*/
 	if (parent != nullptr)
 		parent->transform->rotation = parent->transform->rotation * finalRotation;
 }
