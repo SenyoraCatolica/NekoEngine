@@ -500,8 +500,7 @@ void ModulePhysics::ClearBodies()
 	std::list<btCollisionShape*>::iterator it_shapes = shapes.begin();
 	while (it_shapes != shapes.end())
 	{
-		delete (*it).first;
-		delete (*it).second;
+		delete (*it_shapes);
 		it_shapes++;
 	}
 	shapes.clear();
@@ -529,6 +528,7 @@ void ModulePhysics::ClearBodies()
 	std::list<PhysicVehicle3D*>::iterator it_v = vehicles.begin();
 	while (it_v != vehicles.end())
 	{
+		world->removeRigidBody((*it_v)->body);
 		world->removeVehicle((*it_v)->vehicle);
 		delete (*it_v);
 		it_v++;

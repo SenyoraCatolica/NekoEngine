@@ -9,7 +9,7 @@
 
 
 CarComponent::CarComponent(GameObject* parent) :
-	Component(parent, ComponentType::COMPONENT_BOX) 
+	Component(parent, ComponentType::COMPONENT_CAR) 
 {
 	CreateCar();
 }
