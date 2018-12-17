@@ -57,7 +57,8 @@ void PrimitiveShape::Render() const
 
 	glColor3f(color.r, color.g, color.b);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	if(wire)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	InnerRender();
 

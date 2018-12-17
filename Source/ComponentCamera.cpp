@@ -132,6 +132,19 @@ bool ComponentCamera::IsMainCamera() const
 	return mainCamera;
 }
 
+void ComponentCamera::LookAround(const math::float3& reference, float pitch, float yaw)
+{
+	math::Quat rotationX = math::Quat::RotateAxisAngle({ 0.0f,1.0f,0.0f }, yaw * DEGTORAD);
+	math::Quat rotationY = math::Quat::RotateAxisAngle(frustum.WorldRight(), pitch * DEGTORAD);
+	math::Quat finalRotation = rotationX;
+
+	/*frustum.up = finalRotation * frustum.up * 3;
+	frustum.front = finalRotation * frustum.front * 3;*/
+	if (parent != nullptr)
+		parent->transform->rotation = parent->transform->rotation * finalRotation;
+}
+
+
 void ComponentCamera::OnInternalSave(JSON_Object* file)
 {
 	json_object_set_number(file, "nearPlaneDistance", frustum.nearPlaneDistance);

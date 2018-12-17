@@ -212,6 +212,10 @@ void ModuleCameraEditor::LookAround(const math::float3& reference, float pitch, 
 	camera->frustum.up = finalRotation * camera->frustum.up;
 	camera->frustum.front = finalRotation * camera->frustum.front;
 
+	CONSOLE_LOG("editor up: %s", camera->frustum.up.ToString().data());
+	CONSOLE_LOG("editor frotn: %s", camera->frustum.front.ToString().data())
+
+
 	/*
 	// Cap
 	if (Y.y < 0.0f)
@@ -221,8 +225,8 @@ void ModuleCameraEditor::LookAround(const math::float3& reference, float pitch, 
 	}
 	*/
 
-	float distance = (camera->frustum.pos - reference).Length();
-	camera->frustum.pos = reference + (-camera->frustum.front * distance);
+	//float distance = (camera->frustum.pos - reference).Length();
+	//camera->frustum.pos = reference + (-camera->frustum.front * distance);
 }
 
 #endif // GAME

@@ -5,6 +5,7 @@
 #include "ModuleScene.h"
 #include "ModuleCameraEditor.h"
 #include "ModuleResourceManager.h"
+#include "ModuleInput.h"
 #include "ModuleGui.h"
 #include "ModuleGOs.h"
 #include "ModulePhysics.h"
@@ -178,6 +179,8 @@ update_status ModuleRenderer3D::PostUpdate()
 
 	if (currentCamera != nullptr)
 	{
+		UpdateMainCamera();
+
 		if (currentCamera->HasFrustumCulling())
 			FrustumCulling();
 
@@ -728,5 +731,51 @@ void ModuleRenderer3D::RecursiveDrawQuadtree(QuadtreeNode* node) const
 	{
 		for (uint i = 0; i < 4; ++i)
 			RecursiveDrawQuadtree(node->children[i]);
+	}
+}
+
+void ModuleRenderer3D::UpdateMainCamera()
+{
+	if (App->IsPlay())
+	{
+		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+		{
+			// Move
+			math::float3 offsetPosition(math::float3::zero);
+
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+				offsetPosition += currentCamera->frustum.front;
+			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+				offsetPosition -= currentCamera->frustum.front;
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+				offsetPosition -= currentCamera->frustum.WorldRight();
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+				offsetPosition += currentCamera->frustum.WorldRight();
+			if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)
+				offsetPosition -= currentCamera->frustum.up;
+			if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
+				offsetPosition += currentCamera->frustum.up;
+
+			float movementSpeed = 1.0f;
+			float  rotationSpeed = 1.0f;
+
+			float cameraMovementSpeed = movementSpeed;
+
+			if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
+				cameraMovementSpeed *= 2.0f; // double speed
+
+			currentCamera->GetParent()->transform->position += offsetPosition;
+
+			// Rotate (Look Around camera position)
+			int dx = -App->input->GetMouseXMotion(); // Affects the Yaw
+			int dy = -App->input->GetMouseYMotion(); // Affects the Pitch
+
+			if (dx != 0 || dy != 0)
+			{
+				float cameraRotationSpeed = rotationSpeed;
+
+				currentCamera->LookAround(currentCamera->frustum.pos, (float)dy * cameraRotationSpeed, (float)dx * cameraRotationSpeed);
+			}
+		}
 	}
 }

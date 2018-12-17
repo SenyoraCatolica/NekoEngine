@@ -30,6 +30,7 @@ void PhysicVehicle3D::Render()
 		vehicle->updateWheelTransform(i);
 		vehicle->getWheelInfo(i).m_worldTransform.getOpenGLMatrix(*wheel.transform.v);
 
+		wheel.wire = true;
 		wheel.Render();
 	}
 
@@ -39,11 +40,11 @@ void PhysicVehicle3D::Render()
 	btVector3 offset(info.chassis_offset.x, info.chassis_offset.y, info.chassis_offset.z);
 	offset = offset.rotate(q.getAxis(), q.getAngle());
 
-	chassis.transform.At(3, 2) += offset.getX();
-	chassis.transform.At(0, 3) += offset.getY();
-	chassis.transform.At(1, 3) += offset.getZ();
+	chassis.transform.At(0, 3) += offset.getX();
+	chassis.transform.At(1, 3) += offset.getY();
+	chassis.transform.At(2, 3) += offset.getZ();
 
-
+	chassis.wire = true;
 	chassis.Render();
 
 
@@ -53,11 +54,11 @@ void PhysicVehicle3D::Render()
 	btVector3 offset2(info.cabin_offset.x, info.cabin_offset.y, info.cabin_offset.z);
 	offset2 = offset2.rotate(q2.getAxis(), q2.getAngle());
 
-	cabin.transform.At(3, 2) += offset2.getX();
-	cabin.transform.At(0, 3) += offset2.getY();
-	cabin.transform.At(1, 3) += offset2.getZ();
+	cabin.transform.At(0, 3) += offset2.getX();
+	cabin.transform.At(1, 3) += offset2.getY();
+	cabin.transform.At(2, 3) += offset2.getZ();
 
-
+	cabin.wire = true;
 	cabin.Render();
 
 
@@ -67,11 +68,11 @@ void PhysicVehicle3D::Render()
 	btVector3 offset3(info.front_offset.x, info.front_offset.y, info.front_offset.z);
 	offset3 = offset3.rotate(q3.getAxis(), q3.getAngle());
 
-	front.transform.At(3, 2) += offset3.getX();
-	front.transform.At(0, 3) += offset3.getY();
-	front.transform.At(1, 3) += offset3.getZ();
+	front.transform.At(0, 3) += offset3.getX();
+	front.transform.At(1, 3) += offset3.getY();
+	front.transform.At(2, 3) += offset3.getZ();
 
-
+	front.wire = true;
 	front.Render();
 
 
@@ -81,11 +82,11 @@ void PhysicVehicle3D::Render()
 	btVector3 offset4(info.bar_offset.x, info.bar_offset.y, info.bar_offset.z);
 	offset4 = offset4.rotate(q4.getAxis(), q4.getAngle());
 
-	bar.transform.At(3, 2) += offset4.getX();
-	bar.transform.At(0, 3) += offset4.getY();
-	bar.transform.At(1, 3) += offset4.getZ();
+	bar.transform.At(0, 3) += offset4.getX();
+	bar.transform.At(1, 3) += offset4.getY();
+	bar.transform.At(2, 3) += offset4.getZ();
 
-
+	bar.wire = true;
 	bar.Render();
 }
 

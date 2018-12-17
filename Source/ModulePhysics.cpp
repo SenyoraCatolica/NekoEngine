@@ -161,12 +161,16 @@ update_status ModulePhysics::Update()
 			PrimitiveShapeSphere s(1);
 			math::float3 pos = gameCamera->GetParent()->transform->position;
 			s.SetPos(pos.x, pos.y, pos.z + 5);
+			s.wire = true;
+			s.Render();
 
 			float force = 30.0f;
 			math::float3 direction = gameCamera->GetParent()->transform->GetGlobalMatrix().WorldZ();
 			PhysicBody3D* sphereBody = AddBody(s); 
 			sphereBody->Push((direction.x * force), (direction.y * force), (direction.z * force));
 		}
+
+		//cameraBody->SetTransform(gameCamera->GetParent()->transform->GetGlobalMatrix());
 	}
 
 	return UPDATE_CONTINUE;
@@ -536,6 +540,7 @@ void ModulePhysics::ClearBodies()
 	vehicles.clear();
 
 	gameCamera = nullptr;
+	cameraBody = nullptr;
 }
 void ModulePhysics::AddConstraint(JointP2PComponent* jointA, JointP2PComponent* jointB)
 {
@@ -571,7 +576,7 @@ void ModulePhysics::CreateCameraSphare()
 		PrimitiveShapeSphere s(1);
 		math::float3 pos = gameCamera->frustum.pos;
 		s.SetPos(pos.x, pos.y, pos.z);
-		AddBody(s, 0);
+		cameraBody = AddBody(s, 0);
 	}
 }
 

@@ -30,6 +30,7 @@ public:
 	void SetMatrixFromGlobal(math::float4x4& globalMatrix);
 
 	void SetTransform(math::float4x4& matrix);
+	void SetRotation(math::float3 rot);
 
 	void UpdateOnTransformChanged();
 

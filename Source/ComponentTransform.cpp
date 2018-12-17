@@ -176,6 +176,20 @@ void ComponentTransform::SetTransform(math::float4x4& matrix)
 	scale = scal;
 }
 
+void ComponentTransform::SetRotation(math::float3 rot)
+{
+	math::float3 rotation_degree = rot;
+
+	math::float3 rotation_rad;
+
+	rotation_rad.x = math::DegToRad(rotation_degree.x);
+	rotation_rad.y = math::DegToRad(rotation_degree.y);
+	rotation_rad.z = math::DegToRad(rotation_degree.z);
+
+	rotation = math::Quat::FromEulerXYZ(rotation_rad.x, rotation_rad.y, rotation_rad.z);
+}
+
+
 void ComponentTransform::UpdateOnTransformChanged()
 {
 	// Transform updated: if the game object has a camera, update its frustum

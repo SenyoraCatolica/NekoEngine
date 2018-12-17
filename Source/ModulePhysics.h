@@ -76,6 +76,7 @@ private:
 
 
 	ComponentCamera* gameCamera = nullptr;
+	PhysicBody3D* cameraBody = nullptr;
 
 	float acceleration = 0;
 	float turn = 0;

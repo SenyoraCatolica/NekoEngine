@@ -91,6 +91,8 @@ public:
 	void DrawMesh(ComponentMesh* toDraw) const;
 	void RecursiveDrawQuadtree(QuadtreeNode* node) const;
 
+	void UpdateMainCamera();
+
 private:
 
 	std::vector<ComponentMesh*> meshComponents;

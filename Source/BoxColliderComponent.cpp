@@ -79,7 +79,7 @@ void BoxColliderComponent::OnUniqueEditor()
 
 PrimitiveShapeCube* BoxColliderComponent::GetBoxCollider()
 {
-	return box;
+	if(box) return box;
 }
 
 

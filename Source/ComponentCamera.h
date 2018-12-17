@@ -34,6 +34,8 @@ public:
 	void SetMainCamera(bool mainCamera);
 	bool IsMainCamera() const;
 
+	void LookAround(const math::float3& reference, float pitch, float yaw);
+
 	virtual void OnInternalSave(JSON_Object* file);
 	virtual void OnLoad(JSON_Object* file);
 
