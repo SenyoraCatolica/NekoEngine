@@ -30,7 +30,7 @@ void PhysicVehicle3D::Render()
 		vehicle->updateWheelTransform(i);
 		vehicle->getWheelInfo(i).m_worldTransform.getOpenGLMatrix(*wheel.transform.v);
 
-		wheel.wire = true;
+		wheel.wire = false;
 		wheel.Render();
 	}
 
@@ -44,7 +44,7 @@ void PhysicVehicle3D::Render()
 	chassis.transform.At(1, 3) += offset.getY();
 	chassis.transform.At(2, 3) += offset.getZ();
 
-	chassis.wire = true;
+	chassis.wire = false;
 	chassis.Render();
 
 
@@ -58,7 +58,7 @@ void PhysicVehicle3D::Render()
 	cabin.transform.At(1, 3) += offset2.getY();
 	cabin.transform.At(2, 3) += offset2.getZ();
 
-	cabin.wire = true;
+	cabin.wire = false;
 	cabin.Render();
 
 
@@ -72,7 +72,7 @@ void PhysicVehicle3D::Render()
 	front.transform.At(1, 3) += offset3.getY();
 	front.transform.At(2, 3) += offset3.getZ();
 
-	front.wire = true;
+	front.wire = false;
 	front.Render();
 
 
@@ -86,7 +86,7 @@ void PhysicVehicle3D::Render()
 	bar.transform.At(1, 3) += offset4.getY();
 	bar.transform.At(2, 3) += offset4.getZ();
 
-	bar.wire = true;
+	bar.wire = false;
 	bar.Render();
 }
 
