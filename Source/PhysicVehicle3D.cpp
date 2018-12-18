@@ -40,9 +40,10 @@ void PhysicVehicle3D::Render()
 	btVector3 offset(info.chassis_offset.x, info.chassis_offset.y, info.chassis_offset.z);
 	offset = offset.rotate(q.getAxis(), q.getAngle());
 
-	chassis.transform.At(0, 3) += offset.getX();
-	chassis.transform.At(1, 3) += offset.getY();
-	chassis.transform.At(2, 3) += offset.getZ();
+	math::float3 pos(vehicle->getChassisWorldTransform().getOrigin());
+	math::float3 final_pos(pos.x + offset.getX(), pos.y + offset.getY(), pos.z + offset.getZ());
+
+	chassis.SetPos(final_pos.x, final_pos.y, final_pos.z);
 
 	chassis.wire = false;
 	chassis.Render();
@@ -54,9 +55,8 @@ void PhysicVehicle3D::Render()
 	btVector3 offset2(info.cabin_offset.x, info.cabin_offset.y, info.cabin_offset.z);
 	offset2 = offset2.rotate(q2.getAxis(), q2.getAngle());
 
-	cabin.transform.At(0, 3) += offset2.getX();
-	cabin.transform.At(1, 3) += offset2.getY();
-	cabin.transform.At(2, 3) += offset2.getZ();
+	math::float3 pos2(vehicle->getChassisWorldTransform().getOrigin());
+	cabin.SetPos(offset2.getX() + pos2.x, offset2.getY() + pos2.y, offset2.getZ() + pos2.z);
 
 	cabin.wire = false;
 	cabin.Render();
@@ -68,9 +68,9 @@ void PhysicVehicle3D::Render()
 	btVector3 offset3(info.front_offset.x, info.front_offset.y, info.front_offset.z);
 	offset3 = offset3.rotate(q3.getAxis(), q3.getAngle());
 
-	front.transform.At(0, 3) += offset3.getX();
-	front.transform.At(1, 3) += offset3.getY();
-	front.transform.At(2, 3) += offset3.getZ();
+	math::float3 pos3(vehicle->getChassisWorldTransform().getOrigin());
+	front.SetPos(offset3.getX() + pos3.x, offset3.getY() + pos3.y, offset3.getZ() + pos3.z);
+
 
 	front.wire = false;
 	front.Render();
@@ -82,9 +82,8 @@ void PhysicVehicle3D::Render()
 	btVector3 offset4(info.bar_offset.x, info.bar_offset.y, info.bar_offset.z);
 	offset4 = offset4.rotate(q4.getAxis(), q4.getAngle());
 
-	bar.transform.At(0, 3) += offset4.getX();
-	bar.transform.At(1, 3) += offset4.getY();
-	bar.transform.At(2, 3) += offset4.getZ();
+	math::float3 pos4(vehicle->getChassisWorldTransform().getOrigin());
+	bar.SetPos(offset4.getX() + pos4.x, offset4.getY() + pos4.y, offset4.getZ() + pos4.z);
 
 	bar.wire = false;
 	bar.Render();

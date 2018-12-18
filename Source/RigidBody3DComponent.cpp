@@ -25,9 +25,6 @@ void RigidBody3DComponent::GeneratePhysicBbody()
 	{
 		transform = parent->transform;
 		box = (BoxColliderComponent*)parent->GetComponent(COMPONENT_BOX);
-
-		if (box != nullptr)
-			box->SetRigidBody(this);
 	}
 
 	is_kinematic = false;
