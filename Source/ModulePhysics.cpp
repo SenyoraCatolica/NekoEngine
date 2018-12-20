@@ -301,7 +301,7 @@ PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderCompon
 	float mass = 0.0f;
 
 	if (rb != nullptr)
-		if (rb->is_kinematic == false)
+		if (rb->is_kinematic == false && go->IsStatic() == false)
 			mass = rb->mass;
 
 	if (mass > 0)
