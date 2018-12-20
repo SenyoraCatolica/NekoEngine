@@ -7,6 +7,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
 #include "CarComponent.h"
+#include "JointP2PComponent.h"
 
 #include "Application.h"
 #include "ModuleFileSystem.h"
@@ -487,6 +488,16 @@ void ModuleGOs::AddPhysicsOnPlay()
 			{
 				gameObjects[i]->car->SetVehicle(App->physics->AddVehicle(gameObjects[i]->car));
 				gameObjects[i]->car->SetCarData();
+			}
+		}
+
+		else
+		{
+			if (gameObjects[i]->jp2p->is_paired == false && gameObjects[i]->jp2p->jointToName.empty() == false)
+			{
+				static char goName[INPUT_BUF_SIZE] = "";
+				strcpy(goName, gameObjects[i]->jp2p->jointToName.data());
+				gameObjects[i]->jp2p->MergeJoints(goName);
 			}
 		}
 	}

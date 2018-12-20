@@ -31,7 +31,6 @@ public:
 
 	JointP2PComponent* jointTo = nullptr;
 	GameObject* jointToGO = nullptr;
-
-private:
+	bool is_paired = false;
 	std::string jointToName = "";
 };

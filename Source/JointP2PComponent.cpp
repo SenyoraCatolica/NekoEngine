@@ -63,6 +63,10 @@ void JointP2PComponent::OnUniqueEditor()
 			if(MergeJoints(goName))
 				jointToName = goName;
 		}
+
+		ImGui::NewLine();
+
+		ImGui::DragFloat3("Anchor: ", anchor.ptr(), 0.1f, -1000.0f, 1000.0f);
 	}
 }
 
@@ -87,6 +91,7 @@ bool JointP2PComponent::MergeJoints(char* goName)
 			SetJoinToPair(jointTo);
 			jointTo->SetJoinToPair(this);
 			App->physics->AddConstraint(this, jointTo);
+			is_paired = true;
 			ret = true;
 		}
 
@@ -122,4 +127,13 @@ void JointP2PComponent::OnLoad(JSON_Object* file)
 	anchor.y = json_object_get_number(file, "AnchorY");
 	anchor.z = json_object_get_number(file, "AnchorZ");
 	uint uuid = json_object_get_number(file, "JointToUUID");
+
+	jointToGO = App->GOs->GetGameObjectByUUID(uuid);
+
+	if (jointToGO != nullptr)
+	{
+		jointTo = jointToGO->jp2p;
+		jointToName = jointToGO->GetName();
+		is_paired = false;
+	}
 }

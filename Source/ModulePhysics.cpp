@@ -529,6 +529,16 @@ void ModulePhysics::ClearBodies()
 	}
 	constraints.clear();
 
+	//erase constraints map
+	std::map<JointP2PComponent*, JointP2PComponent*>::iterator it_consp = constraints_pair.begin();
+	while (it_consp != constraints_pair.end())
+	{
+		it_consp->first->is_paired = false;
+		it_consp->second->is_paired = false;
+		it_consp++;
+	}
+	constraints_pair.clear();
+
 	//2DO remove vehicles
 	std::list<PhysicVehicle3D*>::iterator it_v = vehicles.begin();
 	while (it_v != vehicles.end())
