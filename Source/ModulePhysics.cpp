@@ -153,7 +153,7 @@ update_status ModulePhysics::Update()
 	//Update PhysicBodies with their gos
 	UpdateBodies();
 
-	//throwing balls
+	//throwing balls and camera sphere
 	if (gameCamera != nullptr)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
@@ -170,6 +170,7 @@ update_status ModulePhysics::Update()
 			sphereBody->Push((direction.x * force), (direction.y * force), (direction.z * force));
 		}
 
+		//update camera shere
 		cameraBody->SetPos(gameCamera->GetParent()->transform->position);
 	}
 

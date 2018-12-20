@@ -61,17 +61,17 @@ void BoxColliderComponent::GenerateBoxCollider()
 
 void BoxColliderComponent::OnUniqueEditor()
 {
-	ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-	ImGui::PushItemFlag(ImGuiItemFlags_Disabled, false);
+	ImGui::TextColored(ImVec4(0, 0, 1.0, 1), "Component Box Collider");
+	if (IsActive())
+	{
+		ImGui::NewLine();
 
+		ImGui::DragFloat3("Collider offset: ", offset.ptr(), 0.1f, -1000.0f, 1000.0f);
 
-	const double f64_lo_a = -1000000000000000.0, f64_hi_a = +1000000000000000.0;
+		ImGui::NewLine();
 
-	ImGui::DragFloat3("Collider offset: ", offset.ptr(), 0.1f, -1000.0f, 1000.0f);
-
-	ImGui::DragFloat3("Size: ", box->size.ptr(), 0.1f, -1000.0f, 1000.0f);
-
-	ImGui::Checkbox("Is Trigger", &is_trigger);
+		ImGui::DragFloat3("Size: ", box->size.ptr(), 0.1f, -1000.0f, 1000.0f);
+	}	
 }
 
 PrimitiveShapeCube* BoxColliderComponent::GetBoxCollider()
@@ -89,8 +89,6 @@ void BoxColliderComponent::OnInternalSave(JSON_Object* file)
 	json_object_set_number(file, "SizeX", size.x);
 	json_object_set_number(file, "SizeY", size.y);
 	json_object_set_number(file, "SizeZ", size.z);
-
-	json_object_set_boolean(file, "IsTrigger", is_trigger);
 }
 
 void BoxColliderComponent::OnLoad(JSON_Object* file)
@@ -101,6 +99,4 @@ void BoxColliderComponent::OnLoad(JSON_Object* file)
 	size.x = json_object_get_number(file, "SizeX");
 	size.y = json_object_get_number(file, "SizeY");
 	size.z = json_object_get_number(file, "SizeZ");
-
-	is_trigger = json_object_get_boolean(file, "IsTrigger");
 }

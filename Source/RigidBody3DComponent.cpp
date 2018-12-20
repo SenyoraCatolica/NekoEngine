@@ -38,17 +38,22 @@ void RigidBody3DComponent::SetBox(BoxColliderComponent* col)
 
 void RigidBody3DComponent::OnUniqueEditor()
 {
-	ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-	ImGui::PushItemFlag(ImGuiItemFlags_Disabled, false);
+	ImGui::TextColored(ImVec4(0, 0, 1.0, 1), "Component Rigidbody 3D");
 
+	if (IsActive())
+	{
+		ImGui::NewLine();
+		//const double f64_lo_a = -1000000000000000.0, f64_hi_a = +1000000000000000.0;
 
-	const double f64_lo_a = -1000000000000000.0, f64_hi_a = +1000000000000000.0;
+		//ImGui::Text("Mass");
+		//ImGui::PushItemWidth(TRANSFORMINPUTSWIDTH);
+		//ImGui::DragScalar("##Mass", ImGuiDataType_Float, (void*)&mass, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f);
+		ImGui::DragFloat("Mass: ", &mass, 0.1f, 0.0f, 100000.0f);
 
-	ImGui::Text("Mass");
-	ImGui::PushItemWidth(TRANSFORMINPUTSWIDTH);
-	ImGui::DragScalar("##Mass", ImGuiDataType_Float, (void*)&mass, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f); ImGui::SameLine();
+		ImGui::NewLine();
 
-	ImGui::Checkbox("Is Kinematic", &is_kinematic);
+		ImGui::Checkbox("Is Kinematic", &is_kinematic);
+	}	
 }
 
 

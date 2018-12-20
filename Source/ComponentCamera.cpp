@@ -134,9 +134,9 @@ bool ComponentCamera::IsMainCamera() const
 
 void ComponentCamera::LookAround(const math::float3& reference, float pitch, float yaw)
 {
-	math::Quat rotationX = math::Quat::RotateAxisAngle({ 0.0f,1.0f,0.0f }, yaw * DEGTORAD);
+	math::Quat rotationX = math::Quat::RotateAxisAngle({ 0.0, 1.0, 0.0 }, yaw * DEGTORAD);
 	math::Quat rotationY = math::Quat::RotateAxisAngle(frustum.WorldRight(), pitch * DEGTORAD);
-	math::Quat finalRotation = rotationX;
+	math::Quat finalRotation = rotationX * rotationY;
 
 	if (parent != nullptr)
 		parent->transform->rotation = parent->transform->rotation * finalRotation;

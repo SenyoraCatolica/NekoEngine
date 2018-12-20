@@ -50,7 +50,7 @@ void JointP2PComponent::OnUniqueEditor()
 	ImGui::PushItemWidth(100.0f);
 	ImGuiInputTextFlags inputFlag = ImGuiInputTextFlags_EnterReturnsTrue;
 	ImGui::Text("Object name to joint to:");
-	ImGui::Text("the object must have a Component Joint too!!");
+	ImGui::TextColored(ImVec4(1.0,0,0,0),"the object must have a Component Joint too!!");
 	static char goName[INPUT_BUF_SIZE];
 	if (ImGui::InputText("##goName", goName, IM_ARRAYSIZE(goName), inputFlag))
 	{
