@@ -19,6 +19,8 @@ public:
 
 	void OnUniqueEditor();
 
+	bool MergeJoints(char* name);
+
 	virtual void OnInternalSave(JSON_Object* file);
 	virtual void OnLoad(JSON_Object* file);
 

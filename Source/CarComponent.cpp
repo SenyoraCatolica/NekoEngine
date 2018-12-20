@@ -122,16 +122,19 @@ void CarComponent::CreateCar()
 
 void CarComponent::OnUniqueEditor()
 {
-	ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-	ImGui::PushItemFlag(ImGuiItemFlags_Disabled, false);
-
-	ImGui::SliderFloat("Mass", &car_info->mass, 1.0f, 1000.0f);
-	ImGui::SliderFloat("Suspension Stiffness", &car_info->suspensionStiffness, 0.0f, 200.0f);
-	ImGui::SliderFloat("Suspension Compression", &car_info->suspensionCompression, 0.0f, 1.0f);
-	ImGui::SliderFloat("Suspension Damping", &car_info->suspensionDamping, 0.0f, 1.0f);
-	ImGui::SliderFloat("Max Suspension Travel", &car_info->maxSuspensionTravelCm, 0.0f, 1000.0f);
-	ImGui::SliderFloat("Friction Slip", &car_info->frictionSlip, 0.0f, 1000.0f);
-	ImGui::SliderFloat("Max Suspension Force", &car_info->maxSuspensionForce, 0.0f, 100000.0f);
+	ImGui::TextColored(ImVec4(0, 0, 1.0, 1), "Component Car");
+	if (IsActive())
+	{
+		ImGui::NewLine();
+		ImGui::SliderFloat("Mass", &car_info->mass, 1.0f, 1000.0f);
+		ImGui::SliderFloat("Suspension Stiffness", &car_info->suspensionStiffness, 0.0f, 200.0f);
+		ImGui::SliderFloat("Suspension Compression", &car_info->suspensionCompression, 0.0f, 1.0f);
+		ImGui::SliderFloat("Suspension Damping", &car_info->suspensionDamping, 0.0f, 1.0f);
+		ImGui::SliderFloat("Max Suspension Travel", &car_info->maxSuspensionTravelCm, 0.0f, 1000.0f);
+		ImGui::SliderFloat("Friction Slip", &car_info->frictionSlip, 0.0f, 1000.0f);
+		ImGui::SliderFloat("Max Suspension Force", &car_info->maxSuspensionForce, 0.0f, 100000.0f);
+	}
+	
 }
 
 PhysicVehicle3D* CarComponent::GetVehicle()

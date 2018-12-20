@@ -17,6 +17,7 @@ BoxColliderComponent::BoxColliderComponent(GameObject* embedded_game_object) :
 
 BoxColliderComponent::~BoxColliderComponent()
 {
+	//if(box != nullptr)
 	delete box;
 	box = nullptr;
 }
@@ -30,6 +31,8 @@ void BoxColliderComponent::UpdateBoxCollider(bool render)
 			//update box on editor
 			if (box != nullptr && parent != nullptr)
 			{
+				GenerateBoxCollider();
+
 				//Get the transform data from go transform
 				math::float3 trans; math::Quat rot; math::float3 scale;
 				math::float4x4 matrix = parent->transform->GetGlobalMatrix();
@@ -42,6 +45,7 @@ void BoxColliderComponent::UpdateBoxCollider(bool render)
 				//Set the new transform
 				box->SetPos(trans.x, trans.y, trans.z);
 				box->SetRotation(rot.Inverted());
+
 
 				if (render)
 					box->Render();

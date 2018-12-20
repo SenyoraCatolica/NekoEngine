@@ -44,49 +44,68 @@ void JointP2PComponent::ClearJoint()
 
 void JointP2PComponent::OnUniqueEditor()
 {
-	ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-	ImGui::PushItemFlag(ImGuiItemFlags_Disabled, false);
-
-	ImGui::PushItemWidth(100.0f);
-	ImGuiInputTextFlags inputFlag = ImGuiInputTextFlags_EnterReturnsTrue;
-	ImGui::Text("Object name to joint to:");
-	ImGui::TextColored(ImVec4(1.0,0,0,0),"the object must have a Component Joint too!!");
-	static char goName[INPUT_BUF_SIZE];
-	if (ImGui::InputText("##goName", goName, IM_ARRAYSIZE(goName), inputFlag))
+	ImGui::TextColored(ImVec4(0, 0, 1.0, 1), "Component Joint Point to Point");
+	if (IsActive())
 	{
-		GameObject* go = App->GOs->GetGameObjectByName(goName);
+		ImGui::NewLine();
 
-		if (go != nullptr)
+		ImGui::PushItemWidth(100.0f);
+		ImGuiInputTextFlags inputFlag = ImGuiInputTextFlags_EnterReturnsTrue;
+		ImGui::Text("Object name to joint to:");
+		ImGui::TextColored(ImVec4(1.0, 0, 0, 1.0), "Warning! - the object must have a Component Joint too");
+		static char goName[INPUT_BUF_SIZE];
+
+		if (jointToName.empty() == false)
+			strcpy(goName, jointToName.data());
+
+		if (ImGui::InputText("##goName", goName, IM_ARRAYSIZE(goName), inputFlag))
 		{
-			//separate joint components
-			if(jointTo != nullptr)
-				jointTo->UnpairJoint();
-			UnpairJoint();
+			if(MergeJoints(goName))
+				jointToName = goName;
+		}
+	}
+}
 
-			//pair with the new joint if exists
-			jointTo = go->jp2p;
+bool JointP2PComponent::MergeJoints(char* goName)
+{
+	bool ret = false;
 
-			if (jointTo != nullptr)
-			{
-				SetJoinToPair(jointTo);
-				jointTo->SetJoinToPair(this);
-				App->physics->AddConstraint(this, jointTo);
-			}
+	GameObject* go = App->GOs->GetGameObjectByName(goName);
 
-			else
-			{
-				CONSOLE_LOG("Can't find a Joint P2P Component int the object: %s in the scene", go->GetName());
-				std::strcpy(goName, "");
-			}
+	if (go != nullptr)
+	{
+		//separate joint components
+		if (jointTo != nullptr)
+			jointTo->UnpairJoint();
+		UnpairJoint();
+
+		//pair with the new joint if exists
+		jointTo = go->jp2p;
+
+		if (jointTo != nullptr)
+		{
+			SetJoinToPair(jointTo);
+			jointTo->SetJoinToPair(this);
+			App->physics->AddConstraint(this, jointTo);
+			ret = true;
 		}
 
 		else
 		{
-			CONSOLE_LOG("Can't find an object with the name: %s in the scene", goName);
-			std::strcpy(goName, jointToName.data());
+			CONSOLE_LOG("Can't find a Joint P2P Component int the object: %s in the scene", go->GetName());
+			std::strcpy(goName, "");
 		}
-	}	
+	}
+
+	else
+	{
+		CONSOLE_LOG("Can't find an object with the name: %s in the scene", goName);
+		std::strcpy(goName, jointToName.data());
+	}
+
+	return ret;
 }
+
 
 
 void JointP2PComponent::OnInternalSave(JSON_Object* file)

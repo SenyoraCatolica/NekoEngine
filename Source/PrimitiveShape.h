@@ -24,6 +24,7 @@ public:
 	virtual void	InnerRender() const;
 	void			SetPos(float x, float y, float z);
 	void			SetRotation(Quat rot);
+	void			SetScale(float x, float y, float z);
 	void			Scale(float x, float y, float z);
 	ShapeTypes		GetType() const;
 	math::float3	GetPos()const;

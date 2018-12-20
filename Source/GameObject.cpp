@@ -245,9 +245,11 @@ Component* GameObject::AddComponent(ComponentType type)
 
 	case COMPONENT_JP2P:
 		newComponent = jp2p = new JointP2PComponent(this);
+		break;
 
 	case COMPONENT_CAR:
 		newComponent = car = new CarComponent(this);
+		break;
 
 	default:
 		break;

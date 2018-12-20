@@ -68,6 +68,12 @@ void PrimitiveShape::SetRotation(Quat rot)
 }
 
 // ------------------------------------------------------------
+void PrimitiveShape::SetScale(float x, float y, float z)
+{
+	transform.Scale(x, y, z);
+}
+
+// ------------------------------------------------------------
 void PrimitiveShape::Scale(float x, float y, float z)
 {
 	//transform.RemoveScale();
