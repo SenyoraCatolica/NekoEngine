@@ -23,20 +23,33 @@ void PrimitiveShape::Render() const
 	glPushMatrix();
 	glMultMatrixf(*transform.v);
 	glDisable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
+
 
 	glColor3f(color.r, color.g, color.b);
 
-	if(wire)
+	if (wire)
+	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glDisable(GL_CULL_FACE);
+	}
+	else
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glDisable(GL_CULL_FACE);
+	}
 
 	InnerRender();
 
-	glPopMatrix();
-	
-	if(wire)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
+
+	
+
+	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
+
+	glPopMatrix();
+
 }
 
 // ------------------------------------------------------------

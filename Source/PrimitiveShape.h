@@ -35,7 +35,8 @@ public:
 	
 	Color color;
 	float4x4 transform;
-	bool axis, wire;
+	bool axis;
+	bool wire = true;
 
 protected:
 	ShapeTypes type;

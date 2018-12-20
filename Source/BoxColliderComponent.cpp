@@ -56,6 +56,8 @@ void BoxColliderComponent::GenerateBoxCollider()
 		box = new PrimitiveShapeCube(parent->boundingBox.Size().x, parent->boundingBox.Size().y, parent->boundingBox.Size().z);
 	else
 		box = new PrimitiveShapeCube(1, 1, 1);
+
+	box->wire = true;
 }
 
 void BoxColliderComponent::OnUniqueEditor()
