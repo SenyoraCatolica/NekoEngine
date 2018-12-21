@@ -505,6 +505,8 @@ void ModulePhysics::AddConstraintP2P(JointP2PComponent* jointA, JointP2PComponen
 	body_gos.insert(std::pair<GameObject*, PhysicBody3D*>(jointA->GetParent(), jointA->body));
 	body_gos.insert(std::pair<GameObject*, PhysicBody3D*>(jointB->GetParent(), jointB->body));
 	p2p->setDbgDrawSize(2.0f);
+
+	jointA->is_paired = jointB->is_paired = true;
 }
 
 
@@ -686,52 +688,54 @@ void ModulePhysics::AddBodiestoConstraints()
 	std::map<JointP2PComponent*, JointP2PComponent*>::iterator it = constraints_pair.begin();
 	while (it != constraints_pair.end())
 	{
-
-		//Addbody to first joint===============================================
-		bool pair1 = false;
-
-		if ((*it).first->GetParent()->box_collider != nullptr)
+		if ((*it).first->is_paired == false && (*it).second->is_paired == false)
 		{
-			(*it).first->body = AddBody((*it).first->GetParent()->rb, (*it).first->GetParent()->box_collider, (*it).first->GetParent(), true);
-			pair1 = true;
+			//Addbody to first joint===============================================
+			bool pair1 = false;
+
+			if ((*it).first->GetParent()->box_collider != nullptr)
+			{
+				(*it).first->body = AddBody((*it).first->GetParent()->rb, (*it).first->GetParent()->box_collider, (*it).first->GetParent(), true);
+				pair1 = true;
+			}
+
+			else if ((*it).first->GetParent()->sphere_collider != nullptr)
+			{
+				(*it).first->body = AddBody((*it).first->GetParent()->rb, (*it).first->GetParent()->sphere_collider, (*it).first->GetParent(), true);
+				pair1 = true;
+			}
+
+			else
+			{
+				pair1 = false;
+			}
+
+
+			//Addbody to second joint===============================================
+			bool pair2 = false;
+
+			if ((*it).second->GetParent()->box_collider != nullptr)
+			{
+				(*it).second->body = AddBody((*it).second->GetParent()->rb, (*it).second->GetParent()->box_collider, (*it).second->GetParent(), true);
+				pair2 = true;
+			}
+
+			else if ((*it).second->GetParent()->sphere_collider != nullptr)
+			{
+				(*it).second->body = AddBody((*it).second->GetParent()->rb, (*it).second->GetParent()->sphere_collider, (*it).second->GetParent(), true);
+				pair2 = true;
+			}
+
+			else
+			{
+				pair2 = false;
+			}
+
+
+			//Create joint
+			if (pair1 && pair2)
+				AddConstraintP2P((*it).first, (*it).second);
 		}
-
-		else if ((*it).first->GetParent()->sphere_collider != nullptr)
-		{
-			(*it).first->body = AddBody((*it).first->GetParent()->rb, (*it).first->GetParent()->sphere_collider, (*it).first->GetParent(), true);
-			pair1 = true;
-		}
-
-		else
-		{
-			pair1 = false;
-		}
-
-
-		//Addbody to second joint===============================================
-		bool pair2 = false;
-
-		if ((*it).second->GetParent()->box_collider != nullptr)
-		{
-			(*it).second->body = AddBody((*it).second->GetParent()->rb, (*it).second->GetParent()->box_collider, (*it).second->GetParent(), true);
-			pair2 = true;
-		}
-
-		else if ((*it).second->GetParent()->sphere_collider != nullptr)
-		{
-			(*it).second->body = AddBody((*it).second->GetParent()->rb, (*it).second->GetParent()->sphere_collider, (*it).second->GetParent(), true);
-			pair2 = true;
-		}
-
-		else
-		{
-			pair2 = false;
-		}
-
-
-		//Create joint
-		if(pair1 && pair2)
-			AddConstraintP2P((*it).first, (*it).second);
 
 		it++;
 	}

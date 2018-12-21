@@ -31,7 +31,7 @@ void JointP2PComponent::UnpairJoint()
 {
 	jointTo = nullptr;
 	jointToGO = nullptr;
-	jointToName = "";
+	jointToName.clear();
 }
 
 
@@ -91,7 +91,6 @@ bool JointP2PComponent::MergeJoints(char* goName)
 			SetJoinToPair(jointTo);
 			jointTo->SetJoinToPair(this);
 			App->physics->AddConstraint(this, jointTo);
-			is_paired = true;
 			ret = true;
 		}
 
@@ -118,7 +117,11 @@ void JointP2PComponent::OnInternalSave(JSON_Object* file)
 	json_object_set_number(file, "AnchorX", anchor.x);
 	json_object_set_number(file, "AnchorY", anchor.y);
 	json_object_set_number(file, "AnchorZ", anchor.z);
-	json_object_set_number(file, "JointToUUID", jointToGO->GetUUID());
+
+	if(jointToGO != nullptr)
+		json_object_set_number(file, "JointToUUID", jointToGO->GetUUID());
+	else
+		json_object_set_number(file, "JointToUUID", 0);
 }
 
 void JointP2PComponent::OnLoad(JSON_Object* file)
