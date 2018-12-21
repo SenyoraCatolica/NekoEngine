@@ -17,6 +17,7 @@ class PhysicBody3D;
 class PhysicVehicle3D;
 class RigidBody3DComponent;
 class BoxColliderComponent;
+class SphereColliderComponent;
 class JointP2PComponent;
 class CarComponent;
 class DebugPhysicsDrawer;
@@ -37,6 +38,8 @@ public:
 	PhysicBody3D* AddBody(const PrimitiveShapeSphere& sphere, float mass = 1.0f);
 	PhysicBody3D* AddBody(const PrimitiveShapeCube& cube, float mass = 1.0f);
 	PhysicBody3D* AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col, GameObject* go, bool is_constraint = false);
+	PhysicBody3D* AddBody(RigidBody3DComponent* rb, SphereColliderComponent* col, GameObject* go, bool is_constraint = false);
+	PhysicBody3D* AddBody(RigidBody3DComponent* rb, GameObject* go, bool is_constraint = false);
 	PhysicVehicle3D* AddVehicle(CarComponent* car);
 	void AddConstraintP2P(JointP2PComponent* jointA, JointP2PComponent* jointB);
 

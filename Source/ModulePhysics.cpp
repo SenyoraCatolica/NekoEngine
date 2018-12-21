@@ -14,6 +14,7 @@
 #include "ComponentCamera.h"
 #include "RigidBody3DComponent.h"
 #include "BoxColliderComponent.h"
+#include "SphereColliderComponent.h"
 #include "JointP2PComponent.h"
 #include "CarComponent.h"
 
@@ -323,6 +324,86 @@ PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderCompon
 	return pbody;
 }
 
+PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, SphereColliderComponent* col, GameObject* go, bool is_constraint)
+{
+	PrimitiveShapeSphere* s = col->GetSphereCollider();
+
+	btCollisionShape* colShape = new btSphereShape(s->radius);
+	shapes.push_back(colShape);
+
+	math::float4x4 matrix = s->transform;
+
+	btTransform startTransform;
+	startTransform.setFromOpenGLMatrix(*matrix.v);
+
+
+	btVector3 localInertia(0, 0, 0);
+
+	float mass = 0.0f;
+
+	if (rb->is_kinematic == false && go->IsStatic() == false)
+		mass = rb->mass;
+
+	if (mass > 0)
+		colShape->calculateLocalInertia(mass, localInertia);
+
+
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	motions.push_back(myMotionState);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+
+	btRigidBody* body = new btRigidBody(rbInfo);
+	PhysicBody3D* pbody = new PhysicBody3D(body);
+
+	body->setUserPointer(pbody);
+	world->addRigidBody(body);
+	bodies.push_back(pbody);
+
+	if (is_constraint == false)
+		body_gos.insert(std::pair<GameObject*, PhysicBody3D*>(go, pbody));
+
+	return pbody;
+}
+
+PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, GameObject* go, bool is_constraint)
+{
+	btCollisionShape* colShape = new btEmptyShape();
+	
+	btTransform startTransform;
+	startTransform.setIdentity();
+	startTransform.setOrigin(btVector3(go->transform->position.x, go->transform->position.y, go->transform->position.z));
+	startTransform.setRotation(btQuaternion(go->transform->rotation.x, go->transform->rotation.y, go->transform->rotation.z, go->transform->rotation.w));
+
+	btVector3 localInertia(0, 0, 0);
+
+	float mass = 0.0f;
+
+	if (rb->is_kinematic == false && go->IsStatic() == false)
+		mass = rb->mass;
+
+	if (mass > 0)
+		colShape->calculateLocalInertia(mass, localInertia);
+
+
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	motions.push_back(myMotionState);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+
+	btRigidBody* body = new btRigidBody(rbInfo);
+	PhysicBody3D* pbody = new PhysicBody3D(body);
+
+	body->setUserPointer(pbody);
+	world->addRigidBody(body);
+	bodies.push_back(pbody);
+
+	if (is_constraint == false)
+		body_gos.insert(std::pair<GameObject*, PhysicBody3D*>(go, pbody));
+
+	return pbody;
+}
+
+
+
 PhysicVehicle3D* ModulePhysics::AddVehicle(CarComponent* car)
 {
 	btCompoundShape* comShape = new btCompoundShape();
@@ -433,30 +514,71 @@ void ModulePhysics::UpdateBodies()
 	std::map<GameObject*, PhysicBody3D*>::iterator it = body_gos.begin();
 	while (it != body_gos.end())
 	{
-		BoxColliderComponent* box = (BoxColliderComponent*)(*it).first->GetComponent(ComponentType::COMPONENT_BOX);
 
 		if (App->IsPlay())
 		{
 			//update box on play
-			if (box->GetBoxCollider())
+			BoxColliderComponent* box = (BoxColliderComponent*)(*it).first->GetComponent(ComponentType::COMPONENT_BOX);
+			
+			if (box != nullptr)
 			{
-				//Get the transform data from go transform
-				math::float3 trans; math::Quat rot; math::float3 scale;
+				if (box->GetBoxCollider())
+				{
+					//Get the transform data from go transform
+					math::float3 trans; math::Quat rot; math::float3 scale;
+					(*it).second->GetTransform().Transposed().Decompose(trans, rot, scale);
+
+					//Add offset
+					math::float3 real_offset = rot.Transform(box->offset);
+
+					//Set the new transform
+					box->GetBoxCollider()->SetPos(trans.x, trans.y, trans.z);
+					box->GetBoxCollider()->SetRotation(rot.Inverted());
+
+					math::float4x4 matrix = math::float4x4::FromTRS(trans + real_offset, rot, (*it).first->transform->scale);
+					(*it).first->transform->SetTransform(matrix);
+
+					(*it).first->transform->UpdateOnTransformChanged();
+
+					box->GetBoxCollider()->Render();
+				}
+			}
+
+			SphereColliderComponent* sphere = (SphereColliderComponent*)(*it).first->GetComponent(ComponentType::COMPONENT_SPHERE);
+
+			if (sphere != nullptr)
+			{
+				if (sphere->GetSphereCollider())
+				{
+					//Get the transform data from go transform
+					math::float3 trans = math::float3::zero; math::Quat rot = math::Quat::identity; math::float3 scale = math::float3::zero;
+					(*it).second->GetTransform().Transposed().Decompose(trans, rot, scale);
+
+					//Add offset
+					math::float3 real_offset = rot.Transform(sphere->offset);
+
+					//Set the new transform
+					sphere->GetSphereCollider()->SetPos(trans.x, trans.y, trans.z);
+					sphere->GetSphereCollider()->SetRotation(rot.Inverted());
+
+					math::float4x4 matrix = math::float4x4::FromTRS(trans + real_offset, rot, (*it).first->transform->scale);
+					(*it).first->transform->SetTransform(matrix);
+
+					(*it).first->transform->UpdateOnTransformChanged();
+
+					sphere->GetSphereCollider()->Render();
+				}
+			}
+
+			if (box == nullptr && sphere == nullptr)
+			{
+				math::float3 trans = math::float3::zero; math::Quat rot = math::Quat::identity; math::float3 scale = math::float3::zero;
 				(*it).second->GetTransform().Transposed().Decompose(trans, rot, scale);
 
-				//Add offset
-				math::float3 real_offset = rot.Transform(box->offset);
-
-				//Set the new transform
-				box->GetBoxCollider()->SetPos(trans.x, trans.y, trans.z);
-				box->GetBoxCollider()->SetRotation(rot.Inverted());
-
-				math::float4x4 matrix = math::float4x4::FromTRS(trans + real_offset, rot, (*it).first->transform->scale);
+				math::float4x4 matrix = math::float4x4::FromTRS(trans, rot, (*it).first->transform->scale);
 				(*it).first->transform->SetTransform(matrix);
 
 				(*it).first->transform->UpdateOnTransformChanged();
-
-				box->GetBoxCollider()->Render();
 			}
 		}
 
@@ -554,7 +676,8 @@ void ModulePhysics::AddConstraint(JointP2PComponent* jointA, JointP2PComponent* 
 {
 	if (jointA != nullptr && jointB != nullptr)
 	{
-		constraints_pair.insert(std::pair<JointP2PComponent*, JointP2PComponent*>(jointA, jointB));
+		if(jointA->GetParent()->rb != nullptr && jointB->GetParent()->rb != nullptr)
+			constraints_pair.insert(std::pair<JointP2PComponent*, JointP2PComponent*>(jointA, jointB));
 	}
 }
 
@@ -563,10 +686,53 @@ void ModulePhysics::AddBodiestoConstraints()
 	std::map<JointP2PComponent*, JointP2PComponent*>::iterator it = constraints_pair.begin();
 	while (it != constraints_pair.end())
 	{
-		(*it).first->body = AddBody((*it).first->GetParent()->rb, (*it).first->GetParent()->box_collider, (*it).first->GetParent(), true);
-		(*it).second->body = AddBody((*it).second->GetParent()->rb, (*it).second->GetParent()->box_collider, (*it).second->GetParent(), true);
 
-		AddConstraintP2P((*it).first, (*it).second);
+		//Addbody to first joint===============================================
+		bool pair1 = false;
+
+		if ((*it).first->GetParent()->box_collider != nullptr)
+		{
+			(*it).first->body = AddBody((*it).first->GetParent()->rb, (*it).first->GetParent()->box_collider, (*it).first->GetParent(), true);
+			pair1 = true;
+		}
+
+		else if ((*it).first->GetParent()->sphere_collider != nullptr)
+		{
+			(*it).first->body = AddBody((*it).first->GetParent()->rb, (*it).first->GetParent()->sphere_collider, (*it).first->GetParent(), true);
+			pair1 = true;
+		}
+
+		else
+		{
+			pair1 = false;
+		}
+
+
+		//Addbody to second joint===============================================
+		bool pair2 = false;
+
+		if ((*it).second->GetParent()->box_collider != nullptr)
+		{
+			(*it).second->body = AddBody((*it).second->GetParent()->rb, (*it).second->GetParent()->box_collider, (*it).second->GetParent(), true);
+			pair2 = true;
+		}
+
+		else if ((*it).second->GetParent()->sphere_collider != nullptr)
+		{
+			(*it).second->body = AddBody((*it).second->GetParent()->rb, (*it).second->GetParent()->sphere_collider, (*it).second->GetParent(), true);
+			pair2 = true;
+		}
+
+		else
+		{
+			pair2 = false;
+		}
+
+
+		//Create joint
+		if(pair1 && pair2)
+			AddConstraintP2P((*it).first, (*it).second);
+
 		it++;
 	}
 }

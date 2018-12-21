@@ -216,6 +216,9 @@ update_status ModuleRenderer3D::PostUpdate()
 		for (uint i = 0; i < boxComponents.size(); ++i)
 			boxComponents[i]->UpdateBoxCollider(true);
 
+		for (uint i = 0; i < sphereComponents.size(); ++i)
+			sphereComponents[i]->UpdateSphereCollider(true);
+
 		if (drawQuadtree)
 			RecursiveDrawQuadtree(App->scene->quadtree.root);
 

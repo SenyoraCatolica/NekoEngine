@@ -22,6 +22,7 @@ SphereColliderComponent::~SphereColliderComponent()
 void SphereColliderComponent::GenerateSphereCollider()
 {
 	sphere = new PrimitiveShapeSphere(1);
+	sphere->wire = true;
 }
 
 void SphereColliderComponent::UpdateSphereCollider(bool render)
@@ -62,7 +63,8 @@ void SphereColliderComponent::OnUniqueEditor()
 
 		ImGui::NewLine();
 
-		ImGui::DragFloat("Radius: ", &radius, 0.1f, 0.0f, 1000.0f);
+		if (ImGui::DragFloat("Radius: ", &radius, 0.1f, 0.0f, 1000.0f))
+			sphere->radius = radius;
 	}
 }
 

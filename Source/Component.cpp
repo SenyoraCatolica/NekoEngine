@@ -66,7 +66,7 @@ bool Component::IsActive() const
 	return isActive;
 }
 
-bool Component::SetActive(bool active)
+void Component::SetActive(bool active)
 {
 	isActive = active;
 }

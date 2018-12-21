@@ -10,6 +10,7 @@
 #include "imgui\imgui_internal.h"
 
 BoxColliderComponent::BoxColliderComponent(GameObject* embedded_game_object) :
+	Component(embedded_game_object, ComponentType::COMPONENT_BOX)
 {
 	GenerateBoxCollider();
 }

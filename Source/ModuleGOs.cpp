@@ -476,13 +476,27 @@ void ModuleGOs::AddPhysicsOnPlay()
 
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
+		//divide from joints an other physic objects
 		if (gameObjects[i]->jp2p == nullptr)
 		{
-			if (gameObjects[i]->box_collider != nullptr || gameObjects[i]->rb != nullptr)
+			if (gameObjects[i]->rb != nullptr)
 			{
-				if (gameObjects[i]->car == nullptr)
+				if (gameObjects[i]->box_collider != nullptr)
+				{
 					App->physics->AddBody(gameObjects[i]->rb, gameObjects[i]->box_collider, gameObjects[i]);
+				}
+
+				else if (gameObjects[i]->sphere_collider != nullptr)
+				{
+					App->physics->AddBody(gameObjects[i]->rb, gameObjects[i]->sphere_collider, gameObjects[i]);
+				}
+
+				else
+				{
+					App->physics->AddBody(gameObjects[i]->rb, gameObjects[i]);
+				}
 			}
+			
 
 			if (gameObjects[i]->car != nullptr)
 			{

@@ -130,7 +130,7 @@ void PanelInspector::ShowGameObjectInspector() const
 				gameObject->AddComponent(ComponentType::COMPONENT_SPHERE);
 				ImGui::CloseCurrentPopup();
 			}
-		if (gameObject->rb == nullptr)
+		if (gameObject->rb == nullptr && gameObject->car == nullptr)
 			if (ImGui::Selectable("Rigid Body 3D")) {
 				gameObject->AddComponent(ComponentType::COMPONENT_RB);
 				ImGui::CloseCurrentPopup();
@@ -140,7 +140,7 @@ void PanelInspector::ShowGameObjectInspector() const
 				gameObject->AddComponent(ComponentType::COMPONENT_JP2P);
 				ImGui::CloseCurrentPopup();
 			}
-		if (gameObject->car == nullptr)
+		if (gameObject->car == nullptr && gameObject->rb == nullptr)
 			if (ImGui::Selectable("Car")) {
 				gameObject->AddComponent(ComponentType::COMPONENT_CAR);
 				ImGui::CloseCurrentPopup();
