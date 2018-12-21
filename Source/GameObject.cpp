@@ -501,6 +501,8 @@ void GameObject::OnSave(JSON_Object* file) const
 	json_object_set_string(file, "name", name);
 	json_object_set_number(file, "UUID", UUID);
 	json_object_set_number(file, "Parent UUID", parent->UUID);
+	json_object_set_boolean(file, "Static", isStatic);
+
 
 	JSON_Value* arrayValue = json_value_init_array();
 	JSON_Array* jsonComponents = json_value_get_array(arrayValue);
@@ -518,6 +520,7 @@ void GameObject::OnSave(JSON_Object* file) const
 void GameObject::OnLoad(JSON_Object* file)
 {
 	UUID = json_object_get_number(file, "UUID");
+	isStatic = json_object_get_boolean(file, "Static");
 	JSON_Array* jsonComponents = json_object_get_array(file, "jsonComponents");
 	JSON_Object* cObject;
 
