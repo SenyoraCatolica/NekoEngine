@@ -293,6 +293,7 @@
     <ClInclude Include="physfs\include\physfs.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="ModuleTimeManager.h" />
+    <ClInclude Include="SphereColliderComponent.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -386,6 +387,7 @@
     <ClCompile Include="PerfTimer.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="ModuleTimeManager.cpp" />
+    <ClCompile Include="SphereColliderComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>

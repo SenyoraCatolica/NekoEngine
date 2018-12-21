@@ -10,7 +10,6 @@
 #include "imgui\imgui_internal.h"
 
 BoxColliderComponent::BoxColliderComponent(GameObject* embedded_game_object) :
-	Component(embedded_game_object, ComponentType::COMPONENT_BOX)
 {
 	GenerateBoxCollider();
 }
@@ -26,7 +25,7 @@ void BoxColliderComponent::UpdateBoxCollider(bool render)
 		if (App->IsEditor())
 		{
 			//update box on editor
-			if (box != nullptr && parent != nullptr)
+			if (parent != nullptr)
 			{
 				//Get the transform data from go transform
 				math::float3 trans; math::Quat rot; math::float3 scale;
