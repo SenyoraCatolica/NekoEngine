@@ -270,12 +270,10 @@ PhysicBody3D* ModulePhysics::AddBody(const PrimitiveShapeCube& cube, float mass)
 PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderComponent* col, GameObject* go, bool is_constraint)
 {
 	PrimitiveShapeCube* box;
-	GameObject* parent;
 
-	if (col != nullptr)
+	if (col != nullptr && col->IsActive())
 	{
 		box = col->GetBoxCollider();
-		parent = col->GetParent();
 	}
 
 	else
@@ -284,14 +282,13 @@ PhysicBody3D* ModulePhysics::AddBody(RigidBody3DComponent* rb, BoxColliderCompon
 	btCollisionShape* colShape = new btBoxShape(btVector3(box->size.x*0.5f, box->size.y*0.5f, box->size.z*0.5f));
 	shapes.push_back(colShape);
 
-	if (parent == nullptr)
-		parent = rb->GetParent();
+
 
 	math::float4x4 matrix;
-	if (col != nullptr)
+	if (col != nullptr && col->IsActive())
 		matrix = col->GetBoxCollider()->transform;
 	else
-		matrix = parent->transform->GetGlobalMatrix();
+		matrix = go->transform->GetGlobalMatrix();
 
 	btTransform startTransform;
 	startTransform.setFromOpenGLMatrix(*matrix.v);

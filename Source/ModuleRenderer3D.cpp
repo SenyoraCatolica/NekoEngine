@@ -658,6 +658,8 @@ void ModuleRenderer3D::DrawMesh(ComponentMesh* toDraw) const
 		return;
 
 	glPushMatrix();
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	math::float4x4 matrix = toDraw->GetParent()->transform->GetGlobalMatrix();
 	glMultMatrixf(matrix.Transposed().ptr());
 

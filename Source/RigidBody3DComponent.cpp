@@ -43,17 +43,15 @@ void RigidBody3DComponent::OnUniqueEditor()
 	if (IsActive())
 	{
 		ImGui::NewLine();
-		//const double f64_lo_a = -1000000000000000.0, f64_hi_a = +1000000000000000.0;
 
-		//ImGui::Text("Mass");
-		//ImGui::PushItemWidth(TRANSFORMINPUTSWIDTH);
-		//ImGui::DragScalar("##Mass", ImGuiDataType_Float, (void*)&mass, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f);
 		ImGui::DragFloat("Mass: ", &mass, 0.1f, 0.0f, 100000.0f);
 
 		ImGui::NewLine();
 
 		ImGui::Checkbox("Is Kinematic", &is_kinematic);
-	}	
+	}
+	else
+		SetActive(true);
 }
 
 

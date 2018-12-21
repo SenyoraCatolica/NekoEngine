@@ -66,6 +66,12 @@ bool Component::IsActive() const
 	return isActive;
 }
 
+bool Component::SetActive(bool active)
+{
+	isActive = active;
+}
+
+
 ComponentType Component::GetType() const
 {
 	return type;

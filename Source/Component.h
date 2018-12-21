@@ -22,6 +22,7 @@ public:
 
 	void ToggleIsActive();
 	bool IsActive() const;
+	bool SetActive(bool active);
 
 	ComponentType GetType() const;
 

@@ -486,8 +486,11 @@ void ModuleGOs::AddPhysicsOnPlay()
 
 			if (gameObjects[i]->car != nullptr)
 			{
-				gameObjects[i]->car->SetVehicle(App->physics->AddVehicle(gameObjects[i]->car));
-				gameObjects[i]->car->SetCarData();
+				if (gameObjects[i]->car->IsActive())
+				{
+					gameObjects[i]->car->SetVehicle(App->physics->AddVehicle(gameObjects[i]->car));
+					gameObjects[i]->car->SetCarData();
+				}
 			}
 		}
 
