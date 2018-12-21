@@ -16,6 +16,7 @@ class ComponentMaterial;
 class ComponentMesh;
 class ComponentCamera;
 class BoxColliderComponent;
+class SphereColliderComponent;
 class RigidBody3DComponent;
 class JointP2PComponent;
 class CarComponent;
@@ -93,6 +94,7 @@ public:
 	ComponentMesh* meshRenderer = nullptr;
 	ComponentCamera* camera = nullptr;
 	BoxColliderComponent* box_collider = nullptr;
+	SphereColliderComponent* sphere_collider = nullptr;
 	RigidBody3DComponent* rb = nullptr;
 	JointP2PComponent* jp2p = nullptr;
 	CarComponent* car = nullptr;

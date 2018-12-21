@@ -17,6 +17,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
 #include "BoxColliderComponent.h"
+#include "SphereColliderComponent.h"
 
 
 #include "Quadtree.h"
@@ -537,6 +538,44 @@ bool ModuleRenderer3D::EraseBoxColliderComponent(BoxColliderComponent* toErase)
 
 	if (ret)
 		boxComponents.erase(it);
+
+	return ret;
+}
+
+SphereColliderComponent* ModuleRenderer3D::CreateSphereColliderComponent(GameObject* parent)
+{
+	SphereColliderComponent* newComponent = new SphereColliderComponent(parent);
+
+	std::vector<SphereColliderComponent*>::const_iterator it = std::find(sphereComponents.begin(), sphereComponents.end(), newComponent);
+
+	if (it == sphereComponents.end())
+		sphereComponents.push_back(newComponent);
+
+	return newComponent;
+}
+
+bool ModuleRenderer3D::AddSphereColliderComponent(SphereColliderComponent* toAdd)
+{
+	bool ret = true;
+
+	std::vector<SphereColliderComponent*>::const_iterator it = std::find(sphereComponents.begin(), sphereComponents.end(), toAdd);
+	ret = it == sphereComponents.end();
+
+	if (ret)
+		sphereComponents.push_back(toAdd);
+
+	return ret;
+}
+
+bool ModuleRenderer3D::EraseSphereColliderComponent(SphereColliderComponent* toErase)
+{
+	bool ret = false;
+
+	std::vector<SphereColliderComponent*>::const_iterator it = std::find(sphereComponents.begin(), sphereComponents.end(), toErase);
+	ret = it != sphereComponents.end();
+
+	if (ret)
+		sphereComponents.erase(it);
 
 	return ret;
 }

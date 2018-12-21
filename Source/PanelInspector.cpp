@@ -120,9 +120,14 @@ void PanelInspector::ShowGameObjectInspector() const
 				ImGui::CloseCurrentPopup();
 			}
 
-		if (gameObject->box_collider == nullptr)
+		if (gameObject->box_collider == nullptr && gameObject->sphere_collider == nullptr)
 			if (ImGui::Selectable("Box Collider")) {
 				gameObject->AddComponent(ComponentType::COMPONENT_BOX);
+				ImGui::CloseCurrentPopup();
+			}
+		if (gameObject->sphere_collider == nullptr && gameObject->box_collider == nullptr)
+			if (ImGui::Selectable("Sphere Collider")) {
+				gameObject->AddComponent(ComponentType::COMPONENT_SPHERE);
 				ImGui::CloseCurrentPopup();
 			}
 		if (gameObject->rb == nullptr)

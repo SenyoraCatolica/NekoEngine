@@ -22,6 +22,7 @@ class ComponentMesh;
 class ComponentCamera;
 class QuadtreeNode;
 class BoxColliderComponent;
+class SphereColliderComponent;
 
 class ModuleRenderer3D : public Module
 {
@@ -79,6 +80,10 @@ public:
 	bool AddBoxColliderComponent(BoxColliderComponent* toAdd);
 	bool EraseBoxColliderComponent(BoxColliderComponent* toErase);
 
+	SphereColliderComponent* CreateSphereColliderComponent(GameObject* parent);
+	bool AddSphereColliderComponent(SphereColliderComponent* toAdd);
+	bool EraseSphereColliderComponent(SphereColliderComponent* toErase);
+
 	bool RecalculateMainCamera();
 	bool SetMainCamera(ComponentCamera* mainCamera);
 	bool SetCurrentCamera();
@@ -102,6 +107,7 @@ private:
 	ComponentCamera* currentCamera = nullptr;
 
 	std::vector<BoxColliderComponent*> boxComponents;
+	std::vector<SphereColliderComponent*> sphereComponents;
 
 	uint maxTextureUnits = 0;
 

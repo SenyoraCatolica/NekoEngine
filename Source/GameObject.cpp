@@ -5,6 +5,7 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "BoxColliderComponent.h"
+#include "SphereColliderComponent.h"
 #include "RigidBody3DComponent.h"
 #include "JointP2PComponent.h"
 #include "CarComponent.h"
@@ -76,6 +77,13 @@ GameObject::GameObject(const GameObject& gameObject)
 		components.push_back(box_collider);
 	}
 
+	if (gameObject.sphere_collider != nullptr)
+	{
+		sphere_collider = new SphereColliderComponent(*gameObject.sphere_collider);
+		sphere_collider->SetParent(this);
+		components.push_back(sphere_collider);
+	}
+
 	if (gameObject.rb != nullptr)
 	{
 		rb = new RigidBody3DComponent(*gameObject.rb);
@@ -117,6 +125,9 @@ void GameObject::Activate() const
 
 	if (box_collider != nullptr)
 		App->renderer3D->AddBoxColliderComponent(box_collider);
+
+	if (sphere_collider != nullptr)
+		App->renderer3D->AddSphereColliderComponent(sphere_collider);
 }
 
 GameObject::~GameObject()
@@ -239,6 +250,10 @@ Component* GameObject::AddComponent(ComponentType type)
 		newComponent = box_collider = App->renderer3D->CreateBoxColliderComponent(this);
 		break;
 
+	case COMPONENT_SPHERE:
+		newComponent = sphere_collider = App->renderer3D->CreateSphereColliderComponent(this);
+		break;
+
 	case COMPONENT_RB:
 		newComponent = rb = new RigidBody3DComponent(this);;
 		break;
@@ -292,6 +307,11 @@ void GameObject::InternallyDeleteComponent(Component* toDelete)
 		App->renderer3D->EraseBoxColliderComponent((BoxColliderComponent*)toDelete);
 		box_collider = nullptr;
 		break;
+
+	case ComponentType::COMPONENT_SPHERE:
+		App->renderer3D->EraseSphereColliderComponent((SphereColliderComponent*)toDelete);
+		sphere_collider = nullptr;
+		break;
 	}
 
 	components.erase(std::remove(components.begin(), components.end(), toDelete), components.end());
@@ -313,6 +333,10 @@ void GameObject::InternallyDeleteComponents()
 
 		case ComponentType::COMPONENT_BOX:
 			App->renderer3D->EraseBoxColliderComponent((BoxColliderComponent*)components[i]);
+			break;
+
+		case ComponentType::COMPONENT_SPHERE:
+			App->renderer3D->EraseSphereColliderComponent((SphereColliderComponent*)components[i]);
 			break;
 		}		
 
