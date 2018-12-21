@@ -8,6 +8,8 @@
 #include "ComponentCamera.h"
 #include "CarComponent.h"
 #include "JointP2PComponent.h"
+#include "BoxColliderComponent.h"
+#include "SphereColliderComponent.h"
 
 #include "Application.h"
 #include "ModuleFileSystem.h"
@@ -483,12 +485,21 @@ void ModuleGOs::AddPhysicsOnPlay()
 			{
 				if (gameObjects[i]->box_collider != nullptr)
 				{
-					App->physics->AddBody(gameObjects[i]->rb, gameObjects[i]->box_collider, gameObjects[i]);
+					if(gameObjects[i]->box_collider->IsActive())
+						App->physics->AddBody(gameObjects[i]->rb, gameObjects[i]->box_collider, gameObjects[i]);
+
+					else
+						App->physics->AddBody(gameObjects[i]->rb, gameObjects[i]);
+
 				}
 
 				else if (gameObjects[i]->sphere_collider != nullptr)
 				{
-					App->physics->AddBody(gameObjects[i]->rb, gameObjects[i]->sphere_collider, gameObjects[i]);
+					if(gameObjects[i]->sphere_collider->IsActive())
+						App->physics->AddBody(gameObjects[i]->rb, gameObjects[i]->sphere_collider, gameObjects[i]);
+
+					else
+						App->physics->AddBody(gameObjects[i]->rb, gameObjects[i]);
 				}
 
 				else

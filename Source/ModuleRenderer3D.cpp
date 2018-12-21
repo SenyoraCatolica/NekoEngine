@@ -822,9 +822,9 @@ void ModuleRenderer3D::UpdateMainCamera()
 
 			if (dx != 0 || dy != 0)
 			{
-				float cameraRotationSpeed = rotationSpeed;
+				float cameraRotationSpeed = 0.01;
 
-				currentCamera->LookAround(currentCamera->frustum.pos, (float)dy * cameraRotationSpeed, (float)dx * cameraRotationSpeed);
+				currentCamera->LookAround(currentCamera->frustum.pos, (float)dx * cameraRotationSpeed, (float)dy * cameraRotationSpeed);
 			}
 		}
 	}

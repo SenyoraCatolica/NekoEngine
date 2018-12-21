@@ -491,9 +491,6 @@ PhysicVehicle3D* ModulePhysics::AddVehicle(CarComponent* car)
 
 void ModulePhysics::AddConstraintP2P(JointP2PComponent* jointA, JointP2PComponent* jointB)
 {
-	if (jointA == nullptr || jointB == nullptr)
-		return;
-
 	btTypedConstraint* p2p = new btPoint2PointConstraint(
 		*(jointA->body->body),
 		*(jointB->body->body),
@@ -505,8 +502,6 @@ void ModulePhysics::AddConstraintP2P(JointP2PComponent* jointA, JointP2PComponen
 	body_gos.insert(std::pair<GameObject*, PhysicBody3D*>(jointA->GetParent(), jointA->body));
 	body_gos.insert(std::pair<GameObject*, PhysicBody3D*>(jointB->GetParent(), jointB->body));
 	p2p->setDbgDrawSize(2.0f);
-
-	jointA->is_paired = jointB->is_paired = true;
 }
 
 
@@ -651,14 +646,14 @@ void ModulePhysics::ClearBodies()
 	constraints.clear();
 
 	//erase constraints map
-	std::map<JointP2PComponent*, JointP2PComponent*>::iterator it_consp = constraints_pair.begin();
+	/*std::map<JointP2PComponent*, JointP2PComponent*>::iterator it_consp = constraints_pair.begin();
 	while (it_consp != constraints_pair.end())
 	{
 		it_consp->first->is_paired = false;
 		it_consp->second->is_paired = false;
 		it_consp++;
 	}
-	constraints_pair.clear();
+	constraints_pair.clear();*/
 
 	//2DO remove vehicles
 	std::list<PhysicVehicle3D*>::iterator it_v = vehicles.begin();
@@ -678,8 +673,12 @@ void ModulePhysics::AddConstraint(JointP2PComponent* jointA, JointP2PComponent* 
 {
 	if (jointA != nullptr && jointB != nullptr)
 	{
-		if(jointA->GetParent()->rb != nullptr && jointB->GetParent()->rb != nullptr)
+		if (jointA->GetParent()->rb != nullptr && jointB->GetParent()->rb != nullptr)
+		{
 			constraints_pair.insert(std::pair<JointP2PComponent*, JointP2PComponent*>(jointA, jointB));
+			jointA->is_paired = true;
+			jointB->is_paired = true;
+		}
 	}
 }
 
@@ -688,7 +687,7 @@ void ModulePhysics::AddBodiestoConstraints()
 	std::map<JointP2PComponent*, JointP2PComponent*>::iterator it = constraints_pair.begin();
 	while (it != constraints_pair.end())
 	{
-		if ((*it).first->is_paired == false && (*it).second->is_paired == false)
+		//if ((*it).first->is_paired == false && (*it).second->is_paired == false)
 		{
 			//Addbody to first joint===============================================
 			bool pair1 = false;
@@ -733,8 +732,10 @@ void ModulePhysics::AddBodiestoConstraints()
 
 
 			//Create joint
-			if (pair1 && pair2)
+			if (pair1 == true && pair2 == true)
+			{
 				AddConstraintP2P((*it).first, (*it).second);
+			}
 		}
 
 		it++;

@@ -205,12 +205,19 @@ void ModuleCameraEditor::LookAt(const math::float3& reference, float radius) con
 
 void ModuleCameraEditor::LookAround(const math::float3& reference, float pitch, float yaw) const
 {
-	math::Quat rotationX = math::Quat::RotateAxisAngle({ 0.0f,1.0f,0.0f }, yaw * DEGTORAD);
-	math::Quat rotationY = math::Quat::RotateAxisAngle(camera->frustum.WorldRight(), pitch * DEGTORAD);
-	math::Quat finalRotation = rotationX * rotationY;
+	math::Quat qy = math::Quat::RotateY(yaw);
+	camera->frustum.front = qy.Mul(camera->frustum.front).Normalized();
+	camera->frustum.up = qy.Mul(camera->frustum.up).Normalized();
 
-	camera->frustum.up = finalRotation * camera->frustum.up;
-	camera->frustum.front = finalRotation * camera->frustum.front;
+	math::Quat qx = math::Quat::RotateAxisAngle(camera->frustum.WorldRight(), pitch);
+
+	math::float3 new_up = qx.Mul(camera->frustum.up).Normalized();
+
+	if (new_up.y > 0.0f)
+	{
+		camera->frustum.up = new_up;
+		camera->frustum.front = qx.Mul(camera->frustum.front).Normalized();
+	}
 }
 
 #endif // GAME

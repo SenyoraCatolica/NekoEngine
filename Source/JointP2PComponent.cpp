@@ -32,6 +32,7 @@ void JointP2PComponent::UnpairJoint()
 	jointTo = nullptr;
 	jointToGO = nullptr;
 	jointToName.clear();
+	is_paired = false;
 }
 
 
