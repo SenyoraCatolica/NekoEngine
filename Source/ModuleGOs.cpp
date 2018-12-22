@@ -476,6 +476,8 @@ void ModuleGOs::AddPhysicsOnPlay()
 
 	if (gameObjects.empty())return;
 
+	joints.clear();
+
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
 		//divide from joints an other physic objects
@@ -521,14 +523,9 @@ void ModuleGOs::AddPhysicsOnPlay()
 
 		else
 		{
-			if (gameObjects[i]->jp2p->is_paired == false && gameObjects[i]->jp2p->jointToName.empty() == false)
-			{
-				static char goName[INPUT_BUF_SIZE] = "";
-				strcpy(goName, gameObjects[i]->jp2p->jointToName.data());
-				gameObjects[i]->jp2p->MergeJoints(goName);
-			}
+			joints.push_back(gameObjects[i]);
 		}
 	}
 
-	App->physics->AddBodiestoConstraints();
+	App->physics->AddBodiestoConstraints(joints);
 }

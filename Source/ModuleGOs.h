@@ -70,6 +70,8 @@ private:
 
 	// OnGameMode/OnEditorMode
 	std::vector<GameObject*> tmpGameObjects;
+
+	std::vector<GameObject*> joints;
 };
 
 #endif

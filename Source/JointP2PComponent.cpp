@@ -32,7 +32,6 @@ void JointP2PComponent::UnpairJoint()
 	jointTo = nullptr;
 	jointToGO = nullptr;
 	jointToName.clear();
-	is_paired = false;
 }
 
 
@@ -61,8 +60,7 @@ void JointP2PComponent::OnUniqueEditor()
 
 		if (ImGui::InputText("##goName", goName, IM_ARRAYSIZE(goName), inputFlag))
 		{
-			if(MergeJoints(goName))
-				jointToName = goName;
+			jointToName = goName;
 		}
 
 		ImGui::NewLine();
@@ -71,9 +69,11 @@ void JointP2PComponent::OnUniqueEditor()
 	}
 }
 
-bool JointP2PComponent::MergeJoints(char* goName)
+bool JointP2PComponent::MergeJoints()
 {
 	bool ret = false;
+
+	const char* goName = jointToName.data();
 
 	GameObject* go = App->GOs->GetGameObjectByName(goName);
 
@@ -98,14 +98,12 @@ bool JointP2PComponent::MergeJoints(char* goName)
 		else
 		{
 			CONSOLE_LOG("Can't find a Joint P2P Component int the object: %s in the scene", go->GetName());
-			std::strcpy(goName, "");
 		}
 	}
 
 	else
 	{
 		CONSOLE_LOG("Can't find an object with the name: %s in the scene", goName);
-		std::strcpy(goName, jointToName.data());
 	}
 
 	return ret;

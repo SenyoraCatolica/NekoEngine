@@ -646,14 +646,14 @@ void ModulePhysics::ClearBodies()
 	constraints.clear();
 
 	//erase constraints map
-	/*std::map<JointP2PComponent*, JointP2PComponent*>::iterator it_consp = constraints_pair.begin();
+	std::map<JointP2PComponent*, JointP2PComponent*>::iterator it_consp = constraints_pair.begin();
 	while (it_consp != constraints_pair.end())
 	{
 		it_consp->first->is_paired = false;
 		it_consp->second->is_paired = false;
 		it_consp++;
 	}
-	constraints_pair.clear();*/
+	constraints_pair.clear();
 
 	//2DO remove vehicles
 	std::list<PhysicVehicle3D*>::iterator it_v = vehicles.begin();
@@ -682,8 +682,20 @@ void ModulePhysics::AddConstraint(JointP2PComponent* jointA, JointP2PComponent* 
 	}
 }
 
-void ModulePhysics::AddBodiestoConstraints()
+void ModulePhysics::AddBodiestoConstraints(std::vector<GameObject*> objects)
 {
+	for (int i = 0; i < objects.size(); i++)
+	{
+		if (objects[i]->jp2p->is_paired == false)
+		{
+			if (objects[i]->jp2p->MergeJoints())
+			{
+				objects[i]->jp2p->is_paired = true;
+			}
+		}
+	}
+
+	//Create bodies + constraints
 	std::map<JointP2PComponent*, JointP2PComponent*>::iterator it = constraints_pair.begin();
 	while (it != constraints_pair.end())
 	{

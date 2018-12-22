@@ -49,7 +49,7 @@ public:
 	void ClearBodies();
 
 	void AddConstraint(JointP2PComponent* jointA, JointP2PComponent* jointB);
-	void AddBodiestoConstraints();
+	void AddBodiestoConstraints(std::vector<GameObject*> objects);
 
 	void SetMainCamera(ComponentCamera* cam);
 	void CreateCameraSphare();
