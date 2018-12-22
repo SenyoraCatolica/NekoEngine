@@ -77,7 +77,7 @@ bool JointP2PComponent::MergeJoints()
 
 	GameObject* go = App->GOs->GetGameObjectByName(goName);
 
-	if (go != nullptr)
+	if (go != nullptr && go != parent)
 	{
 		//separate joint components
 		if (jointTo != nullptr)
@@ -116,11 +116,7 @@ void JointP2PComponent::OnInternalSave(JSON_Object* file)
 	json_object_set_number(file, "AnchorX", anchor.x);
 	json_object_set_number(file, "AnchorY", anchor.y);
 	json_object_set_number(file, "AnchorZ", anchor.z);
-
-	if(jointToGO != nullptr)
-		json_object_set_number(file, "JointToUUID", jointToGO->GetUUID());
-	else
-		json_object_set_number(file, "JointToUUID", 0);
+	json_object_set_string(file, "JointToName", jointToName.data());
 }
 
 void JointP2PComponent::OnLoad(JSON_Object* file)
@@ -128,14 +124,7 @@ void JointP2PComponent::OnLoad(JSON_Object* file)
 	anchor.x = json_object_get_number(file, "AnchorX");
 	anchor.y = json_object_get_number(file, "AnchorY");
 	anchor.z = json_object_get_number(file, "AnchorZ");
-	uint uuid = json_object_get_number(file, "JointToUUID");
+	jointToName = json_object_get_string(file, "JointToName");
 
-	jointToGO = App->GOs->GetGameObjectByUUID(uuid);
-
-	if (jointToGO != nullptr)
-	{
-		jointTo = jointToGO->jp2p;
-		jointToName = jointToGO->GetName();
-		is_paired = false;
-	}
+	is_paired = false;
 }

@@ -22,9 +22,6 @@ void PrimitiveShape::Render() const
 {
 	glPushMatrix();
 	glMultMatrixf(*transform.v);
-	glDisable(GL_LIGHTING);
-	glDisable(GL_TEXTURE_2D);
-
 
 	glColor3f(color.r, color.g, color.b);
 
@@ -40,13 +37,6 @@ void PrimitiveShape::Render() const
 	}
 
 	InnerRender();
-
-
-
-	
-
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_LIGHTING);
 
 	glPopMatrix();
 

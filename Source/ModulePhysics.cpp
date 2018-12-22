@@ -59,7 +59,7 @@ bool ModulePhysics::Start()
 	world->setGravity(GRAVITY);
 
 	// Big plane as ground
-	{
+	/*{
 		btCollisionShape* colShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
 
 		btDefaultMotionState* myMotionState = new btDefaultMotionState();
@@ -67,7 +67,7 @@ bool ModulePhysics::Start()
 
 		btRigidBody* body = new btRigidBody(rbInfo);
 		world->addRigidBody(body);
-	}
+	}*/
 
 	debug_draw->setDebugMode(1); //TODO this should be set in a window
 	vehicle_raycaster = new btDefaultVehicleRaycaster(world);
@@ -166,7 +166,7 @@ update_status ModulePhysics::Update()
 			s.Render();
 
 			float force = 30.0f;
-			math::float3 direction = gameCamera->GetParent()->transform->GetGlobalMatrix().WorldZ();
+			math::float3 direction = gameCamera->frustum.front;
 			PhysicBody3D* sphereBody = AddBody(s); 
 			sphereBody->Push((direction.x * force), (direction.y * force), (direction.z * force));
 		}
@@ -514,6 +514,13 @@ void ModulePhysics::UpdateBodies()
 
 		if (App->IsPlay())
 		{
+			if ((*it).first->wantToDelete || (*it).first->GetName() == nullptr)
+			{
+				body_gos.erase(it);
+				bodies.remove((*it).second);
+				return;
+			}
+
 			//update box on play
 			BoxColliderComponent* box = (BoxColliderComponent*)(*it).first->GetComponent(ComponentType::COMPONENT_BOX);
 			

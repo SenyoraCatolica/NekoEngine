@@ -101,6 +101,8 @@ public:
 
 	math::AABB boundingBox;
 
+	bool wantToDelete = false;
+
 private:
 
 	char* name = nullptr;

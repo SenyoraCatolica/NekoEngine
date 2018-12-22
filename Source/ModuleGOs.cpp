@@ -182,6 +182,7 @@ void ModuleGOs::DeleteGameObject(GameObject* toDelete)
 	{
 		if (gameObjects[i] == toDelete)
 		{
+			gameObjects[i]->wantToDelete = true;
 			gameObjects[i]->DeleteMe();
 			gameObjects[i]->GetParent()->EraseChild(gameObjects[i]);
 		}
@@ -222,6 +223,7 @@ void ModuleGOs::ClearScene()
 void ModuleGOs::SetToDelete(GameObject* toDelete)
 {
 	gameObjectsToDelete.push_back(toDelete);
+	toDelete->wantToDelete = true;
 }
 
 void ModuleGOs::SetComponentToDelete(Component* toDelete)
