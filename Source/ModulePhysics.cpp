@@ -567,7 +567,7 @@ void ModulePhysics::UpdateBodies()
 					sphere->GetSphereCollider()->SetRotation(rot.Inverted());
 
 					math::float4x4 matrix = math::float4x4::FromTRS(trans + real_offset, rot, (*it).first->transform->scale);
-					(*it).first->transform->SetTransform(matrix);
+					(*it).first->transform->SetMatrixFromGlobal(matrix);
 
 					(*it).first->transform->UpdateOnTransformChanged();
 
