@@ -59,7 +59,16 @@ void SphereColliderComponent::OnUniqueEditor()
 	{
 		ImGui::NewLine();
 
-		ImGui::DragFloat3("Collider sphere offset: ", offset.ptr(), 0.1f, -1000.0f, 1000.0f);
+		const double f64_lo_a = -1000000000000000.0, f64_hi_a = +1000000000000000.0;
+
+		ImGui::Text("Offset");
+
+		ImGui::PushItemWidth(TRANSFORMINPUTSWIDTH);
+		ImGui::DragScalar("##OffSX", ImGuiDataType_Float, (void*)&offset.x, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f); ImGui::SameLine();
+		ImGui::PushItemWidth(TRANSFORMINPUTSWIDTH);
+		ImGui::DragScalar("##OffSY", ImGuiDataType_Float, (void*)&offset.y, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f); ImGui::SameLine();
+		ImGui::PushItemWidth(TRANSFORMINPUTSWIDTH);
+		ImGui::DragScalar("##OffSZ", ImGuiDataType_Float, (void*)&offset.z, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f);
 
 		ImGui::NewLine();
 
@@ -87,4 +96,12 @@ void SphereColliderComponent::OnLoad(JSON_Object* file)
 	offset.y = json_object_get_number(file, "OffsetSY");
 	offset.z = json_object_get_number(file, "OffsetSZ");
 	radius = json_object_get_number(file, "Radius");
+
+	if (radius > 0)
+	{
+		sphere->radius = radius;
+	}
+
+	else
+		radius = sphere->radius;
 }

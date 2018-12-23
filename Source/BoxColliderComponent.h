@@ -30,7 +30,7 @@ public:
 public:
 
 	math::float3 offset = math::float3::zero;
-	math::float3 size = math::float3::one;
+	math::float3 size = math::float3::zero;
 
 private:
 	PrimitiveShapeCube* box = nullptr;

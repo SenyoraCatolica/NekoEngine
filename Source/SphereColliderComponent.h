@@ -26,7 +26,7 @@ public:
 public:
 
 	math::float3 offset = math::float3::zero;
-	float radius = 1.0;
+	float radius = 0;
 
 private:
 	PrimitiveShapeSphere * sphere;

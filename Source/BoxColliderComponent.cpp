@@ -55,7 +55,6 @@ void BoxColliderComponent::GenerateBoxCollider()
 	if (parent->boundingBox.IsFinite())
 	{
 		box = new PrimitiveShapeCube(parent->boundingBox.Size().x, parent->boundingBox.Size().z, parent->boundingBox.Size().y);
-		box->size = size;
 	}
 	else
 		box = new PrimitiveShapeCube(1, 1, 1);
@@ -70,12 +69,31 @@ void BoxColliderComponent::OnUniqueEditor()
 	{
 		ImGui::NewLine();
 
-		ImGui::PushItemWidth(50);
-		ImGui::DragFloat3("Collider offset: ", offset.ptr(), 0.1f, -1000.0f, 1000.0f);
+		const double f64_lo_a = -1000000000000000.0, f64_hi_a = +1000000000000000.0;
 
-		ImGui::NewLine();
+		ImGui::Text("Offset");
 
-		if (ImGui::DragFloat3("Size: ", size.ptr(), 0.1f, -1000.0f, 1000.0f))
+		ImGui::PushItemWidth(TRANSFORMINPUTSWIDTH);
+		ImGui::DragScalar("##OffX", ImGuiDataType_Float, (void*)&offset.x, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f); ImGui::SameLine();
+		ImGui::PushItemWidth(TRANSFORMINPUTSWIDTH);
+		ImGui::DragScalar("##OffY", ImGuiDataType_Float, (void*)&offset.y, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f); ImGui::SameLine();
+		ImGui::PushItemWidth(TRANSFORMINPUTSWIDTH);
+		ImGui::DragScalar("##OffZ", ImGuiDataType_Float, (void*)&offset.z, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f);
+
+
+
+		ImGui::Text("Box Scale");
+
+		bool modify = false;
+
+		ImGui::PushItemWidth(TRANSFORMINPUTSWIDTH);
+		if (ImGui::DragScalar("##BSX", ImGuiDataType_Float, (void*)&size.x, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f))  modify = true; ImGui::SameLine();
+		ImGui::PushItemWidth(TRANSFORMINPUTSWIDTH);
+		if (ImGui::DragScalar("##BSY", ImGuiDataType_Float, (void*)&size.y, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f))  modify = true; ImGui::SameLine();
+		ImGui::PushItemWidth(TRANSFORMINPUTSWIDTH);
+		if(ImGui::DragScalar("##BSZ", ImGuiDataType_Float, (void*)&size.z, 0.1f, &f64_lo_a, &f64_hi_a, "%f", 1.0f))  modify = true;
+
+		if(modify)
 			box->size = size;
 	}	
 }
@@ -105,4 +123,9 @@ void BoxColliderComponent::OnLoad(JSON_Object* file)
 	size.x = json_object_get_number(file, "SizeX");
 	size.y = json_object_get_number(file, "SizeY");
 	size.z = json_object_get_number(file, "SizeZ");
+
+	if (size.x != 0 && size.y != 0 && size.z != 0)
+		box->size = size;
+	else
+		size = box->size;
 }
