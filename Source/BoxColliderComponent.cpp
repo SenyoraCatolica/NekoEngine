@@ -55,6 +55,7 @@ void BoxColliderComponent::GenerateBoxCollider()
 	if (parent->localBoundingBox.IsFinite())
 	{
 		box = new PrimitiveShapeCube(parent->localBoundingBox.Size().x, parent->localBoundingBox.Size().y, parent->localBoundingBox.Size().z);
+		size = box->size;
 	}
 	else
 		box = new PrimitiveShapeCube(1, 1, 1);
