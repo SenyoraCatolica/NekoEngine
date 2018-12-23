@@ -53,7 +53,10 @@ void BoxColliderComponent::UpdateBoxCollider(bool render)
 void BoxColliderComponent::GenerateBoxCollider()
 {
 	if (parent->boundingBox.IsFinite())
+	{
 		box = new PrimitiveShapeCube(parent->boundingBox.Size().x, parent->boundingBox.Size().z, parent->boundingBox.Size().y);
+		box->size = size;
+	}
 	else
 		box = new PrimitiveShapeCube(1, 1, 1);
 
@@ -67,11 +70,13 @@ void BoxColliderComponent::OnUniqueEditor()
 	{
 		ImGui::NewLine();
 
+		ImGui::PushItemWidth(50);
 		ImGui::DragFloat3("Collider offset: ", offset.ptr(), 0.1f, -1000.0f, 1000.0f);
 
 		ImGui::NewLine();
 
-		ImGui::DragFloat3("Size: ", box->size.ptr(), 0.1f, -1000.0f, 1000.0f);
+		if (ImGui::DragFloat3("Size: ", size.ptr(), 0.1f, -1000.0f, 1000.0f))
+			box->size = size;
 	}	
 }
 
