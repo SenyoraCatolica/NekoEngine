@@ -1,5 +1,70 @@
 # Neko Engine
 
+
+Neko Engine is a 3D game engine currently being developed by two students from CITM-UPC Terrassa, Sandra Alvarez and Guillem Costa.
+
+
+///////////////////////////*FORK FOR ASSIGNEMNT 3 ENGINE*////////////////////////////////////////////////////////////////
+
+- Miquel Gironés
+- Github profile: https://github.com/SenyoraCatolica/NekoEngine
+- Github engine repository: https://github.com/SenyoraCatolica/NekoEngine/releases/tag/v.06
+- WARNING! Assignment 3 developed in Assignment3 branch
+
+
+Assignment 3 : PHYSICS PART
+
+In this part of the project I have implemented a module of physics with Bullet.
+
+The module physics updates all the bodies in the scene and creates them when play button is pressed
+
+Includes:
+	- Components box collider and sphere collider as colliders
+	- Component Rigidbody 3D
+	- Component Car
+	- Component Constraint point to point
+
+Instructions:
+
+- Create a physicalized object
+
+	Add a rigidbody component:
+		Edit the mass and set if is kinematic or not
+	Add collider:
+		Add Component box to create a cube collider
+		Add a Component sphere to create a sphere collider
+		Do not add any collider if not wanted a collider
+
+- Create a car object
+
+	Create an empty object and add a Component Car
+		You can adjust the car options as you like
+
+	Car movement: Every car is moved with the arrows of the keyboard
+
+- Create a Constraint poit to point 
+
+	Create two objects
+	Add a component Collider, a rigidbody and JP2P components on each one
+	On the JP2P component write the name of the other object you want to pair with on each object
+		Note: the name can't be the same as the current object and the other object must have all the component to merge correctly
+	Check for erros in the console if not working
+
+
+- Others
+
+	-The camera contains a sphere collider
+	-Press 1 to shot a physical sphere to interact with physical objects
+
+
+
+
+
+
+
+
+///////////////////////////*ORIGINAL ENGINE*////////////////////////////////////////////////////////////////
+
 Neko Engine is a 3D game engine currently being developed by two students from CITM-UPC Terrassa, Sandra Alvarez and Guillem Costa.
 
 - Sandra's GitHub account: [Sandruski](https://github.com/Sandruski)
