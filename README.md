@@ -15,6 +15,8 @@ Assignment 3 : PHYSICS PART
 
 In this part of the project I have implemented a module of physics with Bullet.
 
+The modules physiscs updates all the bodies and creates all the physics elements when play is pressed
+
 Includes:
 	- Components box collider and sphere collider as colliders
 	- Component Rigidbody 3D
