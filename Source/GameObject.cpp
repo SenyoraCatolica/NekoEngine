@@ -36,6 +36,7 @@ GameObject::GameObject(const char* name, GameObject* parent, bool disableTransfo
 	}
 
 	boundingBox.SetNegativeInfinity();
+	localBoundingBox.SetNegativeInfinity();
 
 	UUID = App->GenerateRandomNumber();
 }
@@ -480,6 +481,7 @@ void GameObject::RecursiveRecalculateBoundingBoxes()
 	{
 		const ResourceMesh* meshRes = (const ResourceMesh*)App->res->GetResource(meshRenderer->res);
 		boundingBox.Enclose((const math::float3*)meshRes->vertices, meshRes->verticesSize);
+		localBoundingBox.Enclose((const math::float3*)meshRes->vertices, meshRes->verticesSize);
 	}
 
 	// Transform bounding box (calculate OBB)

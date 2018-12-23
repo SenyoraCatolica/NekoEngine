@@ -100,6 +100,7 @@ public:
 	CarComponent* car = nullptr;
 
 	math::AABB boundingBox;
+	math::AABB localBoundingBox;
 
 	bool wantToDelete = false;
 
