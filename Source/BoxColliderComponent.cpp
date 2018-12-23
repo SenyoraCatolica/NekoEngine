@@ -53,7 +53,7 @@ void BoxColliderComponent::UpdateBoxCollider(bool render)
 void BoxColliderComponent::GenerateBoxCollider()
 {
 	if (parent->boundingBox.IsFinite())
-		box = new PrimitiveShapeCube(parent->boundingBox.Size().x, parent->boundingBox.Size().y, parent->boundingBox.Size().z);
+		box = new PrimitiveShapeCube(parent->boundingBox.Size().x, parent->boundingBox.Size().z, parent->boundingBox.Size().y);
 	else
 		box = new PrimitiveShapeCube(1, 1, 1);
 

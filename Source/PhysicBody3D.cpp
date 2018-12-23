@@ -24,7 +24,11 @@ math::float4x4 PhysicBody3D::GetTransform()
 	math::float4x4 ret = math::float4x4::identity;
 
 	if (body != nullptr)
-		body->getWorldTransform().getOpenGLMatrix(*ret.v);
+	{
+		float tmp[16];
+		body->getWorldTransform().getOpenGLMatrix(tmp);
+		ret.Set(tmp);
+	}
 
 	return ret;
 }
